@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Login</title>
+</head>
+<body>
+
+    <h2>Login</h2>
+
+    <form id="loginForm">
+
+        <div>
+            <label for="username">Username</label>
+            <br>
+            <input
+                type="text"
+                id="username"
+                placeholder="Masukkan username"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="password">Password</label>
+            <br>
+            <input
+                type="password"
+                id="password"
+                placeholder="Masukkan password"
+                required
+            >
+        </div>
+
+        <br>
+
+        <button type="submit">Login</button>
+
+    </form>
+
+    <hr>
+
+    <h3>Hasil Response</h3>
+
+    <pre id="result"></pre>
+
+    <script>
+
+        const form = document.getElementById("loginForm");
+        const result = document.getElementById("result");
+
+        form.addEventListener("submit", async function (e) {
+
+            e.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            try {
+
+                const response = await fetch("http://localhost:3000/auth/login", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+
+                    if (data.access_token) {
+                        localStorage.setItem("token", data.access_token);
+                    }
+
+                    alert("Login berhasil");
+
+                } else {
+
+                    alert(data.message || "Login gagal");
+
+                }
+
+                result.textContent = JSON.stringify(data, null, 2);
+
+            } catch (err) {
+
+                alert("Tidak dapat terhubung ke server");
+
+                console.error(err);
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -10,4 +8,28 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+// ===== TypeORM Entities Mapping =====
+
+model table_role {
+  id          String       @id @default(uuid()) @db.Uuid
+  roleName    String       @unique @map("roleName")
+  description String?      @db.Text
+
+  users table_user[]
+
+  @@map("table_role")
+}
+
+model table_user {
+  id           String     @id @default(uuid()) @db.Uuid
+  fullName     String     @map("fullName")
+  uCredentials String     @unique @map("uCredentials")
+  uPassword    String     @map("uPassword")
+  idRole       String?    @map("idRole") @db.Uuid
+
+  role table_role? @relation(fields: [idRole], references: [id])
+
+  @@map("table_user")
 }
