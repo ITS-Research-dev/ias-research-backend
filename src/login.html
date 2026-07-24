@@ -39,6 +39,8 @@
 
         <button type="submit">Login</button>
 
+        <button type="button" id="logoutBtn">Logout</button>
+
     </form>
 
     <hr>
@@ -103,6 +105,55 @@
             }
 
         });
+
+        const logoutBtn = document.getElementById("logoutBtn");
+
+logoutBtn.addEventListener("click", async function () {
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        alert("Anda belum login");
+        return;
+    }
+
+    try {
+
+        const response = await fetch("http://localhost:3000/auth/logout", {
+
+            method: "POST",
+
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+
+            localStorage.removeItem("token");
+
+            alert("Logout berhasil");
+
+            result.textContent = JSON.stringify(data, null, 2);
+
+        } else {
+
+            alert(data.message || "Logout gagal");
+
+        }
+
+    } catch (err) {
+
+        alert("Tidak dapat terhubung ke server");
+
+        console.error(err);
+
+    }
+
+});
 
     </script>
 
