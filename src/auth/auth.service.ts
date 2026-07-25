@@ -47,4 +47,9 @@ export class AuthService{
             }
         };
     }
+    logout(user: any) {
+    return {
+        message: `${user.username} berhasil logout`,
+    };
+    }
 }
