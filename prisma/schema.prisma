@@ -8,40 +8,14 @@ datasource db {
 }
 
 /////////////////////////////////////////////////////////
-// ENUM
-/////////////////////////////////////////////////////////
-
-enum ProgressStatus {
-  NOT_STARTED
-  IN_PROGRESS
-  COMPLETED
-}
-
-enum CompileStatus {
-  PENDING
-  SUCCESS
-  FAILED
-}
-
-enum ExecutionStatus {
-  WAITING
-  PASSED
-  FAILED
-}
-
-/////////////////////////////////////////////////////////
 // ROLE
 /////////////////////////////////////////////////////////
 
 model Role {
   id          String @id @default(uuid()) @db.Uuid
-  rCode       String @unique
   description String
 
   users User[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@map("table_role")
 }
@@ -53,13 +27,11 @@ model Role {
 model Class {
   id         String @id @default(uuid()) @db.Uuid
   title      String
-  countTotal Int @default(0)
+  waliKelas  String
+  countTotal Int
 
   users User[]
   tests Test[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   @@map("table_class")
 }
@@ -72,27 +44,18 @@ model User {
   id           String @id @default(uuid()) @db.Uuid
 
   idRole       String @db.Uuid
-  role         Role @relation(fields: [idRole], references: [id])
-
   idClass      String? @db.Uuid
-  class        Class? @relation(fields: [idClass], references: [id])
-
-  fullName     String
 
   uCredentials String @unique
-
   uPassword    String
 
-  submissions  Submission[]
+  role         Role  @relation(fields: [idRole], references: [id])
+
+  class        Class? @relation(fields: [idClass], references: [id])
 
   progresses   Progress[]
-
-  activities   ActivityLog[]
-
-  verifications Verification[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  scores       Score[]
+  overrides    Score[] @relation("ScoreOverride")
 
   @@map("table_user")
 }
@@ -102,63 +65,16 @@ model User {
 /////////////////////////////////////////////////////////
 
 model Topic {
-
-  id String @id @default(uuid()) @db.Uuid
-
-  title String
-
-  description String?
-
+  id      String @id @default(uuid()) @db.Uuid
+  title   String
+  text    String
   orderNo Int
+  status  Boolean
 
-  status Boolean @default(true)
-
-  materials Material[]
-
-  tests Test[]
-
+  tests      Test[]
   progresses Progress[]
 
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
-
   @@map("table_topic")
-
-}
-
-/////////////////////////////////////////////////////////
-// MATERIAL
-/////////////////////////////////////////////////////////
-
-model Material {
-
-  id String @id @default(uuid()) @db.Uuid
-
-  idTopic String @db.Uuid
-
-  topic Topic @relation(fields:[idTopic], references:[id])
-
-  title String
-
-  cp String?
-
-  concept String?
-
-  example1 String?
-
-  example2 String?
-
-  summary String?
-
-  status Boolean @default(true)
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
-
-  @@map("table_material")
-
 }
 
 /////////////////////////////////////////////////////////
@@ -166,65 +82,23 @@ model Material {
 /////////////////////////////////////////////////////////
 
 model Test {
+  id         String @id @default(uuid()) @db.Uuid
 
-  id String @id @default(uuid()) @db.Uuid
+  idClass    String @db.Uuid
+  idTopic    String @db.Uuid
+  idRubric   String? @db.Uuid
 
-  idClass String @db.Uuid
+  title      String
+  expOutput  String
+  maxTries   Int
 
-  class Class @relation(fields:[idClass], references:[id])
+  class       Class @relation(fields: [idClass], references: [id])
+  topic       Topic @relation(fields: [idTopic], references: [id])
 
-  idTopic String @db.Uuid
-
-  topic Topic @relation(fields:[idTopic], references:[id])
-
-  idRubric String @db.Uuid
-
-  rubric Rubric @relation(fields: [idRubric], references: [id])
-
-  title String
-
-  question String
-
-  expOutput String
-
-  maxTries Int
-
-  testCases TestCase[]
-
-  hints Hint[]
-
-  submissions Submission[]
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
+  hints        Hint[]
+  scores       Score[]
 
   @@map("table_test")
-
-}
-
-/////////////////////////////////////////////////////////
-// TEST CASE
-/////////////////////////////////////////////////////////
-
-model TestCase {
-
-  id String @id @default(uuid()) @db.Uuid
-
-  idTest String @db.Uuid
-
-  test Test @relation(fields:[idTest], references:[id])
-
-  input String
-
-  expectedOutput String
-
-  weight Int
-
-  createdAt DateTime @default(now())
-
-  @@map("table_test_case")
-
 }
 
 /////////////////////////////////////////////////////////
@@ -232,55 +106,16 @@ model TestCase {
 /////////////////////////////////////////////////////////
 
 model Hint {
-
-  id String @id @default(uuid()) @db.Uuid
+  id         String @id @default(uuid()) @db.Uuid
 
   idQuestion String @db.Uuid
 
-  test Test @relation(fields:[idQuestion], references:[id])
+  hint2      String
+  hint3      String
 
-  hint1 String?
-
-  hint2 String?
-
-  hint3 String?
-
-  createdAt DateTime @default(now())
+  question   Test @relation(fields: [idQuestion], references: [id])
 
   @@map("table_hint")
-
-}
-
-/////////////////////////////////////////////////////////
-// SUBMISSION
-/////////////////////////////////////////////////////////
-
-model Submission {
-
-  id String @id @default(uuid()) @db.Uuid
-
-  idUser String @db.Uuid
-
-  user User @relation(fields:[idUser], references:[id])
-
-  idTest String @db.Uuid
-
-  test Test @relation(fields:[idTest], references:[id])
-
-  sourceCode String
-
-  compileStatus CompileStatus @default(PENDING)
-
-  executionStatus ExecutionStatus @default(WAITING)
-
-  executionTime Int?
-
-  submittedAt DateTime @default(now())
-
-  score Score?
-
-  @@map("table_submission")
-
 }
 
 /////////////////////////////////////////////////////////
@@ -288,63 +123,38 @@ model Submission {
 /////////////////////////////////////////////////////////
 
 model Score {
+  id                 String @id @default(uuid()) @db.Uuid
 
-  id String @id @default(uuid()) @db.Uuid
+  idUser             String @db.Uuid
+  idTest             String @db.Uuid
 
-  idSubmission String @unique @db.Uuid
+  level              String
+  flagOverride       Boolean
 
-  submission Submission @relation(fields:[idSubmission], references:[id])
+  aiScore            String
+  aiSuggestion       String
+  aiFinishTime       String
 
-  level String?
+  uCode              String
 
-  flagOverride Boolean @default(false)
+  overrideBy         String? @db.Uuid
 
-  overallScore Int
+  teacherScore       String?
+  teacherSuggestion  String?
 
-  aiSuggestion String?
+  createdAt          DateTime @default(now())
 
-  aiScore Int?
+  user User @relation(fields: [idUser], references: [id])
 
-  teacherSuggestion String?
+  test Test @relation(fields: [idTest], references: [id])
 
-  teacherScore Int?
-
-  verifications Verification[]
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
+  teacher User? @relation(
+    "ScoreOverride",
+    fields: [overrideBy],
+    references: [id]
+  )
 
   @@map("table_score")
-
-}
-
-/////////////////////////////////////////////////////////
-// VERIFICATION
-/////////////////////////////////////////////////////////
-
-model Verification {
-
-  id String @id @default(uuid()) @db.Uuid
-
-  idScore String @db.Uuid
-
-  score Score @relation(fields:[idScore], references:[id])
-
-  verifiedBy String @db.Uuid
-
-  teacher User @relation(fields:[verifiedBy], references:[id])
-
-  oldScore Int
-
-  newScore Int
-
-  note String?
-
-  verifiedAt DateTime @default(now())
-
-  @@map("table_verification")
-
 }
 
 /////////////////////////////////////////////////////////
@@ -352,75 +162,18 @@ model Verification {
 /////////////////////////////////////////////////////////
 
 model Progress {
+  id       String @id @default(uuid()) @db.Uuid
 
-  id String @id @default(uuid()) @db.Uuid
+  idUser   String @db.Uuid
+  idTopic  String @db.Uuid
 
-  idUser String @db.Uuid
+  progress Int
 
-  user User @relation(fields:[idUser], references:[id])
+  user User @relation(fields: [idUser], references: [id])
 
-  idTopic String @db.Uuid
+  topic Topic @relation(fields: [idTopic], references: [id])
 
-  topic Topic @relation(fields:[idTopic], references:[id])
-
-  progress Int @default(0)
-
-  status ProgressStatus @default(NOT_STARTED)
-
-  lastAccess DateTime?
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
+  @@unique([idUser, idTopic])
 
   @@map("table_progress")
-
-}
-
-/////////////////////////////////////////////////////////
-// ACTIVITY LOG
-/////////////////////////////////////////////////////////
-
-model ActivityLog {
-
-  id String @id @default(uuid()) @db.Uuid
-
-  idUser String @db.Uuid
-
-  user User @relation(fields:[idUser], references:[id])
-
-  activity String
-
-  description String?
-
-  createdAt DateTime @default(now())
-
-  @@map("table_activity_log")
-
-}
-
-/////////////////////////////////////////////////////////
-// RUBRIC
-/////////////////////////////////////////////////////////
-
-model Rubric {
-
-  id String @id @default(uuid()) @db.Uuid
-
-  title String
-
-  description String?
-
-  prompt String
-
-  maxScore Int
-
-  tests Test[]
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
-
-  @@map("table_rubric")
-
 }
