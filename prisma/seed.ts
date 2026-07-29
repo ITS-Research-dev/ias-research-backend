@@ -1,9 +1,23 @@
 import { PrismaClient, RoleState } from '@prisma/client';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Starting database seeding...');
+
+  // 0. Clean database
+  console.log('🧹 Cleaning database...');
+  await prisma.progress.deleteMany({});
+  await prisma.score.deleteMany({});
+  await prisma.hint.deleteMany({});
+  await prisma.test.deleteMany({});
+  await prisma.topic.deleteMany({});
+  await prisma.classAssign.deleteMany({});
+  await prisma.class.deleteMany({});
+  await prisma.user.deleteMany({});
+  await prisma.role.deleteMany({});
 
   // 1. Roles
   const teacherRole = await prisma.role.create({
@@ -101,154 +115,112 @@ async function main() {
 
   await prisma.classAssign.createMany({ data: classAssignments });
 
-  // 6. Topics (5 Topik)
-  const topicsData = [
-    {
-      title: 'Dasar Pemrograman Python',
-      subject: 'Mengenal variabel, tipe data, dan perulangan.',
-    },
-    {
-      title: 'Struktur Data List & Dictionary',
-      subject: 'Memahami manipulasi data koleksi di Python.',
-    },
-    {
-      title: 'Fungsi & Modularisasi',
-      subject: 'Pembuatan fungsi, parameter, dan return value.',
-    },
-    {
-      title: 'Object Oriented Programming (OOP)',
-      subject: 'Konsep Class, Object, Inheritance, dan Encapsulation.',
-    },
-    {
-      title: 'Penanganan Exception & File I/O',
-      subject: 'Try-except block serta membaca/menulis file.',
-    },
-  ];
+  // 6. Read JSON datasets
+  console.log('📖 Loading datasets from JSON...');
+  const datasetDir = path.resolve(__dirname, '../dataset');
+  const rawSubject = fs.readFileSync(path.join(datasetDir, 'subject.json'), 'utf-8');
+  const rawTest = fs.readFileSync(path.join(datasetDir, 'test.json'), 'utf-8');
+  const rawHint = fs.readFileSync(path.join(datasetDir, 'hint.json'), 'utf-8');
+  const rawScore = fs.readFileSync(path.join(datasetDir, 'score.json'), 'utf-8');
 
-  const topics = await Promise.all(
-    topicsData.map((t) =>
-      prisma.topic.create({
-        data: {
-          idClass: classA.id,
-          title: t.title,
-          subject: t.subject,
-          isActive: true,
-        },
-      })
-    )
-  );
+  const subjectJSON = JSON.parse(rawSubject);
+  const testJSON = JSON.parse(rawTest);
+  const hintJSON = JSON.parse(rawHint);
+  const scoreJSON = JSON.parse(rawScore);
 
-  // 7. Tests (5 Soal/Kuis)
-  const testsData = [
-    {
-      title: 'Kuis 1: Loop and Conditionals',
-      question: 'Buatlah fungsi Python yang mencetak angka genap dari 1 sampai 10.',
-      expOutput: '2\n4\n6\n8\n10',
-      idTopic: topics[0].id,
-    },
-    {
-      title: 'Kuis 2: Manipulasi List',
-      question: 'Buatlah program yang mengembalikan nilai terbesar dari daftar angka [3, 7, 2, 9, 5].',
-      expOutput: '9',
-      idTopic: topics[1].id,
-    },
-    {
-      title: 'Kuis 3: Fungsi Kuadrat',
-      question: 'Buat fungsi `kuadrat(x)` yang mengembalikan kuadrat dari parameter x untuk x=5.',
-      expOutput: '25',
-      idTopic: topics[2].id,
-    },
-    {
-      title: 'Kuis 4: Class Person',
-      question: 'Buat class `Person` dengan atribut `nama` = "Budi" lalu cetak nilai atribut tersebut.',
-      expOutput: 'Budi',
-      idTopic: topics[3].id,
-    },
-    {
-      title: 'Kuis 5: Handling Division Zero',
-      question: 'Buat blok try-except untuk menangani pembagian angka 10 dengan 0.',
-      expOutput: 'Tidak bisa membagi dengan nol',
-      idTopic: topics[4].id,
-    },
-  ];
+  // 7. Seed Topics (from subject.json)
+  console.log('📚 Seeding Topics...');
+  // We'll create topics for classA
+  const topicMap = new Map<string, string>(); // Maps subject title to Topic UUID
+  for (const s of subjectJSON) {
+    const topic = await prisma.topic.create({
+      data: {
+        idClass: classA.id,
+        title: s.title,
+        subject: s.subjects || s.description || '',
+        isActive: true,
+      },
+    });
+    topicMap.set(s.title, topic.id);
+  }
 
-  const tests = await Promise.all(
-    testsData.map((t) =>
-      prisma.test.create({
-        data: {
-          idTopic: t.idTopic,
-          title: t.title,
-          question: t.question,
-          expOutput: t.expOutput,
-          maxTries: 3,
-        },
-      })
-    )
-  );
+  // 8. Seed Tests (from test.json)
+  console.log('📝 Seeding Tests...');
+  const testIdMap = new Map<number, string>(); // Maps JSON integer id to Test UUID
+  for (const t of testJSON) {
+    // Find matching topic
+    const topicId = topicMap.get(t['sub-theme']);
+    if (!topicId) {
+      console.warn(`⚠️ Warning: Topic not found for sub-theme "${t['sub-theme']}" in test ID ${t.id}`);
+      continue;
+    }
+    const test = await prisma.test.create({
+      data: {
+        idTopic: topicId,
+        title: t.judul,
+        question: t.soal,
+        expOutput: t.expected_output || '',
+        maxTries: 3,
+      },
+    });
+    testIdMap.set(t.id, test.id);
+  }
 
-  // 8. Hints (5 Hint, 1 untuk setiap Test)
-  const hintsData = [
-    {
-      idTest: tests[0].id,
-      hint1: 'Gunakan perulangan `for` dengan fungsi `range()`.',
-      hint2: 'Gunakan operator modulus `%` untuk mengecek bilangan genap.',
-      hint3: 'Gunakan sintaks `if i % 2 == 0:` di dalam perulangan.',
-    },
-    {
-      idTest: tests[1].id,
-      hint1: 'Anda bisa menggunakan fungsi bawaan `max()`.',
-      hint2: 'Atau iterasi setiap elemen dan simpan nilai terbesarnya.',
-      hint3: 'Pastikan list terdefinisi dengan benar.',
-    },
-    {
-      idTest: tests[2].id,
-      hint1: 'Gunakan kata kunci `def` untuk membuat fungsi.',
-      hint2: 'Gunakan operator `**` atau `x * x`.',
-      hint3: 'Gunakan `return` untuk mengembalikan nilai.',
-    },
-    {
-      idTest: tests[3].id,
-      hint1: 'Definisikan class menggunakan `class Person:`.',
-      hint2: 'Gunakan method `__init__` untuk inisialisasi properti.',
-      hint3: 'Buat instance object lalu panggil atribut `nama`.',
-    },
-    {
-      idTest: tests[4].id,
-      hint1: 'Gunakan kata kunci `try` dan `except`.',
-      hint2: 'Tangkap `ZeroDivisionError`.',
-      hint3: 'Cetak pesan penanganan di dalam blok `except`.',
-    },
-  ];
+  // 9. Seed Hints (from hint.json)
+  console.log('💡 Seeding Hints...');
+  const hintsToCreate: any[] = [];
+  for (const [key, val] of Object.entries(hintJSON)) {
+    // key is like "soal_1"
+    const match = key.match(/soal_(\d+)/);
+    if (!match) continue;
+    const jsonTestId = parseInt(match[1], 10);
+    const testUuid = testIdMap.get(jsonTestId);
+    if (!testUuid) continue;
 
-  await Promise.all(hintsData.map((h) => prisma.hint.create({ data: h })));
+    const h = val as any;
+    hintsToCreate.push({
+      idTest: testUuid,
+      hint1: h.hints?.['1'] || '',
+      hint2: h.hints?.['2'] || '',
+      hint3: h.hints?.['3'] || '',
+    });
+  }
+  if (hintsToCreate.length > 0) {
+    await prisma.hint.createMany({ data: hintsToCreate });
+  }
 
-  // 9. Scores (5 Dummy Score untuk 5 Siswa di Kelas A pada Test 1)
-  const scoresData = studentsClassA.map((student, idx) => ({
-    idTest: tests[0].id,
-    idUser: student.id,
-    level: idx % 2 === 0 ? 'Medium' : 'Hard',
-    averageScore: 75 + idx * 5,
-    flagOverride: idx % 2 === 0,
-    aiScore: String(70 + idx * 5),
-    aiSuggestion: 'Logika kode sudah baik, perhatikan efisiensi memori.',
-    aiFinishTime: `00:0${idx + 1}:30`,
-    uCode: 'for i in range(1, 11):\n    if i % 2 == 0:\n        print(i)',
-    overrideBy: teachers[0].id,
-    teacherScore: String(75 + idx * 5),
-    teacherSuggestion: 'Kerja bagus, pertahankan!',
-  }));
+  // 10. Seed Scores (from score.json)
+  console.log('🏆 Seeding Scores...');
+  const scoresToCreate: any[] = [];
+  // Use studentsClassA as the target users for these scores
+  let studentIdx = 0;
+  for (const s of scoreJSON) {
+    const testUuid = testIdMap.get(s.id_soal);
+    if (!testUuid) continue;
 
-  await Promise.all(scoresData.map((s) => prisma.score.create({ data: s })));
+    // Distribute among students in class A
+    const student = studentsClassA[studentIdx];
+    studentIdx = (studentIdx + 1) % studentsClassA.length;
 
-  // 10. Progress (5 Progress Record untuk 5 Siswa di Kelas A)
-  const progressData = studentsClassA.map((student, idx) => ({
-    idUser: student.id,
-    idTopic: topics[idx].id,
-    maxCount: 5,
-    progressCount: idx + 1,
-  }));
+    scoresToCreate.push({
+      idTest: testUuid,
+      idUser: student.id,
+      level: s.level_siswa || 'Medium',
+      averageScore: Math.round(s.nilai_avg) || 0,
+      flagOverride: false,
+      aiScore: JSON.stringify(s.nilai || {}),
+      aiSuggestion: s.feedback || '',
+      aiFinishTime: '00:05:00',
+      uCode: s.kode_siswa || '',
+    });
+  }
 
-  await prisma.progress.createMany({ data: progressData });
+  // Chunk score insertions to prevent DB packet size limits
+  const chunkSize = 1000;
+  for (let i = 0; i < scoresToCreate.length; i += chunkSize) {
+    const chunk = scoresToCreate.slice(i, i + chunkSize);
+    await prisma.score.createMany({ data: chunk });
+  }
 
   console.log('✅ Seeding completed successfully!');
 }
