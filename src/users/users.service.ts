@@ -10,11 +10,18 @@ export class UsersService {
         private usersRepository: Repository<User>
     ) {}
 
-    async findByUsername(username: string): Promise<User | null>{
+    async findByUsername(username: string): Promise<User | null> {
+        console.log("Username dicari:", username);
+
         const user = await this.usersRepository.findOne({
-            where: { uCredentials: username },
+            where: {
+                uCredentials: username,
+            },
             relations: ['role'],
         });
+
+        console.log("User ditemukan:", user);
+
         return user;
     }
 }

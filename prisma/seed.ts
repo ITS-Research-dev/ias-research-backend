@@ -21,11 +21,14 @@ async function main() {
 
   // 1. Roles
   const teacherRole = await prisma.role.create({
-    data: { description: 'Guru' },
+    data: {
+      description: 'Guru',
+    },
   });
-
   const studentRole = await prisma.role.create({
-    data: { description: 'Siswa' },
+    data: {
+      description: 'Siswa',
+    },
   });
 
   // 2. Teachers (2 Guru)
