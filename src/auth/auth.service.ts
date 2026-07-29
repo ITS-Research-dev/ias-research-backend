@@ -21,7 +21,7 @@ export class AuthService{
             );
         }
 
-        if(user.upassword!==dto.password){
+        if(user.uPassword!==dto.password){
             throw new UnauthorizedException(
                 "Password salah"
             );
@@ -31,7 +31,7 @@ export class AuthService{
 
         const payload={
             sub:user.id,
-            username:user.ucredentials,
+            username:user.uCredentials,
             role: roleName,
         };
 
@@ -42,7 +42,7 @@ export class AuthService{
             access_token:token,
             user:{
                 id:user.id,
-                name:user.fullname,
+                name:user.fullName,
                 role: roleName,
             }
         };

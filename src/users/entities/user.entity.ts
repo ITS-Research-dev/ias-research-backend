@@ -13,20 +13,20 @@ export class User {
   id!: string;
 
   @Column()
-  fullname!: string;
+  fullName!: string;
 
   @Column({
     unique: true,
   })
-  ucredentials!: string;
+  uCredentials!: string;
 
   @Column()
-  upassword!: string;
+  uPassword!: string;
 
-  @Column({ name: 'idrole', nullable: true, type: 'uuid' })
+  @Column({ name: 'idRole', nullable: true, type: 'uuid' })
   idRole?: string;
 
-  @ManyToOne(() => Role, (role) => role.users)
-  @JoinColumn({ name: 'idrole' })
+  @ManyToOne(() => Role, (Role) => Role.users)
+  @JoinColumn({ name: 'idRole' })
   role?: Role;
 }
