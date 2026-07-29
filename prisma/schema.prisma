@@ -1,179 +1,137 @@
+datasource db {
+  provider = "postgresql" // Sesuaikan provider database Anda (postgresql, mysql, sqlite, dll.)
+  url      = env("DATABASE_URL")
+}
+
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+enum RoleState {
+  GURU
+  SISWA
 }
-
-/////////////////////////////////////////////////////////
-// ROLE
-/////////////////////////////////////////////////////////
 
 model Role {
-  id          String @id @default(uuid()) @db.Uuid
-  description String
+  id          String   @id @default(uuid()) @db.Uuid
+  description String   @db.VarChar
+  users       User[]
 
-  users User[]
-
-  @@map("table_role")
+  @@map("TABLE_ROLE")
 }
-
-/////////////////////////////////////////////////////////
-// CLASS
-/////////////////////////////////////////////////////////
 
 model Class {
-  id         String @id @default(uuid()) @db.Uuid
-  title      String
-  waliKelas  String
-  countTotal Int
+  id          String        @id @default(uuid()) @db.Uuid
+  title       String        @db.VarChar
+  waliKelas   String        @db.VarChar
+  countTotal  Int
+  assignments ClassAssign[]
+  topics      Topic[]
 
-  users User[]
-  tests Test[]
-
-  @@map("table_class")
+  @@map("TABLE_CLASS")
 }
-
-/////////////////////////////////////////////////////////
-// USER
-/////////////////////////////////////////////////////////
 
 model User {
-  id           String @id @default(uuid()) @db.Uuid
+  id           String        @id @default(uuid()) @db.Uuid
+  idRole       String        @db.Uuid
+  fullName     String        @db.VarChar
+  uCredentials String        @db.VarChar
+  uPassword    String        @db.VarChar
 
-  idRole       String @db.Uuid
-  idClass      String? @db.Uuid
-
-  uCredentials String @unique
-  uPassword    String
-
-  role         Role  @relation(fields: [idRole], references: [id])
-
-  class        Class? @relation(fields: [idClass], references: [id])
-
+  role         Role          @relation(fields: [idRole], references: [id])
+  assignments  ClassAssign[]
+  scores       Score[]       @relation("UserScores")
+  overriddenScores Score[]   @relation("TeacherOverrides")
   progresses   Progress[]
-  scores       Score[]
-  overrides    Score[] @relation("ScoreOverride")
 
-  @@map("table_user")
+  @@map("TABLE_USER")
 }
 
-/////////////////////////////////////////////////////////
-// TOPIC
-/////////////////////////////////////////////////////////
+model ClassAssign {
+  id      String    @id @default(uuid()) @db.Uuid
+  idUser  String    @db.Uuid
+  idClass String    @db.Uuid
+  state   RoleState
+
+  user  User  @relation(fields: [idUser], references: [id])
+  class Class @relation(fields: [idClass], references: [id])
+
+  @@map("TABLE_CLASS_ASSIGN")
+}
 
 model Topic {
-  id      String @id @default(uuid()) @db.Uuid
-  title   String
-  text    String
-  orderNo Int
-  status  Boolean
+  id         String     @id @default(uuid()) @db.Uuid
+  idClass    String     @db.Uuid
+  title      String     @db.VarChar
+  subject    String     @db.Text
+  isActive   Boolean
 
+  class      Class      @relation(fields: [idClass], references: [id])
   tests      Test[]
   progresses Progress[]
 
-  @@map("table_topic")
+  @@map("TABLE_TOPIC")
 }
-
-/////////////////////////////////////////////////////////
-// TEST
-/////////////////////////////////////////////////////////
 
 model Test {
-  id         String @id @default(uuid()) @db.Uuid
+  id        String   @id @default(uuid()) @db.Uuid
+  idTopic   String   @db.Uuid
+  title     String   @db.VarChar
+  question  String   @db.Text
+  expOutput String   @db.VarChar
+  maxTries  Int
 
-  idClass    String @db.Uuid
-  idTopic    String @db.Uuid
-  idRubric   String? @db.Uuid
+  topic  Topic   @relation(fields: [idTopic], references: [id])
+  hints  Hint[]
+  scores Score[]
 
-  title      String
-  expOutput  String
-  maxTries   Int
-
-  class       Class @relation(fields: [idClass], references: [id])
-  topic       Topic @relation(fields: [idTopic], references: [id])
-
-  hints        Hint[]
-  scores       Score[]
-
-  @@map("table_test")
+  @@map("TABLE_TEST")
 }
-
-/////////////////////////////////////////////////////////
-// HINT
-/////////////////////////////////////////////////////////
 
 model Hint {
-  id         String @id @default(uuid()) @db.Uuid
-
-  idQuestion String @db.Uuid
-
-  hint2      String
-  hint3      String
-
-  question   Test @relation(fields: [idQuestion], references: [id])
-
-  @@map("table_hint")
-}
-
-/////////////////////////////////////////////////////////
-// SCORE
-/////////////////////////////////////////////////////////
-
-model Score {
-  id                 String @id @default(uuid()) @db.Uuid
-
-  idUser             String @db.Uuid
-  idTest             String @db.Uuid
-
-  level              String
-  flagOverride       Boolean
-
-  aiScore            String
-  aiSuggestion       String
-  aiFinishTime       String
-
-  uCode              String
-
-  overrideBy         String? @db.Uuid
-
-  teacherScore       String?
-  teacherSuggestion  String?
-
-  createdAt          DateTime @default(now())
-
-  user User @relation(fields: [idUser], references: [id])
+  id     String @id @default(uuid()) @db.Uuid
+  idTest String @db.Uuid
+  hint1  String @db.Text
+  hint2  String @db.Text
+  hint3  String @db.Text
 
   test Test @relation(fields: [idTest], references: [id])
 
-  teacher User? @relation(
-    "ScoreOverride",
-    fields: [overrideBy],
-    references: [id]
-  )
-
-  @@map("table_score")
+  @@map("TABLE_HINT")
 }
 
-/////////////////////////////////////////////////////////
-// PROGRESS
-/////////////////////////////////////////////////////////
+model Score {
+  id                String   @id @default(uuid()) @db.Uuid
+  idTest            String   @db.Uuid
+  idUser            String   @db.Uuid
+  level             String   @db.VarChar
+  averageScore      Int
+  flagOverride      Boolean
+  aiScore           String   @db.Text
+  aiSuggestion      String   @db.Text
+  aiFinishTime      String   @db.Text
+  uCode             String   @db.Text
+  overrideBy        String?  @db.Uuid
+  teacherScore      String?  @db.Text
+  teacherSuggestion String?  @db.Text
+  createdAt         DateTime @default(now())
+
+  test           Test  @relation(fields: [idTest], references: [id])
+  user           User  @relation("UserScores", fields: [idUser], references: [id])
+  overridingUser User? @relation("TeacherOverrides", fields: [overrideBy], references: [id])
+
+  @@map("TABLE_SCORE")
+}
 
 model Progress {
-  id       String @id @default(uuid()) @db.Uuid
+  idUser        String @db.Uuid
+  idTopic       String @db.Uuid
+  maxCount      Int
+  progressCount Int
 
-  idUser   String @db.Uuid
-  idTopic  String @db.Uuid
-
-  progress Int
-
-  user User @relation(fields: [idUser], references: [id])
-
+  user  User  @relation(fields: [idUser], references: [id])
   topic Topic @relation(fields: [idTopic], references: [id])
 
-  @@unique([idUser, idTopic])
-
-  @@map("table_progress")
+  @@id([idUser, idTopic])
+  @@map("TABLE_PROGRESS")
 }
