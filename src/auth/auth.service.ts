@@ -36,7 +36,15 @@ export class AuthService{
         };
 
         const token=this.jwtService.sign(payload);
-        return token;
+
+        return{
+            message:"Login berhasil",
+            access_token:token,
+            user:{
+                name:user.fullName,
+                role: roleName,
+            }
+        };
     }
     logout(user: any) {
     return {
