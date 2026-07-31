@@ -3,5 +3,6 @@ export class MateriEntity {
     idClass!: string;
     title!: string;
     subject!: string;
+    description!: string;
     isActive!: boolean;
 }

@@ -18,7 +18,11 @@ import { TestRepository } from './test/test.repository';
 import { ScoreRepository } from './score/score.repository';
 import { ProfileRepository } from './profile/profile.repository';
 
+// Modules
+import { UsersModule } from '../users/users.module';
+
 @Module({
+    imports: [UsersModule],
     controllers: [
         MateriController,
         TestController,

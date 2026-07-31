@@ -13,4 +13,14 @@ export class ScoreEntity {
     teacherScore?: string;
     teacherSuggestion?: string;
     createdAt!: Date;
+
+    idSoal?: number;
+    levelSiswa?: string;
+    fungsionalitas?: number;
+    logika?: number;
+    syntax?: number;
+    codeStyle?: number;
+    dokumentasi?: number;
+    konsep?: number;
+    feedback?: string;
 }
