@@ -11,6 +11,7 @@ import { MateriService } from './materi/materi.service';
 import { TestService } from './test/test.service';
 import { ScoreService } from './score/score.service';
 import { ProfileService } from './profile/profile.service';
+import { OllamaService } from './test/ollama.service';
 
 // Repositories
 import { MateriRepository } from './materi/materi.repository';
@@ -30,6 +31,7 @@ import { ProfileRepository } from './profile/profile.repository';
         MateriRepository,
         TestService,
         TestRepository,
+        OllamaService,
         ScoreService,
         ScoreRepository,
         ProfileService,
