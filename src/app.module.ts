@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config'; // Tambahkan ConfigService
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
-import {SiswaModule} from './siswa/siswa.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { autoLoadModules } from '../common/utils/auto-load-modules.util';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
+      isGlobal: true
     }),
 
     TypeOrmModule.forRootAsync({
@@ -23,15 +22,27 @@ import {SiswaModule} from './siswa/siswa.module';
         password: configService.get<string>('DB_PASSWORD', 'postgres'),
         database: configService.get<string>('DB_DATABASE', 'ias_db'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
+        logging: configService.get<string>('NODE_ENV') === 'development',
       }),
     }),
 
-    AuthModule,
-    SiswaModule,
+    // Rate limiting
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000, // 60 detik
+        limit: 100, // max 100 request per menit per IP
+      },
+    ]),
+
+    ...autoLoadModules(join(__dirname)),
+
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard, // aktifkan rate limit secara global
+    }
+  ],
 })
 export class AppModule {}
-
