@@ -1,5 +1,5 @@
 // dto/create-topic.dto.ts
-import { IsUUID, IsString, IsBoolean } from 'class-validator';
+import { IsUUID, IsString, IsBoolean, IsDateString } from 'class-validator';
 
 export class CreateTopicDto {
   @IsUUID()
@@ -10,6 +10,12 @@ export class CreateTopicDto {
 
   @IsString()
   subject: string;
+  
+  @IsString()
+  description: string;
+  
+  @IsDateString()
+  startDate: string;
 
   @IsBoolean()
   isActive: boolean;

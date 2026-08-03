@@ -25,6 +25,12 @@ export class Topic {
   @Column('text')
   subject: string;
 
+  @Column('text')
+  description: string;
+  
+  @Column('date')
+  startDate: string;
+
   @Column()
   isActive: boolean;
 

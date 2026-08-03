@@ -30,6 +30,6 @@ export class TopicService {
 
   async remove(id: string) {
     await this.findOne(id); // pastikan data ada dulu sebelum hapus
-    return this.topicRepository.delete(id);
+  return this.topicRepository.delete(id);
   }
 }

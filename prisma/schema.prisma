@@ -13,8 +13,8 @@ enum RoleState {
 }
 
 model Role {
-  id          String   @id @default(uuid()) @db.Uuid
-  description String   @db.VarChar
+  id          String @id @default(uuid()) @db.Uuid
+  description String @db.VarChar
   users       User[]
 
   @@map("TABLE_ROLE")
@@ -32,17 +32,17 @@ model Class {
 }
 
 model User {
-  id           String        @id @default(uuid()) @db.Uuid
-  idRole       String        @db.Uuid
-  fullName     String        @db.VarChar
-  uCredentials String        @db.VarChar
-  uPassword    String        @db.VarChar
+  id           String @id @default(uuid()) @db.Uuid
+  idRole       String @db.Uuid
+  fullName     String @db.VarChar
+  uCredentials String @db.VarChar
+  uPassword    String @db.VarChar
 
-  role         Role          @relation(fields: [idRole], references: [id])
-  assignments  ClassAssign[]
-  scores       Score[]       @relation("UserScores")
-  overriddenScores Score[]   @relation("TeacherOverrides")
-  progresses   Progress[]
+  role             Role          @relation(fields: [idRole], references: [id])
+  assignments      ClassAssign[]
+  scores           Score[]       @relation("UserScores")
+  overriddenScores Score[]       @relation("TeacherOverrides")
+  progresses       Progress[]
 
   @@map("TABLE_USER")
 }
@@ -60,11 +60,13 @@ model ClassAssign {
 }
 
 model Topic {
-  id         String     @id @default(uuid()) @db.Uuid
-  idClass    String     @db.Uuid
-  title      String     @db.VarChar
-  subject    String     @db.Text
-  isActive   Boolean
+  id          String   @id @default(uuid()) @db.Uuid
+  idClass     String   @db.Uuid
+  title       String   @db.VarChar
+  subject     String   @db.Text
+  description String @default("ini deskripsi")
+  startDate   DateTime @default(now())
+  isActive    Boolean
 
   class      Class      @relation(fields: [idClass], references: [id])
   tests      Test[]
@@ -74,11 +76,11 @@ model Topic {
 }
 
 model Test {
-  id        String   @id @default(uuid()) @db.Uuid
-  idTopic   String   @db.Uuid
-  title     String   @db.VarChar
-  question  String   @db.Text
-  expOutput String   @db.VarChar
+  id        String @id @default(uuid()) @db.Uuid
+  idTopic   String @db.Uuid
+  title     String @db.VarChar
+  question  String @db.Text
+  expOutput String @db.VarChar
   maxTries  Int
 
   topic  Topic   @relation(fields: [idTopic], references: [id])
