@@ -15,7 +15,7 @@ import { UpdateClassDto } from './dto/update-class.dto';
 export class ClassController {
   constructor(private readonly classService: ClassService) {}
 
-  @Get()
+  @Get() 
   getAll() {
     return this.classService.findAll();
   }

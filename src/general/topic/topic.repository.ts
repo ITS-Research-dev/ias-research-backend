@@ -19,7 +19,7 @@ export class TopicRepository {
   }
 
   findByClassId(cId: string): Promise<Topic[]> {
-  return this.repo.find({ where: { idClass: cId } });
+  return this.repo.find({ where: { idClass: cId }, select: { id: true, title: true, progresses: { maxCount: true, progressCount: true } } });
   }
 
   create(data: Partial<Topic>): Promise<Topic> {
