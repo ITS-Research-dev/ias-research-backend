@@ -34,7 +34,7 @@ export class TopicRepository {
         title: "asc",
         startDate: "desc"
       }
-    });
+  });
   }
 
   create(data: Partial<Topic>): Promise<Topic> {

@@ -10,6 +10,15 @@ import {
 import { Test } from '../../test/entities/test.entity';
 import { User } from '../../user/entities/user.entity';
 
+export interface Scoring {
+  fungsionalitas: number;
+  logika: number;
+  syntax: number;
+  code_style: number;
+  dokumentasi: number;
+  konsep: number;
+}
+
 @Entity('TABLE_SCORE')
 export class Score {
   @PrimaryGeneratedColumn('uuid')
@@ -29,9 +38,12 @@ export class Score {
 
   @Column()
   flagOverride: boolean;
+  
+  @Column('int')
+  hintUsage: number;
 
-  @Column('text')
-  aiScore: string;
+  @Column('jsonb', { default: {} })
+  aiScore: Scoring;
 
   @Column('text')
   aiSuggestion: string;
@@ -45,8 +57,8 @@ export class Score {
   @Column({ type: 'uuid', nullable: true })
   overrideBy: string | null;
 
-  @Column({ type: 'text', nullable: true })
-  teacherScore: string | null;
+  @Column({ type: 'jsonb', nullable: true })
+  teacherScore: Scoring | null;
 
   @Column({ type: 'text', nullable: true })
   teacherSuggestion: string | null;

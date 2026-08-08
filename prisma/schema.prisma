@@ -64,7 +64,7 @@ model Topic {
   idClass     String   @db.Uuid
   title       String   @db.VarChar
   subject     String   @db.Text
-  description String @default("ini deskripsi")
+  description String   @default("ini deskripsi")
   startDate   DateTime @default(now())
   isActive    Boolean
 
@@ -109,6 +109,7 @@ model Score {
   level             String   @db.VarChar
   averageScore      Int
   flagOverride      Boolean
+  hintUsage         Int      @default(0)
   aiScore           String   @db.Text
   aiSuggestion      String   @db.Text
   aiFinishTime      String   @db.Text

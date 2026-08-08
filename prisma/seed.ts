@@ -1,6 +1,7 @@
 import { PrismaClient, RoleState } from '@prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
+import { seedScore } from './seed.score';
 
 const prisma = new PrismaClient();
 
@@ -194,36 +195,7 @@ async function main() {
 
   // 10. Seed Scores (from score.json)
   console.log('🏆 Seeding Scores...');
-  const scoresToCreate: any[] = [];
-  // Use studentsClassA as the target users for these scores
-  let studentIdx = 0;
-  for (const s of scoreJSON) {
-    const testUuid = testIdMap.get(s.id_soal);
-    if (!testUuid) continue;
-
-    // Distribute among students in class A
-    const student = studentsClassA[studentIdx];
-    studentIdx = (studentIdx + 1) % studentsClassA.length;
-
-    scoresToCreate.push({
-      idTest: testUuid,
-      idUser: student.id,
-      level: s.level_siswa || 'Medium',
-      averageScore: Math.round(s.nilai_avg) || 0,
-      flagOverride: false,
-      aiScore: JSON.stringify(s.nilai || {}),
-      aiSuggestion: s.feedback || '',
-      aiFinishTime: '00:05:00',
-      uCode: s.kode_siswa || '',
-    });
-  }
-
-  // Chunk score insertions to prevent DB packet size limits
-  const chunkSize = 1000;
-  for (let i = 0; i < scoresToCreate.length; i += chunkSize) {
-    const chunk = scoresToCreate.slice(i, i + chunkSize);
-    await prisma.score.createMany({ data: chunk });
-  }
+  await seedScore()
 
   console.log('✅ Seeding completed successfully!');
 }

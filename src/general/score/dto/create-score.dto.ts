@@ -1,5 +1,14 @@
 // dto/create-score.dto.ts
-import { IsUUID, IsString, IsInt, IsBoolean, IsOptional } from 'class-validator';
+import {
+  IsUUID,
+  IsString,
+  IsInt,
+  IsBoolean,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
+import { ScoringDto } from './scoring.dto';
 
 export class CreateScoreDto {
   @IsUUID()
@@ -17,8 +26,9 @@ export class CreateScoreDto {
   @IsBoolean()
   flagOverride: boolean;
 
-  @IsString()
-  aiScore: string;
+  @ValidateNested()
+  @Type(() => ScoringDto)
+  aiScore: ScoringDto;
 
   @IsString()
   aiSuggestion: string;
@@ -33,9 +43,10 @@ export class CreateScoreDto {
   @IsOptional()
   overrideBy?: string;
 
-  @IsString()
+  @ValidateNested()
+  @Type(() => ScoringDto)
   @IsOptional()
-  teacherScore?: string;
+  teacherScore?: ScoringDto;
 
   @IsString()
   @IsOptional()

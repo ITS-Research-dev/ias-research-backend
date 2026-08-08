@@ -19,7 +19,7 @@ export class GeminiTokenService {
     }
 
     this.genAI = new GoogleGenerativeAI(apiKey);
-    this.modelName = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+    this.modelName = process.env.GEMINI_MODEL || 'gemini-3.0';
   }
 
   private async extractText(file: Express.Multer.File): Promise<string> {
