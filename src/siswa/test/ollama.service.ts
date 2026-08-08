@@ -45,6 +45,7 @@ export interface OllamaAssessmentResult {
   flagOverride: boolean;
   aiSuggestion: string;
   aiFinishTime: string;
+  level: string;
 }
 
 @Injectable()
@@ -52,6 +53,14 @@ export class OllamaService {
   private readonly logger = new Logger(OllamaService.name);
   private readonly ollamaUrl: string;
   private readonly ollamaModel: string;
+  private readonly levels = [
+    { level: 'Expert', min: 90 },
+    { level: 'Competent', min: 80 },
+    { level: 'Advance', min: 70 },
+    { level: 'Advance/Beginner', min: 60 },
+    { level: 'Beginner', min: 50 },
+    { level: 'Novice', min: 0 },
+  ];
 
   constructor(private readonly configService: ConfigService) {
     this.ollamaUrl = this.configService.get<string>(
@@ -69,10 +78,31 @@ export class OllamaService {
     return response;
   }
 
+  checkLevel(avgScore: number, hintUsage: number): string {
+    for (const { level, min } of this.levels) {
+      if (avgScore > min || (min === 0 && avgScore >= 0)) {
+        if (min !== 0 && avgScore > min) return level;
+        if (min === 0) return 'Novice';
+      }
+    }
+
+    switch (hintUsage) {
+      case 1:
+        return '';
+      case 2:
+        return 'Beginner';
+      case 3:
+        return 'Novice';
+    }
+
+    return 'Novice';
+  }
+
   async assessCode(
     soal: string,
     expectedOutput: string,
     studentCode: string,
+    hintUsage: number,
   ): Promise<OllamaAssessmentResult> {
     const prompt =
       `<s>[INST] Soal: ${soal}\n` +
@@ -89,6 +119,7 @@ export class OllamaService {
       flagOverride: false,
       aiSuggestion: parsed.aiSuggestion,
       aiFinishTime: duration,
+      level: this.checkLevel(parsed.overallScore, hintUsage),
     };
   }
 

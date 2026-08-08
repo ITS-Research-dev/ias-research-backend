@@ -25,6 +25,6 @@ export class DashboardService {
         const val = Math.round(start + (finalAvg - start) * t + ((i*7)%5 - 2));
         return { label, value: Math.max(0, Math.min(100, val)) };
         });
-        return { series };
+    return { series };
     }
 }

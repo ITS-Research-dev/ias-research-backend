@@ -48,7 +48,7 @@ export class Score {
   @Column('text')
   aiSuggestion: string;
 
-  @Column('text')
+  @Column('time')
   aiFinishTime: string;
 
   @Column('text')

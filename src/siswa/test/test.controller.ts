@@ -12,6 +12,7 @@ export class SiswaTestController {
             dto.soal,
             dto.expectedOutput,
             dto.studentCode,
+            dto.hintUsage
         );
     }
 }

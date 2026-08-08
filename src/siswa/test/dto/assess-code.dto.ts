@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class AssessCodeDto {
     @IsString()
@@ -12,4 +12,8 @@ export class AssessCodeDto {
     @IsString()
     @IsNotEmpty()
     studentCode!: string;
+    
+    @IsNumber()
+    @IsNotEmpty()
+    hintUsage: number;
 }
