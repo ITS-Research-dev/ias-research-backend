@@ -24,26 +24,33 @@ export class ScoreRepository {
     return this.repo.find({ where: { idUser: uId } });
   }
 
+  findDetail(id: string): Promise<Score | null> {
+    return this.repo.findOne({
+      where: { id },
+      relations: { test: { topic: true } }
+    });
+  }
+
   findProfile(uId: string): Promise<Score[]> {
-   return this.repo.find({
-    where: { idUser: uId },
-    relations: {
-      test: { topic: true },
-    },
-    select: {
-      id: true,
-      averageScore: true,
-      level: true,
-      aiScore: true,
-      teacherScore: true,
-      hintUsage: true,
-      createdAt: true,
-      test: {
-        title: true,
-        topic: { title: true },
+    return this.repo.find({
+      where: { idUser: uId },
+      relations: {
+        test: { topic: true },
       },
-    },
-  });
+      select: {
+        id: true,
+        averageScore: true,
+        level: true,
+        aiScore: true,
+        teacherScore: true,
+        hintUsage: true,
+        createdAt: true,
+        test: {
+          title: true,
+          topic: { title: true },
+        },
+      },
+    });
   }
 
   create(data: Partial<CreateScoreDto>): Promise<Score> {
@@ -51,7 +58,10 @@ export class ScoreRepository {
     return this.repo.save(entity);
   }
 
-  async update(id: string, data: Partial<UpdateScoreDto>): Promise<Score | null> {
+  async update(
+    id: string,
+    data: Partial<UpdateScoreDto>,
+  ): Promise<Score | null> {
     await this.repo.update(id, data);
     return this.findById(id);
   }

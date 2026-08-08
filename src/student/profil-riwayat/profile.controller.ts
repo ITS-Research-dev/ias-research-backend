@@ -1,4 +1,4 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { SiswaAuth } from '../../../common/decorators/siswa-auth.decorator';
 
@@ -11,5 +11,10 @@ export class ProfileController {
     async getProfile(@Req() req: any) {
         const userId = req.user.userId;
         return this.profileService.getProfile(userId);
+    }
+
+    @Get("/:id")
+    async getProfileDetail(@Param('id') id: any) {
+        return this.profileService.getProfileDetail(id);
     }
 }
