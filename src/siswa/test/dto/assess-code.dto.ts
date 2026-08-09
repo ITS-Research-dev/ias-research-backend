@@ -12,7 +12,7 @@ export class AssessCodeDto {
     @IsString()
     @IsNotEmpty()
     studentCode!: string;
-    
+
     @IsNumber()
     @IsNotEmpty()
     hintUsage: number;

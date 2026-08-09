@@ -45,6 +45,7 @@ export interface OllamaAssessmentResult {
   flagOverride: boolean;
   aiSuggestion: string;
   aiFinishTime: string;
+  hintUsage: number;
   level: string;
 }
 
@@ -120,6 +121,7 @@ export class OllamaService {
       flagOverride: false,
       aiSuggestion: parsed.aiSuggestion,
       aiFinishTime: duration,
+      hintUsage,
       level: this.checkLevel(parsed.overallScore, hintUsage),
     };
   }
@@ -187,7 +189,7 @@ export class OllamaService {
     };
     this.logger.log(`Calling Ollama [${this.ollamaModel}] at ${url}`);
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 300000); // 300 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 600000); // 600 second timeout
     let response: Response;
     try {
       response = await fetch(url, {
