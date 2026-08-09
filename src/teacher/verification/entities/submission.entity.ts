@@ -8,17 +8,23 @@ export class Submission {
     @Column()
     studentId: string;
 
-    @Column()
+    @Column({ nullable: true })
+    studentName?: string;
+
+    @Column({ nullable: true })
+    questionTitle?: string;
+
+    @Column({ nullable: true, default: 'XI RPL 2' })
     className: string;
 
-    @Column()
+    @Column({ nullable: true })
     questionId: string;
 
-    @Column('text')
-    code: string;
+    @Column('text', { nullable: true })
+    code?: string;
 
     @Column('jsonb', { nullable: true })
-    aiScore: { logika:number; fungsi:number; sintaks:number; dok:number; gaya:number; konsep:number } | null;
+    aiScore: Record<string, number> | null;
 
     @Column('text', { nullable: true })
     aiNote?: string;
@@ -27,13 +33,16 @@ export class Submission {
     status: 'perlu' | 'selesai' | 'ditolak';
 
     @Column('jsonb', { nullable: true })
-    finalScore: { logika:number; fungsi:number; sintaks:number; dok:number; gaya:number; konsep:number } | null;
+    finalScore: Record<string, number> | null;
 
     @Column({ type: 'int', nullable: true })
     accuracy?: number;
 
     @Column('text', { nullable: true })
     reviewerId?: string;
+
+    @Column('text', { nullable: true })
+    teacherNote?: string;
 
     @CreateDateColumn() createdAt: Date;
     @UpdateDateColumn() updatedAt: Date;

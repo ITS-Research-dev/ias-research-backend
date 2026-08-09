@@ -16,9 +16,15 @@ export class ReviewRequestDto {
 
     @IsOptional()
     @IsObject()
-    @ValidateNested()
-    @Type(() => ScoreDto)
-    finalScore?: ScoreDto;
+    scores?: Record<string, number>;
+
+    @IsOptional()
+    @IsObject()
+    finalScore?: Record<string, number>;
+
+    @IsOptional()
+    @IsString()
+    teacherNote?: string;
 
     @IsOptional()
     @IsString()
