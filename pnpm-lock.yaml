@@ -54,8 +54,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       bullmq:
-        specifier: ^6.0.6
-        version: 6.0.6(ioredis@5.11.1)(pg@8.22.0)
+        specifier: ^6.0.9
+        version: 6.0.9(ioredis@5.11.1)(pg@8.22.0)
       chromadb:
         specifier: ^3.5.0
         version: 3.5.0
@@ -1758,8 +1758,8 @@ packages:
     resolution: {integrity: sha512-lDsx2BzkKe7gkCYiT5Acj02DpTwDznl/VNN7Psn7M3USPG7Vs/BaClZJJTAG+ufAR9++N1/NiUTdaFBWDIl5TQ==}
     engines: {node: '>=12'}
 
-  bullmq@6.0.6:
-    resolution: {integrity: sha512-28z+se5imVUpxDkqovcdPGoS6sBsUgynXfcDE8tKp4hHfDxFmapAS+iC63QJvaUJLpPIieMMP0YbYGYlXF6b9w==}
+  bullmq@6.0.9:
+    resolution: {integrity: sha512-l7kNlirauwdZrqsViO6owHUAhSSN/aCDkrUwZQ2futIItlbJGAxgU+6IOQtTl5Re39GZJEPU6jelGuY1gQD28w==}
     engines: {node: '>=14.17.0'}
     peerDependencies:
       bullmq-otel: '>=2.0.0'
@@ -5859,7 +5859,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  bullmq@6.0.6(ioredis@5.11.1)(pg@8.22.0):
+  bullmq@6.0.9(ioredis@5.11.1)(pg@8.22.0):
     dependencies:
       cron-parser: 5.7.0
       msgpackr: 2.0.5

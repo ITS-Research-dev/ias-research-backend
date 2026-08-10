@@ -1,14 +1,20 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsUUID, IsBoolean } from 'class-validator';
 
 export class CreateMaterialDto {
+    @IsUUID()
+    idClass: string;
+
     @IsString()
     judul: string;
 
-    @IsOptional()
     @IsString()
-    cp?: string;
+    subject: string;
 
     @IsOptional()
     @IsString()
-    kontenMarkdown?: string;
+    deskripsi?: string;
+
+    @IsOptional()
+    @IsBoolean()
+    isActive?: boolean;
 }
