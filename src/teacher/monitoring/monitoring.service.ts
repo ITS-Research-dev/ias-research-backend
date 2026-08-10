@@ -1,19 +1,122 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Class } from '../../general/class/entities/class.entity';
+import { ClassAssign } from '../../general/class-assign/entities/class-assign.entity';
+import { User } from '../../general/user/entities/user.entity';
+import { Score } from '../../general/score/entities/score.entity';
+import { RoleState } from '../../general/class-assign/entities/role-state.enum';
 
 @Injectable()
 export class MonitoringService {
+    constructor(
+        @InjectRepository(Class) private classRepo: Repository<Class>,
+        @InjectRepository(ClassAssign) private assignRepo: Repository<ClassAssign>,
+        @InjectRepository(User) private userRepo: Repository<User>,
+        @InjectRepository(Score) private scoreRepo: Repository<Score>,
+    ) {}
+
     async listClasses() {
-        return [
-        { nama: 'XI RPL 1', wali: 'Bu Yulia', totalSiswa: 32, rataNilai: 79 },
-        { nama: 'XI RPL 2', wali: 'Bu Agus', totalSiswa: 35, rataNilai: 83 },
-        ];
+        const classes = await this.classRepo.find();
+        const result: { nama: string; wali: string; totalSiswa: number; countTotal: number }[] = [];
+        for (const cls of classes) {
+            const totalSiswa = await this.assignRepo.count({
+                where: { idClass: cls.id, state: RoleState.ACTIVE },
+            });
+            result.push({
+                nama: cls.title,
+                wali: cls.waliKelas,
+                totalSiswa,
+                countTotal: cls.countTotal,
+            });
+        }
+        return result;
     }
 
     async getClassDetail(className: string) {
-        return { nama: className, wali: 'Bu Agus', totalSiswa: 35, rataNilai: 83, siswa: [] };
+        const cls = await this.classRepo.findOne({
+            where: { title: className },
+            relations: { assignments: { user: true } },
+        });
+        if (!cls) throw new NotFoundException(`Kelas ${className} tidak ditemukan`);
+
+        const siswa = cls.assignments
+            .filter((a) => a.state === RoleState.ACTIVE)
+            .map((a) => ({ id: a.user.id, nama: a.user.fullName }));
+
+        const userIds = siswa.map((s) => s.id);
+        let rataNilai = 0;
+        if (userIds.length > 0) {
+            const scores = await this.scoreRepo
+                .createQueryBuilder('s')
+                .where('s.idUser IN (:...userIds)', { userIds })
+                .getMany();
+            const avg = scores.length
+                ? scores.reduce((sum, sc) => sum + sc.averageScore, 0) / scores.length
+                : 0;
+            rataNilai = Math.round(avg);
+        }
+
+        return {
+            nama: cls.title,
+            wali: cls.waliKelas,
+            totalSiswa: siswa.length,
+            rataNilai,
+            siswa,
+        };
     }
 
     async getStudentDetail(className: string, studentId: string) {
-        return { nama: studentId, nilai: 88, hint: 1, scores: { logika: 88, fungsi: 90, sintaks: 92, dok: 58, gaya: 80, konsep: 85 } };
+        const user = await this.userRepo.findOne({
+            where: { id: studentId },
+            relations: { assignments: { class: true } },
+        });
+        if (!user) throw new NotFoundException(`Siswa ${studentId} tidak ditemukan`);
+
+        const scores = await this.scoreRepo.find({
+            where: { idUser: studentId },
+            relations: { test: { topic: true } },
+            order: { createdAt: 'DESC' },
+            take: 20,
+        });
+
+        const avg = scores.length
+            ? Math.round(scores.reduce((s, sc) => s + sc.averageScore, 0) / scores.length)
+            : 0;
+
+        const dims = { logika: 0, fungsi: 0, sintaks: 0, dok: 0, gaya: 0, konsep: 0 };
+        const count = scores.length || 1;
+        for (const sc of scores) {
+            const a = sc.aiScore as any;
+            dims.logika += a?.logika ?? 0;
+            dims.fungsi += a?.fungsionalitas ?? a?.fungsi ?? 0;
+            dims.sintaks += a?.syntax ?? a?.sintaks ?? 0;
+            dims.dok += a?.dokumentasi ?? a?.dok ?? 0;
+            dims.gaya += a?.code_style ?? a?.gaya ?? 0;
+            dims.konsep += a?.konsep ?? 0;
+        }
+        const scoresAgg = {
+            logika: Math.round(dims.logika / count),
+            fungsi: Math.round(dims.fungsi / count),
+            sintaks: Math.round(dims.sintaks / count),
+            dok: Math.round(dims.dok / count),
+            gaya: Math.round(dims.gaya / count),
+            konsep: Math.round(dims.konsep / count),
+        };
+
+        return {
+            nama: user.fullName,
+            nilai: avg,
+            hint: scores.reduce((s, sc) => s + ((sc as any).hintUsage ?? 0), 0),
+            scores: scoresAgg,
+            riwayat: scores.map((sc) => ({
+                id: sc.id,
+                soal: sc.test?.title ?? sc.idTest,
+                topik: sc.test?.topic?.title ?? null,
+                nilai: sc.averageScore,
+                level: sc.level,
+                createdAt: sc.createdAt,
+            })),
+        };
     }
 }

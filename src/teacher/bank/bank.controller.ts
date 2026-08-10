@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Body, Param, UseGuards, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { BankService } from './bank.service';
 import { TeacherGuard } from '../../../common/guards/teacher.guard';
 import { FileInterceptor } from '@nestjs/platform-express';

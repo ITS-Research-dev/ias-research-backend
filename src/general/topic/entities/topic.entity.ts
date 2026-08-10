@@ -27,7 +27,7 @@ export class Topic {
 
   @Column('text')
   description: string;
-  
+
   @Column('date')
   startDate: string;
 
