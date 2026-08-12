@@ -1,19 +1,21 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
-import { TeacherGuard } from '../../../common/guards/teacher.guard';
+import { GuruAuth } from '../../../common/decorators/teacher-auth.decorator';
+import { QueryDashboardDto } from './dto/dashboard.dto';
 
 @Controller('teacher/dashboard')
-@UseGuards(TeacherGuard)
+@GuruAuth()
 export class DashboardController {
-    constructor(private readonly svc: DashboardService) {}
+  constructor(private readonly svc: DashboardService) {}
 
-    @Get('summary')
-    async summary(@Query('class') className?: string) {
-        return this.svc.getSummary(className);
-    }
+  @Get('')
+  async getData(@Query() query: QueryDashboardDto) {
+    return this.svc.getData(query.classId);
+  }
 
-    @Get('trend')
-    async trend(@Query('class') className?: string, @Query('period') period = 'minggu') {
-        return this.svc.getTrend(className, period as 'minggu' | 'bulan');
-    }
+  @Get('/trend')
+  async getTrend(@Query() query: QueryDashboardDto) {
+    return this.svc.getTrend(query.classId);
+  }
+  
 }

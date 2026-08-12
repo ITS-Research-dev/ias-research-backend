@@ -51,7 +51,9 @@ export async function seedScore() {
   });
 
   if (allTests.length === 0) {
-    throw new Error('Tidak ada data Test di database. Seed Test terlebih dahulu.');
+    throw new Error(
+      'Tidak ada data Test di database. Seed Test terlebih dahulu.',
+    );
   }
 
   // 3. Ambil semua User dengan role.description = "Siswa"
@@ -68,7 +70,9 @@ export async function seedScore() {
     throw new Error('Tidak ada User dengan role "Siswa" di database.');
   }
 
-  console.log(`Ditemukan ${allTests.length} Test dan ${allSiswa.length} User Siswa`);
+  console.log(
+    `Ditemukan ${allTests.length} Test dan ${allSiswa.length} User Siswa`,
+  );
 
   // 4. Transform & insert satu per satu
   let successCount = 0;
@@ -78,6 +82,7 @@ export async function seedScore() {
     const randomTest = getRandomElement(allTests);
     const randomSiswa = getRandomElement(allSiswa);
     const randomDate = getRandomDate(DAYS_RANGE);
+    const randomTime = getRandomTime()
 
     try {
       await prisma.score.create({
@@ -89,7 +94,7 @@ export async function seedScore() {
           flagOverride: false,
           aiScore: JSON.stringify(entry.nilai),
           aiSuggestion: entry.feedback,
-          aiFinishTime: randomDate.toISOString(),
+          aiFinishTime: randomTime.toISOString(),
           createdAt: randomDate,
           uCode: entry.kode_siswa,
           // overrideBy, teacherScore, teacherSuggestion dibiarkan null (optional)
@@ -101,5 +106,27 @@ export async function seedScore() {
     }
   }
 
-  console.log(`Selesai. ${successCount}/${scoreData.length} data berhasil di-insert.`);
+  console.log(
+    `Selesai. ${successCount}/${scoreData.length} data berhasil di-insert.`,
+  );
+}
+
+function getRandomTime(): Date {
+  const minSeconds = 1;
+  const maxSeconds = 5 * 60; // 5 menit = 300 detik
+
+  const randomSeconds = Math.random() * (maxSeconds - minSeconds) + minSeconds;
+
+  const ms = Math.round(randomSeconds * 1000);
+  const hours = Math.floor(ms / 3_600_000);
+  const minutes = Math.floor((ms % 3_600_000) / 60_000);
+  const seconds = Math.floor((ms % 60_000) / 1000);
+  const millis = ms % 1000;
+
+  const hh = String(hours).padStart(2, '0');
+  const mm = String(minutes).padStart(2, '0');
+  const ss = String(seconds).padStart(2, '0');
+  const sss = String(millis).padStart(3, '0');
+
+  return new Date(`1970-01-01T${hh}:${mm}:${ss}.${sss}Z`);
 }

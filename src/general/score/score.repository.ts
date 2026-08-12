@@ -27,7 +27,7 @@ export class ScoreRepository {
   findDetail(id: string): Promise<Score | null> {
     return this.repo.findOne({
       where: { id },
-      relations: { test: { topic: true } }
+      relations: { test: { topic: true } },
     });
   }
 
@@ -44,6 +44,24 @@ export class ScoreRepository {
         aiScore: true,
         teacherScore: true,
         hintUsage: true,
+        createdAt: true,
+        test: {
+          title: true,
+          topic: { title: true },
+        },
+      },
+    });
+  }
+
+  async findDashboard(idClass: string): Promise<Score[]> {
+    return this.repo.find({
+      where: { test: { topic: { idClass } } },
+      relations: {
+        test: { topic: true },
+      },
+      select: {
+        id: true,
+        averageScore: true,
         createdAt: true,
         test: {
           title: true,

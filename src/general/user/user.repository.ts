@@ -22,7 +22,7 @@ export class UserRepository {
   findByUsername(username: string): Promise<User | null> {
     return this.repo.findOne({
       where: { uCredentials: username },
-      relations: { role: true, assignments: true }
+      relations: { role: true, assignments: { class: true } }
     });
   }
 

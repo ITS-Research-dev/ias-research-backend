@@ -4,6 +4,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Score } from '../../general/score/entities/score.entity';
+import { ScoreRepository } from '../../general/score/score.repository';
 
 interface OllamaGenerateRequest {
   model: string;
@@ -54,6 +56,7 @@ export class OllamaService {
   private readonly logger = new Logger(OllamaService.name);
   private readonly ollamaUrl: string;
   private readonly ollamaModel: string;
+  private readonly scoreRepository = ScoreRepository
   private readonly levels = [
     { level: 'Expert', min: 90 },
     { level: 'Competent', min: 80 },
@@ -80,7 +83,7 @@ export class OllamaService {
   }
 
   checkLevel(avgScore: number, hintUsage: number): string {
-    let currentLevel = "Novice"
+    let currentLevel = 'Novice';
     for (const { level, min } of this.levels) {
       if (avgScore > min || (min === 0 && avgScore >= 0)) {
         if (min !== 0 && avgScore > min) currentLevel = level;
@@ -90,7 +93,7 @@ export class OllamaService {
 
     switch (hintUsage) {
       case 1:
-        return '';
+        return 'Advance/Beginner';
       case 2:
         return 'Beginner';
       case 3:
@@ -120,10 +123,14 @@ export class OllamaService {
       overallScore: parsed.overallScore,
       flagOverride: false,
       aiSuggestion: parsed.aiSuggestion,
-      aiFinishTime: duration,
+      aiFinishTime: this.secondsToReadable(duration),
       hintUsage,
       level: this.checkLevel(parsed.overallScore, hintUsage),
     };
+  }
+
+  private async saveToDb(data: Score) {
+    
   }
 
   private parseAssessmentResponse(raw: string): {
@@ -174,7 +181,7 @@ export class OllamaService {
   private async callOllama(
     prompt: string,
     systemContext?: string,
-  ): Promise<{ response: string; duration: string }> {
+  ): Promise<{ response: string; duration: number }> {
     const startTime = Date.now();
     const url = `${this.ollamaUrl}/api/generate`;
     const body: OllamaGenerateRequest = {
@@ -221,12 +228,36 @@ export class OllamaService {
     }
     const data = (await response.json()) as OllamaGenerateResponse;
     const durationSec = data.total_duration
-      ? (data.total_duration / 1e9).toFixed(2)
-      : ((Date.now() - startTime) / 1000).toFixed(2);
+      ? data.total_duration / 1e9
+      : (Date.now() - startTime) / 1000;
 
     return {
       response: data.response,
-      duration: `${durationSec}s`,
+      duration: durationSec,
     };
+  }
+
+  private secondsToTimeValue(totalSeconds: number): Date {
+    const ms = Math.round(totalSeconds * 1000);
+    const hours = Math.floor(ms / 3_600_000) % 24;
+    const minutes = Math.floor((ms % 3_600_000) / 60_000);
+    const seconds = Math.floor((ms % 60_000) / 1000);
+    const millis = ms % 1000;
+
+    const hh = String(hours).padStart(2, '0');
+    const mm = String(minutes).padStart(2, '0');
+    const ss = String(seconds).padStart(2, '0');
+    const sss = String(millis).padStart(3, '0');
+
+    return new Date(`1970-01-01T${hh}:${mm}:${ss}.${sss}Z`);
+  }
+
+  private secondsToReadable(totalSeconds: number): string {
+    const ms = Math.round(totalSeconds * 1000);
+    const hours = Math.floor(ms / 3_600_000) % 24;
+    const minutes = Math.floor((ms % 3_600_000) / 60_000);
+    const seconds = Math.floor((ms % 60_000) / 1000);
+
+    return `${hours}h ${minutes}m ${seconds}s`;
   }
 }
