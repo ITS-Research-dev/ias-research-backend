@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Topic } from '../../general/topic/entities/topic.entity';
 import { Test } from '../../general/test/entities/test.entity';
 import { Hint } from '../../general/hint/entities/hint.entity';
+import { RedisModule } from '../../redis/redis.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Topic, Test, Hint])],
+    imports: [TypeOrmModule.forFeature([Topic, Test, Hint]), RedisModule],
     controllers: [BankController],
     providers: [BankService],
     exports: [BankService],

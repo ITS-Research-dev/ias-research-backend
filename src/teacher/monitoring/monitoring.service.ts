@@ -5,20 +5,34 @@ import { Class } from '../../general/class/entities/class.entity';
 import { ClassAssign } from '../../general/class-assign/entities/class-assign.entity';
 import { User } from '../../general/user/entities/user.entity';
 import { Score } from '../../general/score/entities/score.entity';
+import { RedisService } from '../../redis/redis.service';
 import { RoleState } from '../../general/class-assign/entities/role-state.enum';
 
 @Injectable()
 export class MonitoringService {
+    private readonly CACHE_TTL = 1200; // 20 menit
+    private readonly CACHE_PREFIX = 'monitoring';
+
     constructor(
         @InjectRepository(Class) private classRepo: Repository<Class>,
         @InjectRepository(ClassAssign) private assignRepo: Repository<ClassAssign>,
         @InjectRepository(User) private userRepo: Repository<User>,
         @InjectRepository(Score) private scoreRepo: Repository<Score>,
+        private readonly redisService: RedisService,
     ) {}
 
     async listClasses() {
+        const cacheKey = `${this.CACHE_PREFIX}:classes:all`;
+
+        // Check cache
+        const cachedData = await this.redisService.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
+
         const classes = await this.classRepo.find();
         const result: { nama: string; wali: string; totalSiswa: number; countTotal: number }[] = [];
+        
         for (const cls of classes) {
             const totalSiswa = await this.assignRepo.count({
                 where: { idClass: cls.id, state: RoleState.ACTIVE },
@@ -30,10 +44,22 @@ export class MonitoringService {
                 countTotal: cls.countTotal,
             });
         }
+
+        // Store ke cache
+        await this.redisService.set(cacheKey, result, this.CACHE_TTL);
+
         return result;
     }
 
     async getClassDetail(className: string) {
+        const cacheKey = `${this.CACHE_PREFIX}:class:${className}`;
+
+        // Check cache
+        const cachedData = await this.redisService.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
+
         const cls = await this.classRepo.findOne({
             where: { title: className },
             relations: { assignments: { user: true } },
@@ -57,16 +83,29 @@ export class MonitoringService {
             rataNilai = Math.round(avg);
         }
 
-        return {
+        const result = {
             nama: cls.title,
             wali: cls.waliKelas,
             totalSiswa: siswa.length,
             rataNilai,
             siswa,
         };
+
+        // Store ke cache
+        await this.redisService.set(cacheKey, result, this.CACHE_TTL);
+
+        return result;
     }
 
     async getStudentDetail(className: string, studentId: string) {
+        const cacheKey = `${this.CACHE_PREFIX}:student:${studentId}`;
+
+        // Check cache
+        const cachedData = await this.redisService.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
+
         const user = await this.userRepo.findOne({
             where: { id: studentId },
             relations: { assignments: { class: true } },
@@ -104,7 +143,7 @@ export class MonitoringService {
             konsep: Math.round(dims.konsep / count),
         };
 
-        return {
+        const result = {
             nama: user.fullName,
             nilai: avg,
             hint: scores.reduce((s, sc) => s + ((sc as any).hintUsage ?? 0), 0),
@@ -118,5 +157,24 @@ export class MonitoringService {
                 createdAt: sc.createdAt,
             })),
         };
+
+        // Store ke cache
+        await this.redisService.set(cacheKey, result, this.CACHE_TTL);
+
+        return result;
+    }
+
+    async invalidateClassCache(className?: string, studentId?: string) {
+        const keysToDelete: string[] = [`${this.CACHE_PREFIX}:classes:all`];
+
+        if (className) {
+            keysToDelete.push(`${this.CACHE_PREFIX}:class:${className}`);
+        }
+
+        if (studentId) {
+            keysToDelete.push(`${this.CACHE_PREFIX}:student:${studentId}`);
+        }
+
+        await this.redisService.deleteMany(keysToDelete);
     }
 }

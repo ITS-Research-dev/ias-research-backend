@@ -3,7 +3,7 @@ import { ScoreRepository } from '../../general/score/score.repository';
 import { HintRepository } from '../../general/hint/hint.repository';
 import { TestRepository } from '../../general/test/test.repository';
 import { TopicRepository } from '../../general/topic/topic.repository';
-import { RedisService } from '../redis/redis.service';
+import { RedisService } from '../../redis/redis.service';
 import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -264,20 +264,4 @@ export class StudyCaseService {
       await this.redisService.deleteMany(keysToDelete);
     }
   }
-
-  // Uncomment jika perlu implement submitCode dengan Redis caching
-  // async submitCode(dto: CreateSubmissionDto, idUser: string) {
-  //   const test = await this.testRepository.findById(dto.testId);
-
-  //   const execResult = await this.executeCode(dto.sourceCode);
-
-  //   const cacheKey = `submission:${dto.testId}:${dto.sourceCode}`;
-  //   const cachedResult = await this.redisService.get(cacheKey);
-  //   if (cachedResult) {
-  //     return cachedResult;
-  //   }
-
-  //   // Implementasi AI assessment dan caching
-  //   // ...
-  // }
 }

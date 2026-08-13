@@ -2,12 +2,17 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserRepository } from '../../general/user/user.repository';
 import { TopicRepository } from '../../general/topic/topic.repository';
 import { ScoreRepository } from '../../general/score/score.repository';
-import { RedisService } from '../redis/redis.service';
+import { RedisService } from '../../redis/redis.service';
 
 @Injectable()
 export class ProfileService {
   private readonly CACHE_TTL = 1800; // 30 menit
   private readonly CACHE_PREFIX = 'profile';
+
+  constructor(
+    private readonly scoreRepository: ScoreRepository,
+    private readonly redisService: RedisService,
+  ) {}
 
   constructor(
     private readonly scoreRepository: ScoreRepository,
@@ -57,9 +62,6 @@ export class ProfileService {
     return score;
   }
 
-  /**
-   * Invalidate cache ketika profile diupdate
-   */
   async invalidateProfileCache(userId: string, scoreId?: string) {
     const keysToDelete: string[] = [`${this.CACHE_PREFIX}:${userId}`];
 

@@ -11,7 +11,7 @@ import { TestModule } from '../general/test/test.module';
 import { ScoreModule } from '../general/score/score.module';
 import { HintModule } from '../general/hint/hint.module';
 import { ClassModule } from '../general/class/class.module';
-import { RedisModule } from './redis/redis.module';
+import { RedisModule } from '../../src/redis/redis.module';
 
 @Module({
   imports: [

@@ -2,11 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Score } from '../../general/score/entities/score.entity';
+import { RedisService } from '../../redis/redis.service';
 
 @Injectable()
 export class VerificationService {
+    private readonly CACHE_TTL = 600; // 10 menit (verification queue berubah sering)
+    private readonly CACHE_PREFIX = 'verification';
+
     constructor(
         @InjectRepository(Score) private scoreRepo: Repository<Score>,
+        private readonly redisService: RedisService,
     ) {}
 
     private parseJsonScores(raw: any): Record<string, number> {
@@ -80,6 +85,14 @@ export class VerificationService {
     }
 
     async listQueue(className?: string, q?: string) {
+        const cacheKey = `${this.CACHE_PREFIX}:queue:${className || 'all'}:${q || 'all'}`;
+
+        // Check cache
+        const cachedData = await this.redisService.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
+
         try {
             const qb = this.scoreRepo
                 .createQueryBuilder('score')
@@ -105,8 +118,14 @@ export class VerificationService {
             if (scores.length === 0) {
                 return this.getFallbackItems();
             }
-            return scores.map((score) => this.formatScoreEntity(score));
-        } catch (e) {
+            
+            const result = scores.map((score) => this.formatScoreEntity(score));
+
+            // Store ke cache
+            await this.redisService.set(cacheKey, result, this.CACHE_TTL);
+
+            return result;
+        } catch (e: any) {
             console.warn('VerificationService.listQueue error, using fallback:', e?.message || e);
             let items = this.getFallbackItems();
             if (q) {
@@ -122,6 +141,14 @@ export class VerificationService {
     }
 
     async getSubmissionDetail(id: string) {
+        const cacheKey = `${this.CACHE_PREFIX}:detail:${id}`;
+
+        // Check cache
+        const cachedData = await this.redisService.get(cacheKey);
+        if (cachedData) {
+            return cachedData;
+        }
+
         try {
             const score = await this.scoreRepo.findOne({
                 where: { id },
@@ -132,7 +159,13 @@ export class VerificationService {
                 const fallback = this.getFallbackItems().find((item) => item.id === id);
                 return fallback || null;
             }
-            return this.formatScoreEntity(score);
+
+            const result = this.formatScoreEntity(score);
+
+            // Store ke cache
+            await this.redisService.set(cacheKey, result, this.CACHE_TTL);
+
+            return result;
         } catch (e) {
             const fallback = this.getFallbackItems().find((item) => item.id === id);
             return fallback || null;
@@ -167,10 +200,30 @@ export class VerificationService {
 
             await this.scoreRepo.save(score);
 
+            // Invalidate cache
+            await this.invalidateVerificationCache(id);
+
             return { ok: true, submission: this.formatScoreEntity(score) };
-        } catch (e) {
+        } catch (e: any) {
             console.warn('VerificationService.review error:', e?.message || e);
             return { ok: true };
+        }
+    }
+
+    private async invalidateVerificationCache(submissionId?: string) {
+        const keysToDelete: string[] = [];
+        
+        // Invalidate queue cache
+        const queueKeys = await this.redisService.getKeysByPattern(`${this.CACHE_PREFIX}:queue:*`);
+        keysToDelete.push(...queueKeys);
+
+        // Invalidate detail cache
+        if (submissionId) {
+            keysToDelete.push(`${this.CACHE_PREFIX}:detail:${submissionId}`);
+        }
+
+        if (keysToDelete.length > 0) {
+            await this.redisService.deleteMany(keysToDelete);
         }
     }
 
@@ -204,36 +257,6 @@ export class VerificationService {
                 ],
                 aiAccuracy: 100,
                 code: 'def hitung_rata_rata(a, b, c):\n    return (a + b + c) / 3',
-                createdAt: new Date(),
-            },
-            {
-                id: '2',
-                studentId: 'std-2',
-                studentName: 'Citra Ramadhani',
-                questionTitle: 'Luas Lingkaran',
-                className: 'XI RPL 2',
-                aiScore: 72,
-                status: 'Perlu Verifikasi',
-                aiNote: 'Perhitungan sudah mendekati hasil yang diharapkan, namun terdapat beberapa bagian kode yang masih perlu diperiksa kembali.',
-                teacherNote: '',
-                dimensions: [
-                    { name: 'Logika', aiScore: 70, teacherScore: 70 },
-                    { name: 'Fungsionalitas', aiScore: 75, teacherScore: 75 },
-                    { name: 'Sintaks', aiScore: 78, teacherScore: 78 },
-                    { name: 'Dokumentasi', aiScore: 65, teacherScore: 65 },
-                    { name: 'Gaya', aiScore: 70, teacherScore: 70 },
-                    { name: 'Konsep', aiScore: 74, teacherScore: 74 },
-                ],
-                finalScores: [
-                    { name: 'Logika', aiScore: 70, teacherScore: 70 },
-                    { name: 'Fungsionalitas', aiScore: 75, teacherScore: 75 },
-                    { name: 'Sintaks', aiScore: 78, teacherScore: 78 },
-                    { name: 'Dokumentasi', aiScore: 65, teacherScore: 65 },
-                    { name: 'Gaya', aiScore: 70, teacherScore: 70 },
-                    { name: 'Konsep', aiScore: 74, teacherScore: 74 },
-                ],
-                aiAccuracy: 100,
-                code: 'import math\ndef luas_lingkaran(r):\n    return math.pi * r * r',
                 createdAt: new Date(),
             },
         ];

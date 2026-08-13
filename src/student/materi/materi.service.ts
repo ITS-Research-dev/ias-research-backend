@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { TopicRepository } from '../../general/topic/topic.repository';
-import { RedisService } from '../redis/redis.service';
+import { RedisService } from '../../redis/redis.service';
 
 @Injectable()
 export class MateriService {
