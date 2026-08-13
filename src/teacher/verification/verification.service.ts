@@ -195,13 +195,32 @@ export class VerificationService {
             if (payload.decision === 'terima') {
                 score.teacherScore = score.aiScore;
             } else {
-                score.teacherScore = payload.scores || payload.finalScore || score.aiScore;
+                const rawScores = payload.scores || payload.finalScore || score.aiScore;
+                if (typeof rawScores === 'object' && rawScores !== null) {
+                    score.teacherScore = {
+                        logika: Number(rawScores.logika ?? rawScores.Logika ?? 0),
+                        fungsionalitas: Number(rawScores.fungsionalitas ?? rawScores.fungsi ?? rawScores.Fungsionalitas ?? 0),
+                        syntax: Number(rawScores.syntax ?? rawScores.sintaks ?? rawScores.Sintaks ?? 0),
+                        dokumentasi: Number(rawScores.dokumentasi ?? rawScores.dok ?? rawScores.Dokumentasi ?? 0),
+                        code_style: Number(rawScores.code_style ?? rawScores.gaya ?? rawScores.Gaya ?? 0),
+                        konsep: Number(rawScores.konsep ?? rawScores.Konsep ?? 0),
+                    };
+                } else {
+                    score.teacherScore = rawScores;
+                }
+            }
+
+            // Recalculate averageScore from the final teacher scores
+            const finalScores = score.teacherScore as unknown as Record<string, number>;
+            const vals = Object.values(finalScores).filter((v) => typeof v === 'number');
+            if (vals.length > 0) {
+                score.averageScore = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
             }
 
             await this.scoreRepo.save(score);
 
             // Invalidate cache
-            await this.invalidateVerificationCache(id);
+            await this.invalidateVerificationCache(id, score.idUser);
 
             return { ok: true, submission: this.formatScoreEntity(score) };
         } catch (e: any) {
@@ -210,7 +229,7 @@ export class VerificationService {
         }
     }
 
-    private async invalidateVerificationCache(submissionId?: string) {
+    private async invalidateVerificationCache(submissionId?: string, studentId?: string) {
         const keysToDelete: string[] = [];
         
         // Invalidate queue cache
@@ -220,6 +239,22 @@ export class VerificationService {
         // Invalidate detail cache
         if (submissionId) {
             keysToDelete.push(`${this.CACHE_PREFIX}:detail:${submissionId}`);
+        }
+
+        // Invalidate monitoring cache
+        const monitoringKeys = await this.redisService.getKeysByPattern(`monitoring:*`);
+        keysToDelete.push(...monitoringKeys);
+
+        // Invalidate dashboard cache
+        const dashboardKeys = await this.redisService.getKeysByPattern(`dashboard:*`);
+        keysToDelete.push(...dashboardKeys);
+
+        // Invalidate profile cache
+        if (studentId) {
+            keysToDelete.push(`profile:${studentId}`);
+        } else {
+            const profileKeys = await this.redisService.getKeysByPattern(`profile:*`);
+            keysToDelete.push(...profileKeys);
         }
 
         if (keysToDelete.length > 0) {

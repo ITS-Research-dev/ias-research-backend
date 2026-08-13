@@ -116,7 +116,6 @@ export class MonitoringService {
             where: { idUser: studentId },
             relations: { test: { topic: true } },
             order: { createdAt: 'DESC' },
-            take: 20,
         });
 
         const avg = scores.length
@@ -155,6 +154,12 @@ export class MonitoringService {
                 nilai: sc.averageScore,
                 level: sc.level,
                 createdAt: sc.createdAt,
+                aiScore: sc.aiScore,
+                teacherScore: sc.teacherScore,
+                flagOverride: sc.flagOverride,
+                hintUsage: sc.hintUsage,
+                aiSuggestion: sc.aiSuggestion ?? null,
+                teacherSuggestion: sc.teacherSuggestion ?? null,
             })),
         };
 
