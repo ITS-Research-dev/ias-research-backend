@@ -11,11 +11,20 @@ import { TestModule } from '../general/test/test.module';
 import { ScoreModule } from '../general/score/score.module';
 import { HintModule } from '../general/hint/hint.module';
 import { ClassModule } from '../general/class/class.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
-  imports: [TopicModule, UserModule, ClassModule, TestModule, ScoreModule, HintModule],
+  imports: [
+    TopicModule,
+    UserModule,
+    ClassModule,
+    TestModule,
+    ScoreModule,
+    HintModule,
+    RedisModule,
+  ],
   controllers: [MateriController, ProfileController, StudyCaseController],
   providers: [MateriService, ProfileService, StudyCaseService],
-  exports: [MateriService, ProfileService, StudyCaseService]
+  exports: [MateriService, ProfileService, StudyCaseService, RedisModule],
 })
 export class StudentModule {}

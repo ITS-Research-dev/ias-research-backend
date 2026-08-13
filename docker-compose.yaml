@@ -1,37 +1,54 @@
+version: '3.8'
+
 services:
   postgres:
-    image: postgres:16
-    container_name: ias_postgres
-    restart: unless-stopped
+    image: postgres:17
     environment:
-      POSTGRES_USER: ias_user
-      POSTGRES_PASSWORD: ias_password
-      POSTGRES_DB: ias_research_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ias_db
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ias-network
 
   redis:
-    image: redis:7
-    container_name: ias_redis
-    restart: unless-stopped
+    image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - ias-network
 
-  chroma:
-    image: chromadb/chroma:latest
-    container_name: ias_chroma
-    restart: unless-stopped
+  api:
+    build: .
     ports:
-      - "8000:8000"
+      - '3000:3000'
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: ias_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      NODE_ENV: development
     volumes:
-      - chroma_data:/chroma/chroma
+      - .:/app
+    networks:
+      - ias-network
 
 volumes:
   postgres_data:
   redis_data:
-  chroma_data:
 
+networks:
+  ias-network:
+    driver: bridge
