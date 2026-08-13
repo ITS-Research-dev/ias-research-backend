@@ -14,6 +14,14 @@ export class ProfileService {
     private readonly redisService: RedisService,
   ) {}
 
+  constructor(
+    private readonly scoreRepository: ScoreRepository,
+    private readonly redisService: RedisService,
+  ) {}
+
+  /**
+   * Get profile dengan caching
+   */
   async getProfile(userId: string) {
     const cacheKey = `${this.CACHE_PREFIX}:${userId}`;
 
@@ -32,6 +40,9 @@ export class ProfileService {
     return data;
   }
 
+  /**
+   * Get profile detail dengan caching
+   */
   async getProfileDetail(id: string) {
     const cacheKey = `${this.CACHE_PREFIX}:detail:${id}`;
 
