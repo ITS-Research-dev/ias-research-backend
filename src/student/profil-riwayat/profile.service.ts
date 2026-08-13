@@ -14,11 +14,6 @@ export class ProfileService {
     private readonly redisService: RedisService,
   ) {}
 
-  constructor(
-    private readonly scoreRepository: ScoreRepository,
-    private readonly redisService: RedisService,
-  ) {}
-
   /**
    * Get profile dengan caching
    */
