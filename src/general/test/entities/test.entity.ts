@@ -31,6 +31,9 @@ export class Test {
   @Column('int')
   maxTries: number;
 
+  @Column('boolean')
+  isActive: boolean;
+
   @ManyToOne(() => Topic, (topic) => topic.tests)
   @JoinColumn({ name: 'idTopic' })
   topic: Topic;

@@ -1,32 +1,35 @@
-import { IsString, IsOptional, IsUUID, IsInt } from 'class-validator';
+import { IsString, IsOptional, IsUUID, IsInt, IsIn } from 'class-validator';
 
 export class CreateQuestionDto {
-    @IsUUID()
-    idTopic: string;
+  @IsUUID()
+  materialId: string;
 
-    @IsString()
-    judul: string;
+  @IsString()
+  title: string;
 
-    @IsString()
-    soal: string;
+  @IsString()
+  description: string;
 
-    @IsOptional()
-    @IsString()
-    expectedOutput?: string;
+  @IsOptional()
+  @IsString()
+  expectedOutput?: string;
 
-    @IsOptional()
-    @IsInt()
-    maxTries?: number;
+  @IsOptional()
+  @IsInt()
+  maxTries?: number = 3;
 
-    @IsOptional()
-    @IsString()
-    hint1?: string;
+  @IsOptional()
+  @IsString()
+  hint1?: string;
 
-    @IsOptional()
-    @IsString()
-    hint2?: string;
+  @IsOptional()
+  @IsString()
+  hint2?: string;
 
-    @IsOptional()
-    @IsString()
-    hint3?: string;
+  @IsOptional()
+  @IsString()
+  hint3?: string;
+
+  @IsIn(['active', 'inactive'])
+  status: 'active' | 'inactive';
 }

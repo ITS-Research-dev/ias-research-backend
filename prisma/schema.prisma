@@ -82,6 +82,7 @@ model Test {
   question  String @db.Text
   expOutput String @db.VarChar
   maxTries  Int
+  isActive Boolean @default(true)
 
   topic  Topic   @relation(fields: [idTopic], references: [id])
   hints  Hint[]

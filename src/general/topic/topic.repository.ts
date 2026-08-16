@@ -35,7 +35,7 @@ export class TopicRepository {
         startDate: "desc"
       }
   });
-  }
+}
 
   create(data: Partial<Topic>): Promise<Topic> {
     const entity = this.repo.create(data);
