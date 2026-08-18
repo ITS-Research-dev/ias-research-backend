@@ -46,7 +46,7 @@ export class BankService {
       content: t.subject,
       description: t.description,
       startDate: t.startDate,
-      status: t.isActive ? 'active' : 'inactive ',
+      status: t.isActive ? 'active' : 'inactive',
     }));
 
     // Store ke cache
