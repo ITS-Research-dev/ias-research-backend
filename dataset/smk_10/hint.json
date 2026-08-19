@@ -1,0 +1,114 @@
+{
+  "soal_33": {
+    "pertanyaan": "Buatlah program Python yang menerima input panjang dan lebar suatu bidang...",
+    "hints": {
+      "1": "ALGORITHM CekBentuk()\nBEGIN\n\tINPUT panjang\n\tINPUT lebar\n\n\tIF panjang == lebar THEN\n\t\tPRINT 'Sama sisi'\n\tELSE\n\t\tPRINT 'Persegi panjang'\n\tENDIF\nEND\n\nCALL CekBentuk()",
+      "2": "panjang = int(input('Panjang: '))\nlebar = int(input('Lebar: '))\n\nif panjang ____ lebar:\n\tprint(____)\nelse:\n\tprint('Persegi panjang')",
+      "3": "panjang = int(input('Panjang: '))\nlebar = int(input('Lebar: '))\n\nif panjang == lebar:\n\tprint('Sama sisi')\nelse:\n\tprint('Persegi panjang')"
+    }
+  },
+  "soal_1": {
+    "pertanyaan": "Buat fungsi python untuk menghitung luas lingkaran jika diketahui jari-jarinya. Gunakan phi 3.14.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI luas_lingkaran(r)\n    phi <- 3.14\n    luas <- phi * r * r\n    KEMBALIKAN luas\nAKHIR FUNGSI\n\nr <- 10\nhasil <- PANGGIL luas_lingkaran(r)\nTAMPILKAN hasil\nSELESAI",
+      "2": "def luas_lingkaran(r):\n    phi = ____\n    luas = phi * ____ * ____\n    return ____\n\nr = 10\nhasil = luas_lingkaran(r)\nprint(\"luas =\", hasil)",
+      "3": "def luas_lingkaran(r):\n    phi = 3.14\n    luas = phi * r * r\n    return luas\n\nr = 10\nhasil = luas_lingkaran(r)\nprint(\"luas =\", hasil)"
+    }
+  },
+  "soal_4": {
+    "pertanyaan": "Buat fungsi untuk menghitung luas persegi jika diketahui sisi.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI luas_persegi(sisi)\n    luas <- sisi * sisi\n    KEMBALIKAN luas\nAKHIR FUNGSI\n\nsisi <- 4\nhasil <- PANGGIL luas_persegi(sisi)\nTAMPILKAN hasil\nSELESAI",
+      "2": "def luas_persegi(sisi):\n    luas = ____ * ____\n    return ____\n\nsisi = 4\nhasil = luas_persegi(sisi)\nprint(\"luas =\", hasil)",
+      "3": "def luas_persegi(sisi):\n    luas = sisi * sisi\n    return luas\n\nsisi = 4\nhasil = luas_persegi(sisi)\nprint(\"luas =\", hasil)"
+    }
+  },
+  "soal_5": {
+    "pertanyaan": "Buat fungsi untuk menghitung keliling persegi.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI keliling_persegi(sisi)\n    keliling <- 4 * sisi\n    KEMBALIKAN keliling\nAKHIR FUNGSI\n\nsisi <- 4\nhasil <- PANGGIL keliling_persegi(sisi)\nTAMPILKAN hasil\nSELESAI",
+      "2": "def keliling_persegi(sisi):\n    keliling = ____ * ____\n    return ____\n\nsisi = 4\nhasil = keliling_persegi(sisi)\nprint(\"keliling =\", hasil)",
+      "3": "def keliling_persegi(sisi):\n    keliling = 4 * sisi\n    return keliling\n\nsisi = 4\nhasil = keliling_persegi(sisi)\nprint(\"keliling =\", hasil)"
+    }
+  },
+  "soal_7": {
+    "pertanyaan": "Buat fungsi untuk menentukan angka terbesar dari dua angka.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI bilangan_terbesar(a, b)\n    JIKA a > b MAKA\n        KEMBALIKAN a\n    JIKA TIDAK\n        KEMBALIKAN b\nAKHIR FUNGSI\n\na <- 10\nb <- 7\nhasil <- PANGGIL bilangan_terbesar(a, b)\nTAMPILKAN \"Angka terbesar dari\", a, \"dan\", b, \"adalah\", hasil\nSELESAI",
+      "2": "def bilangan_terbesar(a, b):\n    if a ____ b:\n        return ____\n    else:\n        return ____\n\na = 10\nb = 7\nhasil = bilangan_terbesar(a, b)\nprint(\"Angka terbesar dari\", a, \"dan\", b, \"adalah\", hasil)",
+      "3": "def bilangan_terbesar(a, b):\n    if a > b:\n        return a\n    else:\n        return b\n\na = 10\nb = 7\nhasil = bilangan_terbesar(a, b)\nprint(\"Angka terbesar dari\", a, \"dan\", b, \"adalah\", hasil)"
+    }
+  },
+  "soal_8": {
+    "pertanyaan": "Buat fungsi untuk menghitung jumlah karakter dalam sebuah string.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI panjang_string(teks)\n    KEMBALIKAN PANJANG(teks)\nAKHIR FUNGSI\n\nteks <- \"Python\"\nhasil <- PANGGIL panjang_string(teks)\nTAMPILKAN \"Panjang string\", teks, \"adalah\", hasil\nSELESAI",
+      "2": "def panjang_string(teks):\n    return ____(teks)\n\nteks = \"Python\"\nhasil = panjang_string(teks)\nprint(\"Panjang string\", f\"'{teks}'\", \"adalah\", hasil)",
+      "3": "def panjang_string(teks):\n    return len(teks)\n\nteks = \"Python\"\nhasil = panjang_string(teks)\nprint(\"Panjang string\", f\"'{teks}'\", \"adalah\", hasil)"
+    }
+  },
+  "soal_9": {
+    "pertanyaan": "Buat fungsi untuk membalik sebuah string.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI balik_string(teks)\n    KEMBALIKAN BALIK(teks)\nAKHIR FUNGSI\n\nteks <- \"Python\"\nhasil <- PANGGIL balik_string(teks)\nTAMPILKAN teks, \"dibalik menjadi\", hasil\nSELESAI",
+      "2": "def balik_string(teks):\n    return teks[____]\n\nteks = \"Python\"\nhasil = balik_string(teks)\nprint(f\"'{teks}' dibalik menjadi '{hasil}'\")",
+      "3": "def balik_string(teks):\n    return teks[::-1]\n\nteks = \"Python\"\nhasil = balik_string(teks)\nprint(f\"'{teks}' dibalik menjadi '{hasil}'\")"
+    }
+  },
+  "soal_10": {
+    "pertanyaan": "Buat fungsi untuk menghitung faktorial dari sebuah angka.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI faktorial(n)\n    hasil <- 1\n    UNTUK i DARI 1 SAMPAI n LAKUKAN\n        hasil <- hasil * i\n    KEMBALIKAN hasil\nAKHIR FUNGSI\n\nn <- 5\nhasil <- PANGGIL faktorial(n)\nTAMPILKAN \"Faktorial\", n, \"adalah\", hasil\nSELESAI",
+      "2": "def faktorial(n):\n    hasil = ____\n    for i in range(1, n + 1):\n        hasil = hasil * ____\n    return hasil\n\nn = 5\nhasil = faktorial(n)\nprint(\"Faktorial\", n, \"adalah\", hasil)",
+      "3": "def faktorial(n):\n    hasil = 1\n    for i in range(1, n + 1):\n        hasil = hasil * i\n    return hasil\n\nn = 5\nhasil = faktorial(n)\nprint(\"Faktorial\", n, \"adalah\", hasil)"
+    }
+  },
+  "soal_11": {
+    "pertanyaan": "Buat program untuk menampilkan angka dari 1 sampai 10 menggunakan perulangan.",
+    "hints": {
+      "1": "MULAI\nUNTUK i DARI 1 SAMPAI 10 LAKUKAN\n    TAMPILKAN i\nSELESAI",
+      "2": "for i in range(____, ____):\n    print(i, end=\" \")",
+      "3": "for i in range(1, 11):\n    print(i, end=\" \")"
+    }
+  },
+  "soal_44": {
+    "pertanyaan": "Buatlah fungsi Python yang menerima dua buah bilangan sebagai parameter kemudian mengembalikan nilai yang paling besar.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI bilangan_terbesar(a, b)\n    JIKA a > b MAKA\n        KEMBALIKAN a\n    JIKA TIDAK\n        KEMBALIKAN b\nAKHIR FUNGSI\n\na <- 15\nb <- 27\nhasil <- PANGGIL bilangan_terbesar(a, b)\nTAMPILKAN hasil\nSELESAI",
+      "2": "def bilangan_terbesar(a, b):\n    if a > b:\n        return ____\n    else:\n        return ____\n\na = 15\nb = 27\nhasil = bilangan_terbesar(a, b)\nprint(hasil)",
+      "3": "def bilangan_terbesar(a, b):\n    if a > b:\n        return a\n    else:\n        return b\n\na = 15\nb = 27\nhasil = bilangan_terbesar(a, b)\nprint(hasil)"
+    }
+  },
+  "soal_12": {
+    "pertanyaan": "Buat fungsi untuk menjumlahkan semua angka dalam sebuah list.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI jumlah_list(data)\n    total <- 0\n    UNTUK SETIAP angka DALAM data LAKUKAN\n        total <- total + angka\n    KEMBALIKAN total\nAKHIR FUNGSI\n\ndata <- [1, 2, 3, 4]\nhasil <- PANGGIL jumlah_list(data)\nTAMPILKAN \"Jumlah\", data, \"adalah\", hasil\nSELESAI",
+      "2": "def jumlah_list(data):\n    total = ____\n    for angka in data:\n        total = total + ____\n    return total\n\ndata = [1, 2, 3, 4]\nhasil = jumlah_list(data)\nprint(\"Jumlah\", data, \"adalah\", hasil)",
+      "3": "def jumlah_list(data):\n    total = 0\n    for angka in data:\n        total = total + angka\n    return total\n\ndata = [1, 2, 3, 4]\nhasil = jumlah_list(data)\nprint(\"Jumlah\", data, \"adalah\", hasil)"
+    }
+  },
+  "soal_13": {
+    "pertanyaan": "Buat fungsi untuk mencari nilai terbesar dalam list.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI nilai_terbesar(data)\n    terbesar <- data[0]\n    UNTUK SETIAP angka DALAM data LAKUKAN\n        JIKA angka > terbesar MAKA\n            terbesar <- angka\n    KEMBALIKAN terbesar\nAKHIR FUNGSI\n\ndata <- [2, 5, 1, 9]\nhasil <- PANGGIL nilai_terbesar(data)\nTAMPILKAN \"Nilai terbesar dari\", data, \"adalah\", hasil\nSELESAI",
+      "2": "def nilai_terbesar(data):\n    terbesar = data[____]\n    for angka in data:\n        if angka ____ terbesar:\n            terbesar = angka\n    return terbesar\n\ndata = [2, 5, 1, 9]\nhasil = nilai_terbesar(data)\nprint(\"Nilai terbesar dari\", data, \"adalah\", hasil)",
+      "3": "def nilai_terbesar(data):\n    terbesar = data[0]\n    for angka in data:\n        if angka > terbesar:\n            terbesar = angka\n    return terbesar\n\ndata = [2, 5, 1, 9]\nhasil = nilai_terbesar(data)\nprint(\"Nilai terbesar dari\", data, \"adalah\", hasil)"
+    }
+  },
+  "soal_15": {
+    "pertanyaan": "Buat fungsi untuk menghitung rata-rata dari list angka.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI rata_rata(data)\n    total <- JUMLAH(data)\n    jumlah_data <- PANJANG(data)\n    hasil <- total / jumlah_data\n    KEMBALIKAN hasil\nAKHIR FUNGSI\n\ndata <- [2, 4, 6, 8]\nhasil <- PANGGIL rata_rata(data)\nTAMPILKAN \"Rata-rata\", data, \"adalah\", hasil\nSELESAI",
+      "2": "def rata_rata(data):\n    total = sum(data)\n    jumlah_data = len(data)\n    hasil = ____ / ____\n    return hasil\n\ndata = [2, 4, 6, 8]\nhasil = rata_rata(data)\nprint(\"Rata-rata\", data, \"adalah\", hasil)",
+      "3": "def rata_rata(data):\n    total = sum(data)\n    jumlah_data = len(data)\n    hasil = total / jumlah_data\n    return hasil\n\ndata = [2, 4, 6, 8]\nhasil = rata_rata(data)\nprint(\"Rata-rata\", data, \"adalah\", hasil)"
+    }
+  },
+  "soal_17": {
+    "pertanyaan": "Buat fungsi untuk menghapus semua spasi dalam string.",
+    "hints": {
+      "1": "MULAI\nDEFINISI FUNGSI hapus_spasi(teks)\n    KEMBALIKAN GANTI(teks, \" \", \"\")\nAKHIR FUNGSI\n\nteks <- \"halo dunia\"\nhasil <- PANGGIL hapus_spasi(teks)\nTAMPILKAN teks, \"menjadi\", hasil\nSELESAI",
+      "2": "def hapus_spasi(teks):\n    return teks.replace(\"____\", \"____\")\n\nteks = \"halo dunia\"\nhasil = hapus_spasi(teks)\nprint(f\"'{teks}' menjadi '{hasil}'\")",
+      "3": "def hapus_spasi(teks):\n    return teks.replace(\" \", \"\")\n\nteks = \"halo dunia\"\nhasil = hapus_spasi(teks)\nprint(f\"'{teks}' menjadi '{hasil}'\")"
+    }
+  }
+}

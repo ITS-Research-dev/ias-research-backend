@@ -13,7 +13,7 @@ enum RoleState {
 }
 
 model Role {
-  id          String @id @default(uuid()) @db.Uuid
+  id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   description String @db.VarChar
   users       User[]
 
@@ -21,7 +21,7 @@ model Role {
 }
 
 model Class {
-  id          String        @id @default(uuid()) @db.Uuid
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title       String        @db.VarChar
   waliKelas   String        @db.VarChar
   countTotal  Int
@@ -32,7 +32,7 @@ model Class {
 }
 
 model User {
-  id           String @id @default(uuid()) @db.Uuid
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   idRole       String @db.Uuid
   fullName     String @db.VarChar
   uCredentials String @db.VarChar
@@ -60,7 +60,7 @@ model ClassAssign {
 }
 
 model Topic {
-  id          String   @id @default(uuid()) @db.Uuid
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   idClass     String   @db.Uuid
   title       String   @db.VarChar
   subject     String   @db.Text
@@ -76,7 +76,7 @@ model Topic {
 }
 
 model Test {
-  id        String @id @default(uuid()) @db.Uuid
+  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   idTopic   String @db.Uuid
   title     String @db.VarChar
   question  String @db.Text
@@ -92,7 +92,7 @@ model Test {
 }
 
 model Hint {
-  id     String @id @default(uuid()) @db.Uuid
+  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   idTest String @db.Uuid
   hint1  String @db.Text
   hint2  String @db.Text
@@ -104,7 +104,7 @@ model Hint {
 }
 
 model Score {
-  id                String   @id @default(uuid()) @db.Uuid
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   idTest            String   @db.Uuid
   idUser            String   @db.Uuid
   level             String   @db.VarChar

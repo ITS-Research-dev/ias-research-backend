@@ -49,7 +49,7 @@ export class Score {
   aiSuggestion: string;
 
   @Column('time')
-  aiFinishTime: string;
+  aiFinishTime: Date;
 
   @Column('text')
   uCode: string;

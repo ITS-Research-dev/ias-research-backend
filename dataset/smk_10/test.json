@@ -1,0 +1,159 @@
+[
+  {
+    "id": 10,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Algoritma Terstruktur - Logika Perulangan (Looping)",
+    "judul": "Menghitung Faktorial",
+    "soal": "Buat fungsi untuk menghitung faktorial dari sebuah angka.",
+    "expected_output": "Faktorial 5 adalah 120",
+    "level": "easy"
+  },
+  {
+    "id": 11,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Algoritma Terstruktur - Logika Perulangan (Looping)",
+    "judul": "Menampilkan Bilangan 1-10",
+    "soal": "Buat program untuk menampilkan angka dari 1 sampai 10 menggunakan perulangan.",
+    "expected_output": "1 2 3 4 5 6 7 8 9 10",
+    "level": "easy"
+  },
+  {
+    "id": 7,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Algoritma Terstruktur - Logika Seleksi (Percabangan)",
+    "judul": "Menentukan Bilangan Terbesar",
+    "soal": "Buat fungsi untuk menentukan angka terbesar dari dua angka.",
+    "expected_output": "Angka terbesar dari 10 dan 7 adalah 10",
+    "level": "easy"
+  },
+  {
+    "id": 33,
+    "checked": true,
+    "source_valid": "valid",
+    "reference": "AI_REF_3 Hal 78-80 (AP-K10-09)",
+    "sub-theme": "Algoritma Terstruktur - Logika Seleksi (Percabangan)",
+    "judul": "Program Mengenali Bentuk Persegi Panjang atau Persegi (Sama Sisi)",
+    "soal": "Buatlah program Python yang menerima input panjang dan lebar suatu bidang, lalu memeriksa apakah nilai panjang sama dengan lebar. Jika sama, tampilkan 'sama sisi'; jika tidak, tampilkan 'persegi panjang'.",
+    "expected_output": "Input panjang=10, lebar=10 -> output: 'sama sisi'. Input panjang=10, lebar=5 -> output: 'persegi panjang'.",
+    "level": "easy"
+  },
+  {
+    "id": 44,
+    "checked": true,
+    "source_valid": "valid",
+    "reference": "Kaggle Dataset",
+    "sub-theme": "Algoritma Terstruktur - Logika Seleksi (Percabangan)",
+    "judul": "Menentukan Bilangan Terbesar",
+    "soal": "Buatlah fungsi Python yang menerima dua buah bilangan sebagai parameter kemudian mengembalikan nilai yang paling besar.",
+    "expected_output": "Contoh: input 15 dan 27 -> output 27",
+    "level": "easy",
+    "hints": [
+      "code"
+    ]
+  },
+  {
+    "id": 1,
+    "reference": "Agus Juhana STEl",
+    "source_valid": "mixed",
+    "checked": true,
+    "level": "easy",
+    "sub-theme": "Sintaks Dasar Pemrograman - Fungsi (Aplikasi Geometri)",
+    "judul": "Menghitung Luas Lingkaran",
+    "soal": "Buat fungsi python untuk menghitung luas lingkaran jika diketahui jari-jarinya. Gunakan phi 3.14.",
+    "expected_output": "Jika r=10, maka luas=314.0"
+  },
+  {
+    "id": 4,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Sintaks Dasar Pemrograman - Fungsi (Aplikasi Geometri)",
+    "judul": "Menghitung Luas Persegi",
+    "soal": "Buat fungsi untuk menghitung luas persegi jika diketahui sisi.",
+    "expected_output": "Jika sisi=4, maka luas=16",
+    "level": "easy"
+  },
+  {
+    "id": 5,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Sintaks Dasar Pemrograman - Fungsi (Aplikasi Geometri)",
+    "judul": "Menghitung Keliling Persegi",
+    "soal": "Buat fungsi untuk menghitung keliling persegi.",
+    "expected_output": "Jika sisi=4, maka keliling=16",
+    "level": "easy"
+  },
+  {
+    "id": 12,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Struktur Data - List",
+    "judul": "Menjumlahkan Angka dalam List",
+    "soal": "Buat fungsi untuk menjumlahkan semua angka dalam sebuah list.",
+    "expected_output": "Jumlah [1,2,3,4] adalah 10",
+    "level": "easy"
+  },
+  {
+    "id": 13,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Struktur Data - List",
+    "judul": "Mencari Nilai Maksimum dalam List",
+    "soal": "Buat fungsi untuk mencari nilai terbesar dalam list.",
+    "expected_output": "Nilai terbesar dari [2,5,1,9] adalah 9",
+    "level": "easy"
+  },
+  {
+    "id": 15,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Struktur Data - List",
+    "judul": "Menghitung Rata-rata",
+    "soal": "Buat fungsi untuk menghitung rata-rata dari list angka.",
+    "expected_output": "Rata-rata [2,4,6,8] adalah 5.0",
+    "level": "easy"
+  },
+  {
+    "id": 8,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Struktur Data - String",
+    "judul": "Menghitung Panjang String",
+    "soal": "Buat fungsi untuk menghitung jumlah karakter dalam sebuah string.",
+    "expected_output": "Panjang string 'Python' adalah 6",
+    "level": "easy"
+  },
+  {
+    "id": 9,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Struktur Data - String",
+    "judul": "Membalik String",
+    "soal": "Buat fungsi untuk membalik sebuah string.",
+    "expected_output": "'Python' dibalik menjadi 'nohtyP'",
+    "level": "easy"
+  },
+  {
+    "id": 17,
+    "checked": true,
+    "source_valid": "mixed",
+    "reference": "Agus Juhana STEl",
+    "sub-theme": "Struktur Data - String",
+    "judul": "Menghapus Spasi dalam String",
+    "soal": "Buat fungsi untuk menghapus semua spasi dalam string.",
+    "expected_output": "'halo dunia' menjadi 'halodunia'",
+    "level": "easy"
+  }
+]

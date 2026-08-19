@@ -39,7 +39,7 @@ function getRandomDate(daysAgo: number): Date {
 
 export async function seedScore() {
   // 1. Baca dataset/score.json
-  const filePath = path.join(process.cwd(), 'dataset', 'score.json');
+  const filePath = path.join(process.cwd(), 'dataset', 'smk_10', 'score.json');
   const rawData = fs.readFileSync(filePath, 'utf-8');
   const scoreData: ScoreJsonEntry[] = JSON.parse(rawData);
 
@@ -59,7 +59,7 @@ export async function seedScore() {
   // 3. Ambil semua User dengan role.description = "Siswa"
   const allSiswa = await prisma.user.findMany({
     where: {
-      fullName: { not: 'Siswa Negative' },
+      uCredentials: { not: "negative_siswa"},
       role: {
         description: 'Siswa',
       },

@@ -2,6 +2,7 @@ import { PrismaClient, RoleState } from '@prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
 import { seedScore } from './seed.score';
+import { seedNegative } from './seed.negative';
 
 const prisma = new PrismaClient();
 
@@ -56,14 +57,6 @@ async function main() {
   const studentData = [
     { fullName: 'Anisa Rahmawati', uCredentials: 'anisa_siswa' },
     { fullName: 'Rian Hidayat', uCredentials: 'rian_siswa' },
-    { fullName: 'Citra Lestari', uCredentials: 'citra_siswa' },
-    { fullName: 'Deni Kurniawan', uCredentials: 'deni_siswa' },
-    { fullName: 'Eka Prasetya', uCredentials: 'eka_siswa' },
-    { fullName: 'Fajar Nugraha', uCredentials: 'fajar_siswa' },
-    { fullName: 'Gita Gutawa', uCredentials: 'gita_siswa' },
-    { fullName: 'Hadi Wijaya', uCredentials: 'hadi_siswa' },
-    { fullName: 'Indah Permata', uCredentials: 'indah_siswa' },
-    { fullName: 'Joko Susilo', uCredentials: 'joko_siswa' },
   ];
 
   const students = await Promise.all(
@@ -79,23 +72,23 @@ async function main() {
     )
   );
 
-  const studentsClassA = students.slice(0, 5);
-  const studentsClassB = students.slice(5, 10);
+  const studentsClassA = students.slice(0, 1);
+  const studentsClassB = students.slice(1, 2);
 
   // 4. Classes (2 Kelas, Wali Kelas masing-masing guru)
   const classA = await prisma.class.create({
     data: {
-      title: 'Kelas 10 RPL 1',
+      title: 'X RPL 1',
       waliKelas: teachers[0].fullName,
-      countTotal: 5,
+      countTotal: 1,
     },
   });
 
   const classB = await prisma.class.create({
     data: {
-      title: 'Kelas 10 RPL 2',
+      title: 'X RPL 2',
       waliKelas: teachers[1].fullName,
-      countTotal: 5,
+      countTotal: 1,
     },
   });
 
@@ -121,11 +114,10 @@ async function main() {
 
   // 6. Read JSON datasets
   console.log('📖 Loading datasets from JSON...');
-  const datasetDir = path.resolve(__dirname, '../dataset');
+  const datasetDir = path.resolve(__dirname, '../../dataset/smk_10/');
   const rawSubject = fs.readFileSync(path.join(datasetDir, 'subject.json'), 'utf-8');
   const rawTest = fs.readFileSync(path.join(datasetDir, 'test.json'), 'utf-8');
   const rawHint = fs.readFileSync(path.join(datasetDir, 'hint.json'), 'utf-8');
-  const rawScore = fs.readFileSync(path.join(datasetDir, 'score.json'), 'utf-8');
 
   const subjectJSON = JSON.parse(rawSubject);
   const testJSON = JSON.parse(rawTest);
@@ -195,6 +187,7 @@ async function main() {
   // 10. Seed Scores (from score.json)
   console.log('🏆 Seeding Scores...');
   await seedScore()
+  await seedNegative()
 
   console.log('✅ Seeding completed successfully!');
 }

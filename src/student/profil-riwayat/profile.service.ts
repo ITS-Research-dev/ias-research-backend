@@ -19,6 +19,7 @@ export class ProfileService {
    */
   async getProfile(userId: string) {
     const cacheKey = `${this.CACHE_PREFIX}:${userId}`;
+    console.log(userId)
 
     // Check cache
     const cachedData = await this.redisService.get(cacheKey);
