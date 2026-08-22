@@ -23,6 +23,15 @@ export class GeminiTokenController {
     return this.geminiTokenService.countTokens(document, body);
   }
   
+  @Post('generate-materi')
+  @UseInterceptors(FileInterceptor('document', { storage: memoryStorage() }))
+  async generateMateri(
+    @UploadedFile() document: Express.Multer.File,
+    @Body() body: CountTokensDto,
+  ) {
+    return this.geminiTokenService.generateMateri(document, body);
+  }
+
   @Post('generate-materi-test')
   @UseInterceptors(FileInterceptor('document', { storage: memoryStorage() }))
   async generateMateriTest(
