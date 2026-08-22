@@ -212,7 +212,12 @@ Kembalikan HANYA JSON valid, tanpa markdown code fence, tanpa teks tambahan di l
       .join('\n\n---\n\n');
 
     const genAI = this.getGenAI();
-    const model = genAI.getGenerativeModel({ model: usedModel });
+    const model = genAI.getGenerativeModel({
+      model: usedModel,
+      generationConfig: {
+        responseMimeType: 'application/json',
+      },
+    });
 
     const result = await model.generateContent(combinedContent);
     const response = result.response;
@@ -230,9 +235,20 @@ Kembalikan HANYA JSON valid, tanpa markdown code fence, tanpa teks tambahan di l
     try {
       parsedResult = JSON.parse(cleanedText);
     } catch (err) {
-      throw new BadRequestException(
-        'Gagal parsing response AI sebagai JSON: ' + (err as Error).message,
-      );
+      try {
+        // Fallback: replace raw unescaped control characters (newlines, tabs) inside string literals
+        const sanitized = cleanedText.replace(/[\x00-\x1F]+/g, (match) => {
+          if (match === '\n') return '\\n';
+          if (match === '\r') return '\\r';
+          if (match === '\t') return '\\t';
+          return ' ';
+        });
+        parsedResult = JSON.parse(sanitized);
+      } catch (fallbackErr) {
+        throw new BadRequestException(
+          'Gagal parsing response AI sebagai JSON: ' + (err as Error).message,
+        );
+      }
     }
 
     const usage = response.usageMetadata;
