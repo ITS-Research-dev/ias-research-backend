@@ -87,15 +87,24 @@ export class StudyCaseService {
 
     const tests = await this.testRepository.findByTopicId(topicId);
 
-    const questions = tests.map((test, index) => ({
-      id: test.id,
-      order: index + 1,
-      title: test.title,
-      description: test.question,
-      expectedOutput: test.expOutput,
-      starterCode: '# Tulis kode kamu di sini\n',
-      hints: [],
-    }));
+    const questions = tests.map((test, index) => {
+      const hintRecord = test.hints?.[0];
+      const hints = [
+        hintRecord?.hint1,
+        hintRecord?.hint2,
+        hintRecord?.hint3,
+      ].filter((h): h is string => Boolean(h && h.trim()));
+
+      return {
+        id: test.id,
+        order: index + 1,
+        title: test.title,
+        description: test.question,
+        expectedOutput: test.expOutput,
+        starterCode: '# Tulis kode kamu di sini\n',
+        hints,
+      };
+    });
 
     const result = {
       id: topic.id,

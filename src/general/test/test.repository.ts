@@ -19,7 +19,11 @@ export class TestRepository {
   }
 
   findByTopicId(idTopic: string): Promise<Test[]> {
-    return this.repo.find({ where: { idTopic } })
+    return this.repo.find({
+      where: { idTopic },
+      relations: { hints: true },
+      order: { title: 'ASC' },
+    });
   }
 
   create(data: Partial<Test>): Promise<Test> {
