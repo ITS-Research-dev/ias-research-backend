@@ -30,6 +30,11 @@ export class BankController {
     return this.svc.listMaterials(q);
   }
 
+  @Get('materials/:id')
+  getMaterial(@Param('id') id: string) {
+    return this.svc.getMaterial(id);
+  }
+
   @Post('materials')
   createMaterial(@Body() dto: CreateMaterialDto) {
     return this.svc.createMaterial(dto);
@@ -43,6 +48,11 @@ export class BankController {
   @Get('questions')
   listQuestions(@Query() q: QueryMaterialDto) {
     return this.svc.listQuestions(q);
+  }
+
+  @Get(['question/:id', 'questions/:id'])
+  getQuestion(@Param('id') id: string) {
+    return this.svc.getQuestion(id);
   }
 
   @Post('questions')
@@ -68,3 +78,4 @@ export class BankController {
     return this.svc.triggerGenerate(body);
   }
 }
+

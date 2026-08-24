@@ -130,7 +130,7 @@ export class OllamaService {
   }
 
   private async saveToDb(data: Score) {
-    
+
   }
 
   private parseAssessmentResponse(raw: string): {

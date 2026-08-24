@@ -22,7 +22,7 @@ export class BankService {
     @InjectRepository(Test) private testRepo: Repository<Test>,
     @InjectRepository(Hint) private hintRepo: Repository<Hint>,
     private readonly redisService: RedisService,
-  ) {}
+  ) { }
 
   async listMaterials(q: QueryMaterialDto) {
     const { idClass } = q;
@@ -48,6 +48,37 @@ export class BankService {
       startDate: t.startDate,
       status: t.isActive ? 'active' : 'inactive',
     }));
+
+    // Store ke cache
+    await this.redisService.set(cacheKey, result, this.CACHE_TTL);
+
+    return result;
+  }
+
+  async getMaterial(id: string) {
+    const cacheKey = `${this.CACHE_PREFIX}:material:${id}`;
+
+    // Check cache
+    const cachedData = await this.redisService.get(cacheKey);
+    if (cachedData) return cachedData;
+
+    const topic = await this.topicRepo.findOne({
+      where: { id },
+    });
+
+    if (!topic) {
+      throw new NotFoundException(`Materi dengan id '${id}' tidak ditemukan.`);
+    }
+
+    const result = {
+      id: topic.id,
+      idClass: topic.idClass,
+      title: topic.title,
+      content: topic.subject,
+      description: topic.description,
+      startDate: topic.startDate,
+      status: topic.isActive ? 'active' : 'inactive',
+    };
 
     // Store ke cache
     await this.redisService.set(cacheKey, result, this.CACHE_TTL);
@@ -137,6 +168,44 @@ export class BankService {
       hint2: t.hints?.[0]?.hint2 ?? '',
       hint3: t.hints?.[0]?.hint3 ?? '',
     }));
+
+    // Store ke cache
+    await this.redisService.set(cacheKey, result, this.CACHE_TTL);
+
+    return result;
+  }
+
+  async getQuestion(id: string) {
+    const cacheKey = `${this.CACHE_PREFIX}:question:${id}`;
+
+    // Check cache
+    const cachedData = await this.redisService.get(cacheKey);
+    if (cachedData) {
+      return cachedData;
+    }
+
+    const test = await this.testRepo.findOne({
+      where: { id },
+      relations: { topic: true, hints: true },
+    });
+
+    if (!test) {
+      throw new NotFoundException(`Soal dengan id '${id}' tidak ditemukan.`);
+    }
+
+    const result = {
+      id: test.id,
+      title: test.title,
+      materialId: test.idTopic,
+      topic: test.topic ? { id: test.topic.id, title: test.topic.title } : null,
+      description: test.question,
+      expectedOutput: test.expOutput,
+      maxTries: test.maxTries,
+      status: test.isActive ? 'active' : 'inactive',
+      hint1: test.hints?.[0]?.hint1 ?? '',
+      hint2: test.hints?.[0]?.hint2 ?? '',
+      hint3: test.hints?.[0]?.hint3 ?? '',
+    };
 
     // Store ke cache
     await this.redisService.set(cacheKey, result, this.CACHE_TTL);
@@ -283,7 +352,7 @@ export class BankService {
 
   private async invalidateMaterialsCache() {
     const keys = await this.redisService.getKeysByPattern(
-      `${this.CACHE_PREFIX}:materials:*`,
+      `${this.CACHE_PREFIX}:material*`,
     );
     if (keys.length > 0) {
       await this.redisService.deleteMany(keys);
@@ -292,7 +361,7 @@ export class BankService {
 
   private async invalidateQuestionsCache() {
     const keys = await this.redisService.getKeysByPattern(
-      `${this.CACHE_PREFIX}:questions:*`,
+      `${this.CACHE_PREFIX}:question*`,
     );
     if (keys.length > 0) {
       await this.redisService.deleteMany(keys);
