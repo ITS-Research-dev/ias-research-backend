@@ -102,7 +102,12 @@ export class VerificationService {
                 .leftJoinAndSelect('topic.class', 'class');
 
             if (className) {
-                qb.andWhere('(class.title = :className OR class.id = :className)', { className });
+                const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(className);
+                if (isUuid) {
+                    qb.andWhere('class.id = :className', { className });
+                } else {
+                    qb.andWhere('class.title = :className', { className });
+                }
             }
 
             if (q) {
