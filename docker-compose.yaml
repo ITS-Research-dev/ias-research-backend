@@ -42,6 +42,8 @@ services:
       NODE_ENV: development
     volumes:
       - .:/app
+      - /app/node_modules
+      - /app/dist
     networks:
       - ias-network
 
