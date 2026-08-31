@@ -1,9 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import { Topic } from '../../general/topic/entities/topic.entity';
 import { Test } from '../../general/test/entities/test.entity';
 import { Hint } from '../../general/hint/entities/hint.entity';
+import { Class } from '../../general/class/entities/class.entity';
+import { ClassAssign } from '../../general/class-assign/entities/class-assign.entity';
 import { RedisService } from '../../redis/redis.service';
 import { CreateMaterialDto } from './dto/create-material.dto';
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -21,19 +23,53 @@ export class BankService {
     @InjectRepository(Topic) private topicRepo: Repository<Topic>,
     @InjectRepository(Test) private testRepo: Repository<Test>,
     @InjectRepository(Hint) private hintRepo: Repository<Hint>,
+    @InjectRepository(Class) private classRepo: Repository<Class>,
+    @InjectRepository(ClassAssign) private classAssignRepo: Repository<ClassAssign>,
     private readonly redisService: RedisService,
   ) { }
 
+  private async resolveClassId(idClass?: string): Promise<string> {
+    if (!idClass || typeof idClass !== 'string' || idClass.trim() === '') {
+      const fallback = await this.classRepo.findOne({ where: {} });
+      if (!fallback) throw new BadRequestException('Tidak ada data kelas terdaftar di sistem.');
+      return fallback.id;
+    }
+
+    const trimmed = idClass.trim();
+
+    // 1. Direct check in TABLE_CLASS by ID
+    const directClass = await this.classRepo.findOne({ where: { id: trimmed } });
+    if (directClass) return directClass.id;
+
+    // 2. Check in TABLE_CLASS_ASSIGN by ID (in case assignment ID was passed)
+    const assign = await this.classAssignRepo.findOne({ where: { id: trimmed } });
+    if (assign && assign.idClass) return assign.idClass;
+
+    // 3. Check in TABLE_CLASS by Title (in case class title was passed)
+    const classByTitle = await this.classRepo.findOne({ where: { title: trimmed } });
+    if (classByTitle) return classByTitle.id;
+
+    // 4. Fallback to first class in DB
+    const firstClass = await this.classRepo.findOne({ where: {} });
+    if (firstClass) return firstClass.id;
+
+    throw new BadRequestException(`Kelas dengan id '${idClass}' tidak valid atau tidak ditemukan.`);
+  }
+
   async listMaterials(q: QueryMaterialDto) {
-    const { idClass } = q;
-    const cacheKey = `${this.CACHE_PREFIX}:materials:${idClass || 'all'}`;
+    const rawClassId = q.idClass;
+    let validClassId: string | undefined = undefined;
+    if (rawClassId) {
+      validClassId = await this.resolveClassId(rawClassId);
+    }
+    const cacheKey = `${this.CACHE_PREFIX}:materials:${validClassId || 'all'}`;
 
     // Check cache
     const cachedData = await this.redisService.get(cacheKey);
     if (cachedData) return cachedData;
 
     const where: any = {};
-    if (idClass) where.idClass = idClass;
+    if (validClassId) where.idClass = validClassId;
 
     const topics = await this.topicRepo.find({
       where,
@@ -87,15 +123,19 @@ export class BankService {
   }
 
   async listTopics(q: QueryMaterialDto) {
-    const { idClass } = q;
-    const cacheKey = `${this.CACHE_PREFIX}:topics:${idClass || 'all'}`;
+    const rawClassId = q.idClass;
+    let validClassId: string | undefined = undefined;
+    if (rawClassId) {
+      validClassId = await this.resolveClassId(rawClassId);
+    }
+    const cacheKey = `${this.CACHE_PREFIX}:topics:${validClassId || 'all'}`;
 
     // Check cache
     const cachedData = await this.redisService.get(cacheKey);
     if (cachedData) return cachedData;
 
     const where: any = {};
-    if (idClass) where.idClass = idClass;
+    if (validClassId) where.idClass = validClassId;
 
     const topics = await this.topicRepo.find({
       where,
@@ -114,32 +154,44 @@ export class BankService {
   }
 
   async createMaterial(dto: CreateMaterialDto) {
-    const topic = this.topicRepo.create({
-      id: randomUUID(),
-      idClass: dto.idClass,
-      title: dto.title,
-      subject: dto.content,
-      description: dto.description,
-      startDate: dto.startDate,
-      isActive: dto.status === 'active',
-    });
-    const saved = await this.topicRepo.save(topic);
-    await this.invalidateMaterialsCache();
+    const validClassId = await this.resolveClassId(dto.idClass);
 
-    return {
-      id: saved.id,
-      idClass: saved.idClass,
-      judul: saved.title,
-      subject: saved.subject,
-      deskripsi: saved.description,
-      status: saved.isActive ? 'active' : 'inactive',
-      message: 'Materi berhasil dibuat.',
-    };
+    try {
+      const topic = this.topicRepo.create({
+        id: randomUUID(),
+        idClass: validClassId,
+        title: dto.title,
+        subject: dto.content || '',
+        description: dto.description || '',
+        startDate: dto.startDate || new Date().toISOString().slice(0, 10),
+        isActive: dto.status !== 'inactive',
+      });
+      const saved = await this.topicRepo.save(topic);
+      await this.invalidateMaterialsCache();
+
+      return {
+        id: saved.id,
+        idClass: saved.idClass,
+        judul: saved.title,
+        subject: saved.subject,
+        deskripsi: saved.description,
+        status: saved.isActive ? 'active' : 'inactive',
+        message: 'Materi berhasil dibuat.',
+      };
+    } catch (err: any) {
+      throw new BadRequestException(
+        `Gagal membuat materi: ${err?.message || err}`,
+      );
+    }
   }
 
   async listQuestions(q: QueryMaterialDto) {
-    const { idClass } = q;
-    const cacheKey = `${this.CACHE_PREFIX}:questions:${idClass || 'all'}`;
+    const rawClassId = q.idClass;
+    let validClassId: string | undefined = undefined;
+    if (rawClassId) {
+      validClassId = await this.resolveClassId(rawClassId);
+    }
+    const cacheKey = `${this.CACHE_PREFIX}:questions:${validClassId || 'all'}`;
 
     // Check cache
     const cachedData = await this.redisService.get(cacheKey);
@@ -148,7 +200,7 @@ export class BankService {
     }
 
     const where: any = {};
-    if (idClass) where.topic = { idClass };
+    if (validClassId) where.topic = { idClass: validClassId };
 
     const tests = await this.testRepo.find({
       where,
@@ -217,6 +269,10 @@ export class BankService {
    * Create question dan invalidate cache
    */
   async createQuestion(dto: CreateQuestionDto) {
+    if (!dto.materialId || typeof dto.materialId !== 'string' || dto.materialId.trim() === '') {
+      throw new BadRequestException('materialId wajib diisi dan harus berupa UUID valid.');
+    }
+
     const topic = await this.topicRepo.findOne({ where: { id: dto.materialId } });
     if (!topic) {
       throw new NotFoundException(
@@ -224,39 +280,45 @@ export class BankService {
       );
     }
 
-    const test = this.testRepo.create({
-      id: randomUUID(),
-      idTopic: dto.materialId,
-      title: dto.title,
-      question: dto.description,
-      expOutput: dto.expectedOutput ?? '',
-      maxTries: dto.maxTries ?? 3,
-      isActive: dto.status == "active"
-    });
-    const saved = await this.testRepo.save(test);
+    try {
+      const test = this.testRepo.create({
+        id: randomUUID(),
+        idTopic: dto.materialId,
+        title: dto.title,
+        question: dto.description,
+        expOutput: dto.expectedOutput ?? '',
+        maxTries: dto.maxTries ?? 3,
+        isActive: dto.status !== 'inactive',
+      });
+      const saved = await this.testRepo.save(test);
 
-    const hint = this.hintRepo.create({
-      id: randomUUID(),
-      idTest: saved.id,
-      hint1: dto.hint1 ?? '',
-      hint2: dto.hint2 ?? '',
-      hint3: dto.hint3 ?? '',
-    });
-    await this.hintRepo.save(hint);
+      const hint = this.hintRepo.create({
+        id: randomUUID(),
+        idTest: saved.id,
+        hint1: dto.hint1 ?? '',
+        hint2: dto.hint2 ?? '',
+        hint3: dto.hint3 ?? '',
+      });
+      await this.hintRepo.save(hint);
 
-    // Invalidate cache
-    await this.invalidateQuestionsCache();
+      // Invalidate cache
+      await this.invalidateQuestionsCache();
 
-    return {
-      id: saved.id,
-      idTopic: saved.idTopic,
-      judul: saved.title,
-      soal: saved.question,
-      expectedOutput: saved.expOutput,
-      maxTries: saved.maxTries,
-      status: dto.status,
-      message: 'Soal berhasil dibuat.',
-    };
+      return {
+        id: saved.id,
+        idTopic: saved.idTopic,
+        judul: saved.title,
+        soal: saved.question,
+        expectedOutput: saved.expOutput,
+        maxTries: saved.maxTries,
+        status: dto.status,
+        message: 'Soal berhasil dibuat.',
+      };
+    } catch (err: any) {
+      throw new BadRequestException(
+        `Gagal membuat soal: ${err?.message || err}`,
+      );
+    }
   }
 
   async updateMaterial(id: string, dto: UpdateMaterialDto) {
