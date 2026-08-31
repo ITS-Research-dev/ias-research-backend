@@ -102,7 +102,7 @@ export class VerificationService {
                 .leftJoinAndSelect('topic.class', 'class');
 
             if (className) {
-                qb.andWhere('class.title = :className', { className });
+                qb.andWhere('(class.title = :className OR class.id = :className)', { className });
             }
 
             if (q) {
@@ -116,7 +116,7 @@ export class VerificationService {
 
             const scores = await qb.getMany();
             if (scores.length === 0) {
-                return this.getFallbackItems();
+                return this.getFallbackItems(className);
             }
             
             const result = scores.map((score) => this.formatScoreEntity(score));
@@ -127,7 +127,7 @@ export class VerificationService {
             return result;
         } catch (e: any) {
             console.warn('VerificationService.listQueue error, using fallback:', e?.message || e);
-            let items = this.getFallbackItems();
+            let items = this.getFallbackItems(className);
             if (q) {
                 const keyword = q.toLowerCase();
                 items = items.filter(
@@ -262,14 +262,15 @@ export class VerificationService {
         }
     }
 
-    private getFallbackItems() {
-        return [
+    private getFallbackItems(className?: string) {
+        const allItems = [
             {
                 id: '1',
                 studentId: 'std-1',
                 studentName: 'Dika Pratama',
                 questionTitle: 'Rata-rata Tiga Nilai',
                 className: 'XI RPL 2',
+                classId: 'c1',
                 aiScore: 57,
                 status: 'Perlu Verifikasi',
                 aiNote: 'Struktur fungsi masih perlu diperbaiki, hasil perhitungan kadang tidak sesuai output yang diharapkan.',
@@ -295,5 +296,12 @@ export class VerificationService {
                 createdAt: new Date(),
             },
         ];
+
+        if (className) {
+            return allItems.filter(
+                (item) => item.className === className || (item as any).classId === className,
+            );
+        }
+        return allItems;
     }
 }
