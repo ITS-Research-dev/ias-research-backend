@@ -29,7 +29,7 @@ export class StudyCaseController {
 
   @Post('run')
   async runCode(@Body() dto: RunCodeDto) {
-    return this.studyCaseService.runCode(dto.code);
+    return this.studyCaseService.runCode(dto.code, dto.stdin);
   }
 
   // @Post('submission')
