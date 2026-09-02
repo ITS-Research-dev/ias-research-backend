@@ -5,5 +5,6 @@ import { GeminiTokenService } from './gemini-token.service';
 @Module({
   controllers: [GeminiTokenController],
   providers: [GeminiTokenService],
+  exports: [GeminiTokenService],
 })
 export class GeminiTokenModule {}
