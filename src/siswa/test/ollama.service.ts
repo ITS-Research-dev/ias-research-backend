@@ -56,7 +56,7 @@ export class OllamaService {
   private readonly logger = new Logger(OllamaService.name);
   private readonly ollamaUrl: string;
   private readonly ollamaModel: string;
-  private readonly scoreRepository = ScoreRepository
+  private readonly scoreRepository = ScoreRepository;
   private readonly levels = [
     { level: 'Expert', min: 90 },
     { level: 'Competent', min: 80 },
@@ -113,7 +113,7 @@ export class OllamaService {
       `<s>[INST] Soal: ${soal}\n` +
       `Output yang diharapkan: ${expectedOutput}\n\n` +
       `Kode siswa:\n\`\`\`python\n${studentCode}\n\`\`\`\n\n` +
-      `Nilai kode siswa ini dan berikan feedback. [/INST]`;
+      `Nilai kode siswa ini dan berikan feedback (maksimal 100 kata). [/INST]`;
 
     const { response: raw, duration } = await this.callOllama(prompt);
     const parsed = this.parseAssessmentResponse(raw);
@@ -129,8 +129,19 @@ export class OllamaService {
     };
   }
 
-  private async saveToDb(data: Score) {
+  private async saveToDb(data: Score) {}
 
+  private limitWords(text: string, maxWords = 100): string {
+    if (!text) return '';
+    const trimmed = text.trim();
+    const words = trimmed.split(/\s+/);
+    if (words.length <= maxWords) {
+      return trimmed;
+    }
+    return words
+      .slice(0, maxWords)
+      .join(' ')
+      .replace(/[,;:\-\s]+$/, '');
   }
 
   private parseAssessmentResponse(raw: string): {
@@ -171,9 +182,11 @@ export class OllamaService {
     const feedbackMatch = raw.match(
       /(?:feedback|aiSuggestion|suggestion)\s*:\s*([\s\S]+)/i,
     );
-    const aiSuggestion = feedbackMatch
+    const rawSuggestion = feedbackMatch
       ? feedbackMatch[1].replace(/<\/s>/g, '').trim()
       : raw.trim();
+
+    const aiSuggestion = this.limitWords(rawSuggestion, 100);
 
     return { aiScore, overallScore, aiSuggestion };
   }
