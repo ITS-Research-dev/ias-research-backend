@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { autoLoadModules } from '../common/utils/auto-load-modules.util';
+import { QueueModule } from './queue/queue.module';
 import { join } from 'path';
 
 @Module({
@@ -35,6 +36,7 @@ import { join } from 'path';
       },
     ]),
 
+    QueueModule, // QUEUE MODULE
     ...autoLoadModules(join(__dirname)),
 
   ],
