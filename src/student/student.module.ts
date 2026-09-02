@@ -12,6 +12,7 @@ import { ScoreModule } from '../general/score/score.module';
 import { HintModule } from '../general/hint/hint.module';
 import { ClassModule } from '../general/class/class.module';
 import { RedisModule } from '../../src/redis/redis.module';
+import { SubmissionQueueModule } from './submission-queue/submission-queue.module';
 
 @Module({
   imports: [
@@ -22,9 +23,10 @@ import { RedisModule } from '../../src/redis/redis.module';
     ScoreModule,
     HintModule,
     RedisModule,
+    SubmissionQueueModule,
   ],
   controllers: [MateriController, ProfileController, StudyCaseController],
   providers: [MateriService, ProfileService, StudyCaseService],
   exports: [MateriService, ProfileService, StudyCaseService, RedisModule],
 })
-export class StudentModule {}
+export class StudentModule {}
