@@ -51,4 +51,21 @@ export class AuthService {
       },
     };
   }
+
+  verifyToken(token: string) {
+    try {
+      return this.jwtService.verify(token);
+    } catch (error) {
+      if (error instanceof Error && error.name === 'TokenExpiredError') {
+        throw new UnauthorizedException({ 
+          code: 'TOKEN_EXPIRED',
+          message: 'Token sudah expired'
+        });
+      }
+      throw new UnauthorizedException({ 
+        code: 'TOKEN_INVALID',
+        message: 'Token tidak valid'
+      });
+    }
+  }
 }
