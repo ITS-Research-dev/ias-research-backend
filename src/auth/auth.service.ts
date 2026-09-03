@@ -19,10 +19,10 @@ export class AuthService {
     if (user.assignments.length < 1)
       throw new UnauthorizedException('Siswa/Guru belum masuk ke kelas apapun');
 
-    // const isMatch = await bcrypt.compare(password, user.uPassword);
-    // if (!isMatch) {
-    //   throw new UnauthorizedException('Username atau password salah');
-    // }
+    const isMatch = await bcrypt.compare(password, user.uPassword);
+    if (!isMatch) {
+      throw new UnauthorizedException('Username atau password salah');
+    }
 
     const { uPassword: _, ...result } = user;
     return result;
