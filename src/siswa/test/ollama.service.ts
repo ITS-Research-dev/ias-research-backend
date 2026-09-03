@@ -88,12 +88,7 @@ export class OllamaService {
 
   checkLevel(avgScore: number, hintUsage: number): string {
     let currentLevel = 'Novice';
-    for (const { level, min } of this.levels) {
-      if (avgScore >= min) {
-        currentLevel = level;
-      }
-    }
-
+    
     switch (hintUsage) {
       case 1:
         return 'Advance/Beginner';
@@ -101,6 +96,12 @@ export class OllamaService {
         return 'Beginner';
       case 3:
         return 'Novice';
+    }
+    
+    for (const { level, min } of this.levels) {
+      if (avgScore >= min) {
+        if (min !== 0 && avgScore >= min) currentLevel = level;
+      }
     }
 
     return currentLevel;
