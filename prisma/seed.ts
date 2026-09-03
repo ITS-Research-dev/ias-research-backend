@@ -38,7 +38,7 @@ async function main() {
       data: {
         fullName: 'Budi Santoso, S.Pd.',
         uCredentials: 'budi_guru',
-        uPassword: 'password123',
+        uPassword: '$2a$12$nizTbiHhWvlg8cbwk4hk6eDugUw.Imj60cZLSVDc2JkEonEIchEkK',
         idRole: teacherRole.id,
       },
     }),
@@ -46,7 +46,7 @@ async function main() {
       data: {
         fullName: 'Siti Aminah, M.Kom.',
         uCredentials: 'siti_guru',
-        uPassword: 'password123',
+        uPassword: '$2a$12$nizTbiHhWvlg8cbwk4hk6eDugUw.Imj60cZLSVDc2JkEonEIchEkK',
         idRole: teacherRole.id,
       },
     }),
@@ -72,7 +72,7 @@ async function main() {
         data: {
           fullName: s.fullName,
           uCredentials: s.uCredentials,
-          uPassword: 'password123',
+          uPassword: '$2a$12$nizTbiHhWvlg8cbwk4hk6eDugUw.Imj60cZLSVDc2JkEonEIchEkK',
           idRole: studentRole.id,
         },
       })
