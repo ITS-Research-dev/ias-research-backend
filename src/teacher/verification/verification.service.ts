@@ -97,6 +97,8 @@ export class VerificationService {
             const qb = this.scoreRepo
                 .createQueryBuilder('score')
                 .leftJoinAndSelect('score.user', 'user')
+                .leftJoinAndSelect('user.assignments', 'assignments')
+                .leftJoinAndSelect('assignments.class', 'userClass')
                 .leftJoinAndSelect('score.test', 'test')
                 .leftJoinAndSelect('test.topic', 'topic')
                 .leftJoinAndSelect('topic.class', 'class');
@@ -104,11 +106,12 @@ export class VerificationService {
             if (className) {
                 const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(className);
                 if (isUuid) {
-                    qb.andWhere('class.id = :className', { className });
+                    qb.andWhere('(class.id = :className OR userClass.id = :className)', { className });
                 } else {
-                    qb.andWhere('class.title = :className', { className });
+                    qb.andWhere('(class.title = :className OR userClass.title = :className)', { className });
                 }
             }
+
 
             if (q) {
                 qb.andWhere(

@@ -68,8 +68,10 @@ export class StudyCaseService {
   /**
    * Get case detail dengan caching
    */
-  async getCaseDetail(topicId: string) {
-    const cacheKey = `${this.CACHE_PREFIX}:case:${topicId}`;
+  async getCaseDetail(topicId: string, currentUserId?: string) {
+    const cacheKey = currentUserId
+      ? `${this.CACHE_PREFIX}:case:${topicId}:${currentUserId}`
+      : `${this.CACHE_PREFIX}:case:${topicId}`;
 
     // Check cache
     const cachedData = await this.redisService.get(cacheKey);
@@ -87,6 +89,12 @@ export class StudyCaseService {
 
     const tests = await this.testRepository.findByTopicId(topicId);
 
+    // If student user ID is present, fetch their existing scores
+    let userScores: any[] = [];
+    if (currentUserId) {
+      userScores = await this.scoreRepository.findByUserId(currentUserId);
+    }
+
     const questions = tests.map((test, index) => {
       const hintRecord = test.hints?.[0];
       const hints = [
@@ -95,14 +103,32 @@ export class StudyCaseService {
         hintRecord?.hint3,
       ].filter((h): h is string => Boolean(h && h.trim()));
 
+      const userScore = userScores.find((s) => s.idTest === test.id);
+      const hasSubmitted = Boolean(userScore);
+
       return {
         id: test.id,
         order: index + 1,
         title: test.title,
         description: test.question,
         expectedOutput: test.expOutput,
-        starterCode: '# Tulis kode kamu di sini\n',
+        starterCode: userScore?.uCode || '# Tulis kode kamu di sini\n',
         hints,
+        hasSubmitted,
+        submission: userScore
+          ? {
+              id: userScore.id,
+              score: userScore.averageScore,
+              level: userScore.level,
+              feedback:
+                userScore.teacherSuggestion || userScore.aiSuggestion || '',
+              aiScore: userScore.aiScore,
+              teacherScore: userScore.teacherScore,
+              code: userScore.uCode,
+              hintUsage: userScore.hintUsage,
+              createdAt: userScore.createdAt,
+            }
+          : null,
       };
     });
 
@@ -115,11 +141,13 @@ export class StudyCaseService {
       questions,
     };
 
-    // Store ke cache
-    await this.redisService.set(cacheKey, result, this.CACHE_TTL);
+    // Store ke cache (shorter TTL if user-specific)
+    const ttl = currentUserId ? 300 : this.CACHE_TTL;
+    await this.redisService.set(cacheKey, result, ttl);
 
     return result;
   }
+
 
   /**
    * Get hint dengan caching
