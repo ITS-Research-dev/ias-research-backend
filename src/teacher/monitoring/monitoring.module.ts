@@ -7,9 +7,11 @@ import { ClassAssign } from '../../general/class-assign/entities/class-assign.en
 import { User } from '../../general/user/entities/user.entity';
 import { Score } from '../../general/score/entities/score.entity';
 import { RedisModule } from '../../redis/redis.module';
+import { DashboardService } from '../dashboard/dashboard.service';
+import { DashboardModule } from '../dashboard/dahsboard.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Class, ClassAssign, User, Score]), RedisModule],
+    imports: [TypeOrmModule.forFeature([Class, ClassAssign, User, Score]), RedisModule, DashboardModule],
     controllers: [MonitoringController],
     providers: [MonitoringService],
     exports: [MonitoringService],

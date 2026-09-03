@@ -2,6 +2,7 @@ import { PrismaClient, RoleState } from '@prisma/client';
 import * as fs from 'fs';
 import * as path from 'path';
 import { seedScore } from './seed.score';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -38,7 +39,7 @@ async function main() {
       data: {
         fullName: 'Budi Santoso, S.Pd.',
         uCredentials: 'budi_guru',
-        uPassword: '$2a$12$nizTbiHhWvlg8cbwk4hk6eDugUw.Imj60cZLSVDc2JkEonEIchEkK',
+        uPassword: await bcrypt.hash("password123", 10),
         idRole: teacherRole.id,
       },
     }),
@@ -46,7 +47,7 @@ async function main() {
       data: {
         fullName: 'Siti Aminah, M.Kom.',
         uCredentials: 'siti_guru',
-        uPassword: '$2a$12$nizTbiHhWvlg8cbwk4hk6eDugUw.Imj60cZLSVDc2JkEonEIchEkK',
+        uPassword: await bcrypt.hash("password123", 10),
         idRole: teacherRole.id,
       },
     }),
@@ -67,12 +68,12 @@ async function main() {
   ];
 
   const students = await Promise.all(
-    studentData.map((s) =>
+    studentData.map(async (s) =>
       prisma.user.create({
         data: {
           fullName: s.fullName,
           uCredentials: s.uCredentials,
-          uPassword: '$2a$12$nizTbiHhWvlg8cbwk4hk6eDugUw.Imj60cZLSVDc2JkEonEIchEkK',
+          uPassword: await bcrypt.hash("password123", 10),
           idRole: studentRole.id,
         },
       })

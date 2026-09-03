@@ -5,7 +5,7 @@ import { SiswaAuth } from '../../../common/decorators/siswa-auth.decorator';
 @SiswaAuth()
 @Controller('siswa/materi')
 export class MateriController {
-  constructor(private readonly materiService: MateriService) { }
+  constructor(private readonly materiService: MateriService) {}
 
   @Get()
   async findAll(@Req() req: any) {

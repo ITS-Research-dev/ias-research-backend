@@ -58,12 +58,12 @@ export class OllamaService {
   private readonly ollamaModel: string;
   private readonly scoreRepository = ScoreRepository;
   private readonly levels = [
-    { level: 'Expert', min: 90 },
-    { level: 'Competent', min: 80 },
-    { level: 'Advance', min: 70 },
-    { level: 'Advance/Beginner', min: 60 },
-    { level: 'Beginner', min: 50 },
     { level: 'Novice', min: 0 },
+    { level: 'Beginner', min: 50 },
+    { level: 'Advance/Beginner', min: 60 },
+    { level: 'Advance', min: 70 },
+    { level: 'Competent', min: 80 },
+    { level: 'Expert', min: 90 },
   ];
 
   constructor(private readonly configService: ConfigService) {
@@ -84,13 +84,7 @@ export class OllamaService {
 
   checkLevel(avgScore: number, hintUsage: number): string {
     let currentLevel = 'Novice';
-    for (const { level, min } of this.levels) {
-      if (avgScore > min || (min === 0 && avgScore >= 0)) {
-        if (min !== 0 && avgScore > min) currentLevel = level;
-        if (min === 0) currentLevel = 'Novice';
-      }
-    }
-
+    
     switch (hintUsage) {
       case 1:
         return 'Advance/Beginner';
@@ -98,6 +92,12 @@ export class OllamaService {
         return 'Beginner';
       case 3:
         return 'Novice';
+    }
+    
+    for (const { level, min } of this.levels) {
+      if (avgScore >= min) {
+        if (min !== 0 && avgScore >= min) currentLevel = level;
+      }
     }
 
     return currentLevel;
