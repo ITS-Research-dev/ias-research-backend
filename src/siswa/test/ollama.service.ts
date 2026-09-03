@@ -6,6 +6,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Score } from '../../general/score/entities/score.entity';
 import { ScoreRepository } from '../../general/score/score.repository';
+import { RedisService } from '../../redis/redis.service';
 
 interface OllamaGenerateRequest {
   model: string;
@@ -56,17 +57,20 @@ export class OllamaService {
   private readonly logger = new Logger(OllamaService.name);
   private readonly ollamaUrl: string;
   private readonly ollamaModel: string;
-  private readonly scoreRepository = ScoreRepository;
   private readonly levels = [
-    { level: 'Expert', min: 90 },
-    { level: 'Competent', min: 80 },
-    { level: 'Advance', min: 70 },
-    { level: 'Advance/Beginner', min: 60 },
-    { level: 'Beginner', min: 50 },
     { level: 'Novice', min: 0 },
+    { level: 'Beginner', min: 50 },
+    { level: 'Advance/Beginner', min: 60 },
+    { level: 'Advance', min: 70 },
+    { level: 'Competent', min: 80 },
+    { level: 'Expert', min: 90 },
   ];
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly scoreRepository: ScoreRepository,
+    private readonly redisService: RedisService,
+  ) {
     this.ollamaUrl = this.configService.get<string>(
       'OLLAMA_URL',
       'http://localhost:11434',
@@ -85,9 +89,8 @@ export class OllamaService {
   checkLevel(avgScore: number, hintUsage: number): string {
     let currentLevel = 'Novice';
     for (const { level, min } of this.levels) {
-      if (avgScore > min || (min === 0 && avgScore >= 0)) {
-        if (min !== 0 && avgScore > min) currentLevel = level;
-        if (min === 0) currentLevel = 'Novice';
+      if (avgScore >= min) {
+        currentLevel = level;
       }
     }
 
@@ -108,6 +111,8 @@ export class OllamaService {
     expectedOutput: string,
     studentCode: string,
     hintUsage: number,
+    testId?: string,
+    userId?: string,
   ): Promise<OllamaAssessmentResult> {
     const prompt =
       `<s>[INST] Soal: ${soal}\n` +
@@ -118,7 +123,7 @@ export class OllamaService {
     const { response: raw, duration } = await this.callOllama(prompt);
     const parsed = this.parseAssessmentResponse(raw);
 
-    return {
+    const result: OllamaAssessmentResult = {
       aiScore: parsed.aiScore,
       overallScore: parsed.overallScore,
       flagOverride: false,
@@ -127,11 +132,56 @@ export class OllamaService {
       hintUsage,
       level: this.checkLevel(parsed.overallScore, hintUsage),
     };
+
+    if (testId && userId) {
+      await this.saveToDb({
+        idTest: testId,
+        idUser: userId,
+        level: result.level,
+        averageScore: Math.round(result.overallScore),
+        flagOverride: false,
+        hintUsage,
+        aiScore: result.aiScore,
+        aiSuggestion: result.aiSuggestion,
+        aiFinishTime: result.aiFinishTime,
+        uCode: studentCode,
+      });
+
+      await this.invalidateCache(userId);
+    }
+
+    return result;
   }
 
-  private async saveToDb(data: Score) {}
+  private async saveToDb(data: any): Promise<Score | null> {
+    try {
+      if (!data.idTest || !data.idUser) return null;
+      return await this.scoreRepository.create(data);
+    } catch (err) {
+      this.logger.error('Failed to save score to database', err);
+      return null;
+    }
+  }
+
+  private async invalidateCache(userId?: string): Promise<void> {
+    try {
+      const patterns = ['studycase:*', 'monitoring:*', 'dashboard:*'];
+      if (userId) {
+        patterns.push(`profile:${userId}*`);
+      }
+      for (const pattern of patterns) {
+        const keys = await this.redisService.getKeysByPattern(pattern);
+        if (keys && keys.length > 0) {
+          await this.redisService.deleteMany(keys);
+        }
+      }
+    } catch (err) {
+      this.logger.warn('Failed to invalidate cache after score save', err);
+    }
+  }
 
   private limitWords(text: string, maxWords = 100): string {
+
     if (!text) return '';
     const trimmed = text.trim();
     const words = trimmed.split(/\s+/);

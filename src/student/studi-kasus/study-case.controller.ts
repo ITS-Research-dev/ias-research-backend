@@ -21,9 +21,10 @@ export class StudyCaseController {
   }
 
   @Get(':tId')
-  async findByTopic(@Param('tId') topicId: string) {
-    return this.studyCaseService.getCaseDetail(topicId);
+  async findByTopic(@Param('tId') topicId: string, @Req() req: any) {
+    return this.studyCaseService.getCaseDetail(topicId, req.user?.id);
   }
+
 
   @Get(':testId/:hintLevel')
   async getHint(@Param('testId') testId: string, @Param('hintLevel') hintLevel: number) {

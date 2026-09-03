@@ -2,6 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { OllamaService } from './ollama.service';
 
+import { ScoreRepository } from '../../general/score/score.repository';
+import { RedisService } from '../../redis/redis.service';
+
 describe('OllamaService', () => {
   let service: OllamaService;
 
@@ -15,6 +18,22 @@ describe('OllamaService', () => {
             get: jest.fn((key: string, defaultVal: string) => defaultVal),
           },
         },
+        {
+          provide: ScoreRepository,
+          useValue: {
+            create: jest.fn(),
+            findByUserId: jest.fn(),
+          },
+        },
+        {
+          provide: RedisService,
+          useValue: {
+            get: jest.fn(),
+            set: jest.fn(),
+            getKeysByPattern: jest.fn().mockResolvedValue([]),
+            deleteMany: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -24,6 +43,21 @@ describe('OllamaService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should correctly calculate levels with highest level at bottom (ascending)', () => {
+    expect(service.checkLevel(95, 0)).toBe('Expert');
+    expect(service.checkLevel(90, 0)).toBe('Expert');
+    expect(service.checkLevel(85, 0)).toBe('Competent');
+    expect(service.checkLevel(75, 0)).toBe('Advance');
+    expect(service.checkLevel(65, 0)).toBe('Advance/Beginner');
+    expect(service.checkLevel(55, 0)).toBe('Beginner');
+    expect(service.checkLevel(40, 0)).toBe('Novice');
+    // Hint usage overrides
+    expect(service.checkLevel(95, 1)).toBe('Advance/Beginner');
+    expect(service.checkLevel(95, 2)).toBe('Beginner');
+    expect(service.checkLevel(95, 3)).toBe('Novice');
+  });
+
 
   it('should limit AI feedback to 100 words when raw response exceeds 100 words', () => {
     const longFeedback = Array.from(
