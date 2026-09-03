@@ -20,12 +20,31 @@ export class ScoreService {
   }
 
   create(dto: CreateScoreDto) {
+    if (dto.aiSuggestion) {
+      dto.aiSuggestion = this.limitWords(dto.aiSuggestion, 100);
+    }
     return this.scoreRepository.create(dto);
   }
 
   async update(id: string, dto: UpdateScoreDto) {
     await this.findOne(id); // pastikan data ada dulu sebelum update
+    if (dto.aiSuggestion) {
+      dto.aiSuggestion = this.limitWords(dto.aiSuggestion, 100);
+    }
     return this.scoreRepository.update(id, dto);
+  }
+
+  private limitWords(text: string, maxWords = 100): string {
+    if (!text) return '';
+    const trimmed = text.trim();
+    const words = trimmed.split(/\s+/);
+    if (words.length <= maxWords) {
+      return trimmed;
+    }
+    return words
+      .slice(0, maxWords)
+      .join(' ')
+      .replace(/[,;:\-\s]+$/, '');
   }
 
   async remove(id: string) {

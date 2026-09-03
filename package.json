@@ -11,7 +11,7 @@
     "start": "nest start",
     "start:dev": "docker compose up -d && nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main",
     "start:ai": "ollama run its-codellama-7b:latest",
     "stop:ai": "taskkill /f /im llama-server.exe & taskkill /f /im ollama.exe",
     "start:docker": "docker compose up -d",

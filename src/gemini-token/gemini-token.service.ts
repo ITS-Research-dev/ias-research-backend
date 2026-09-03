@@ -223,32 +223,13 @@ Kembalikan HANYA JSON valid, tanpa markdown code fence, tanpa teks tambahan di l
     const response = result.response;
     const rawText = response.text();
 
-    let cleanedText = rawText.trim();
-    if (cleanedText.startsWith('```')) {
-      cleanedText = cleanedText
-        .replace(/^```(?:json)?\s*/i, '')
-        .replace(/\s*```$/i, '')
-        .trim();
-    }
-
     let parsedResult: any;
     try {
-      parsedResult = JSON.parse(cleanedText);
-    } catch (err) {
-      try {
-        // Fallback: replace raw unescaped control characters (newlines, tabs) inside string literals
-        const sanitized = cleanedText.replace(/[\x00-\x1F]+/g, (match) => {
-          if (match === '\n') return '\\n';
-          if (match === '\r') return '\\r';
-          if (match === '\t') return '\\t';
-          return ' ';
-        });
-        parsedResult = JSON.parse(sanitized);
-      } catch (fallbackErr) {
-        throw new BadRequestException(
-          'Gagal parsing response AI sebagai JSON: ' + (err as Error).message,
-        );
-      }
+      parsedResult = this.repairAIJson(rawText);
+    } catch (err: any) {
+      throw new BadRequestException(
+        err?.message || 'Gagal parsing response AI sebagai JSON',
+      );
     }
 
     const usage = response.usageMetadata;
@@ -289,5 +270,102 @@ Kembalikan HANYA JSON valid, tanpa markdown code fence, tanpa teks tambahan di l
           },
       result: parsedResult,
     };
+  }
+
+  private repairAIJson(raw: string): any {
+    if (!raw || typeof raw !== 'string') {
+      throw new Error('Input response dari AI kosong');
+    }
+
+    let text = raw.trim();
+
+    // Strip markdown code fences if present
+    if (text.startsWith('```')) {
+      text = text
+        .replace(/^```(?:json)?\s*/i, '')
+        .replace(/\s*```$/i, '')
+        .trim();
+    }
+
+    // Find boundaries of root JSON object or array
+    const firstBrace = text.indexOf('{');
+    const firstBracket = text.indexOf('[');
+    let startIdx = -1;
+    let endIdx = -1;
+
+    if (firstBrace !== -1 && (firstBracket === -1 || firstBrace < firstBracket)) {
+      startIdx = firstBrace;
+      endIdx = text.lastIndexOf('}');
+    } else if (firstBracket !== -1) {
+      startIdx = firstBracket;
+      endIdx = text.lastIndexOf(']');
+    }
+
+    if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+      text = text.substring(startIdx, endIdx + 1);
+    }
+
+    // 1. Try direct parse first
+    try {
+      return JSON.parse(text);
+    } catch (_) {
+      // Continue to sanitization
+    }
+
+    // 2. State-machine to escape raw control chars and unescaped newlines/tabs inside string literals
+    let repaired = '';
+    let inString = false;
+    let isEscaped = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const code = char.charCodeAt(0);
+
+      if (inString) {
+        if (isEscaped) {
+          isEscaped = false;
+          repaired += char;
+        } else if (char === '\\') {
+          isEscaped = true;
+          repaired += char;
+        } else if (char === '"') {
+          inString = false;
+          repaired += char;
+        } else if (char === '\n') {
+          repaired += '\\n';
+        } else if (char === '\r') {
+          repaired += '\\r';
+        } else if (char === '\t') {
+          repaired += '\\t';
+        } else if (code < 32) {
+          const hex = code.toString(16).padStart(4, '0');
+          repaired += `\\u${hex}`;
+        } else {
+          repaired += char;
+        }
+      } else {
+        if (char === '"') {
+          inString = true;
+          repaired += char;
+        } else {
+          repaired += char;
+        }
+      }
+    }
+
+    // 3. Try parsing after state-machine repair
+    try {
+      return JSON.parse(repaired);
+    } catch (_) {
+      // Continue to trailing comma removal
+    }
+
+    // 4. Remove trailing commas before } or ]
+    const noTrailingCommas = repaired.replace(/,\s*([\]}])/g, '$1');
+    try {
+      return JSON.parse(noTrailingCommas);
+    } catch (err: any) {
+      throw new Error(`Gagal parsing response AI sebagai JSON: ${err?.message || err}`);
+    }
   }
 }

@@ -152,9 +152,10 @@ export class StudyCaseService {
    */
   async runCode(
     code: string,
+    stdin?: string,
   ): Promise<{ stdout: string; stderr: string; exitCode: number }> {
-    // Generate cache key dari code hash
-    const codeHash = this.hashCode(code);
+    // Generate cache key dari code hash dan stdin
+    const codeHash = this.hashCode(code + (stdin ? `_in:${stdin}` : ''));
     const cacheKey = `${this.CACHE_PREFIX}:run:${codeHash}`;
 
     // Check cache
@@ -168,7 +169,7 @@ export class StudyCaseService {
     }
 
     // Execute code
-    const result = await this.executeCode(code);
+    const result = await this.executeCode(code, stdin);
 
     // Store ke cache (hanya store successful execution)
     if (result.exitCode === 0) {
@@ -181,7 +182,10 @@ export class StudyCaseService {
   /**
    * Execute code sandbox
    */
-  private async executeCode(code: string): Promise<{
+  private async executeCode(
+    code: string,
+    stdin?: string,
+  ): Promise<{
     stdout: string;
     stderr: string;
     exitCode: number;
@@ -209,6 +213,13 @@ export class StudyCaseService {
             PYTHONIOENCODING: 'utf-8',
           },
         });
+
+        if (stdin) {
+          proc.stdin.write(stdin);
+          proc.stdin.end();
+        } else {
+          proc.stdin.end();
+        }
 
         proc.stdout.on('data', (chunk: Buffer) => {
           stdout += chunk.toString();
