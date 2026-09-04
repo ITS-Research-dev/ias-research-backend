@@ -21,7 +21,10 @@ export class ScoreRepository {
   }
 
   findByUserId(uId: string): Promise<Score[]> {
-    return this.repo.find({ where: { idUser: uId } });
+    return this.repo.find({
+      where: { idUser: uId },
+      order: { createdAt: 'DESC' },
+    });
   }
 
   findDetail(id: string): Promise<Score | null> {
@@ -37,6 +40,7 @@ export class ScoreRepository {
       relations: {
         test: { topic: true },
       },
+      order: { createdAt: 'DESC' },
       select: {
         id: true,
         averageScore: true,
