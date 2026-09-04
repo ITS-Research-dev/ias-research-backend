@@ -247,7 +247,7 @@ export class OllamaService {
     systemContext?: string,
   ): Promise<{ response: string; duration: number }> {
     const startTime = Date.now();
-    const url = `http://localhost:11434/api/generate`;
+    const url = `${this.ollamaUrl}/api/generate`;
     const body: OllamaGenerateRequest = {
       model: this.ollamaModel,
       prompt,
