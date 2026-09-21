@@ -1,0 +1,98 @@
+{
+  "soal_1": {
+    "pertanyaan": "Ask the user to enter three numbers. Print the average of the three numbers.",
+    "hints": {
+      "1": "MULAI\n    BACA a (bilangan pecahan)\n    BACA b (bilangan pecahan)\n    BACA c (bilangan pecahan)\n    rata ← (a + b + c) / 3\n    TAMPILKAN rata\nSELESAI",
+      "2": "```python\na = float(input(\"Masukkan angka pertama: \"))\nb = float(input(\"Masukkan angka kedua: \"))\nc = float(input(\"Masukkan angka ketiga: \"))\nrata = (a + b + ____) / ____\nprint(\"Result =\", rata)\n```",
+      "3": "```python\na = float(input(\"Masukkan angka pertama: \"))\nb = float(input(\"Masukkan angka kedua: \"))\nc = float(input(\"Masukkan angka ketiga: \"))\nrata = (a + b + c) / 3\nprint(\"Result =\", rata)\n```"
+    }
+  },
+  "soal_2": {
+    "pertanyaan": "Ask the user to enter two integers. Print the result of multiplying them.",
+    "hints": {
+      "1": "MULAI\n    DEFINISI FUNGSI kali(a, b)\n        KEMBALIKAN a × b\n    AKHIR FUNGSI\n\n    BACA a (bilangan bulat)\n    BACA b (bilangan bulat)\n    hasil ← PANGGIL kali(a, b)\n    TAMPILKAN hasil\nSELESAI",
+      "2": "```python\ndef kali(a, b):\n    return a ____ b\n\n\na = int(input(\"Masukkan angka pertama: \"))\nb = int(input(\"Masukkan angka kedua: \"))\nhasil = ____(a, b)\nprint(\"Result =\", hasil)\n```",
+      "3": "```python\ndef kali(a, b):\n    return a * b\n\n\na = int(input(\"Masukkan angka pertama: \"))\nb = int(input(\"Masukkan angka kedua: \"))\nhasil = kali(a, b)\nprint(\"Result =\", hasil)\n```"
+    }
+  },
+  "soal_3": {
+    "pertanyaan": "Ask the user to enter the length and width of a rectangle. Print the area (length x width).",
+    "hints": {
+      "1": "MULAI\n    BACA panjang (bilangan bulat)\n    BACA lebar (bilangan bulat)\n    luas ← panjang × lebar\n    TAMPILKAN luas\nSELESAI",
+      "2": "```python\npanjang = int(input(\"Masukkan panjang: \"))\nlebar = int(input(\"Masukkan lebar: \"))\nluas = panjang ____ lebar\nprint(\"Result =\", ____)\n```",
+      "3": "```python\npanjang = int(input(\"Masukkan panjang: \"))\nlebar = int(input(\"Masukkan lebar: \"))\nluas = panjang * lebar\nprint(\"Result =\", luas)\n```"
+    }
+  },
+  "soal_4": {
+    "pertanyaan": "Ask the user to enter two integers. Print their sum.",
+    "hints": {
+      "1": "MULAI\n    DEFINISI FUNGSI tambah(x, y)\n        KEMBALIKAN x + y\n    AKHIR FUNGSI\n\n    BACA a (bilangan bulat)\n    BACA b (bilangan bulat)\n    TAMPILKAN PANGGIL tambah(a, b)\nSELESAI",
+      "2": "```python\ndef tambah(x, y):\n    return x ____ y\n\na = int(input(\"Angka 1: \"))\nb = int(input(\"Angka 2: \"))\nprint(\"Result =\", ____(a, b))\n```",
+      "3": "```python\ndef tambah(x, y):\n    return x + y\n\na = int(input(\"Angka 1: \"))\nb = int(input(\"Angka 2: \"))\nprint(\"Result =\", tambah(a, b))\n```"
+    }
+  },
+  "soal_5": {
+    "pertanyaan": "Ask the user to enter a number. Print 'Positive' if the number is greater than 0, 'Negative' if less than 0, or 'Zero' if it equals 0.",
+    "hints": {
+      "1": "MULAI\n    DEFINISI FUNGSI cek_bilangan(n)\n        JIKA n LEBIH BESAR DARI 0 MAKA\n            KEMBALIKAN \"Positive\"\n        LAINNYA JIKA n LEBIH KECIL DARI 0 MAKA\n            KEMBALIKAN \"Negative\"\n        LAINNYA\n            KEMBALIKAN \"Zero\"\n    AKHIR FUNGSI\n\n    BACA angka\n    hasil ← PANGGIL cek_bilangan(angka)\n    TAMPILKAN hasil\nSELESAI",
+      "2": "```python\ndef cek_bilangan(n):\n    if n ____ 0:\n        return ____\n    elif n ____ 0:\n        return ____\n    else:\n        return ____\n\n\nangka = int(input(\"Masukkan angka: \"))\nprint(cek_bilangan(angka))\n```",
+      "3": "```python\ndef cek_bilangan(n):\n    if n > 0:\n        return \"Positive\"\n    elif n < 0:\n        return \"Negative\"\n    else:\n        return \"Zero\"\n\n\nangka = int(input(\"Masukkan angka: \"))\nprint(cek_bilangan(angka))\n```"
+    }
+  },
+  "soal_6": {
+    "pertanyaan": "Ask the user to enter an integer. Print 'Even' if the number is even, or 'Odd' if it is odd.",
+    "hints": {
+      "1": "MULAI\n    DEFINISI FUNGSI cek_genap_ganjil(angka)\n        JIKA angka MODULO 2 SAMA DENGAN 0 MAKA\n            KEMBALIKAN \"Even\"\n        LAINNYA\n            KEMBALIKAN \"Odd\"\n    AKHIR FUNGSI\n\n    BACA angka\n    hasil ← PANGGIL cek_genap_ganjil(angka)\n    TAMPILKAN hasil\nSELESAI",
+      "2": "```python\ndef cek_genap_ganjil(angka):\n    if angka % ____ == ____:\n        return ____\n    else:\n        return ____\n\n\nangka = int(input(\"Masukkan angka: \"))\nprint(cek_genap_ganjil(angka))\n```",
+      "3": "```python\ndef cek_genap_ganjil(angka):\n    if angka % 2 == 0:\n        return \"Even\"\n    else:\n        return \"Odd\"\n\n\nangka = int(input(\"Masukkan angka: \"))\nprint(cek_genap_ganjil(angka))\n```"
+    }
+  },
+  "soal_7": {
+    "pertanyaan": "Ask the user to enter their age. Print 'Child' (0-12), 'Teenager' (13-17), or 'Adult' (18 and above).",
+    "hints": {
+      "1": "MULAI\n    DEFINISI FUNGSI kategori_usia(usia)\n        JIKA usia KURANG DARI SAMA DENGAN 12 MAKA\n            KEMBALIKAN \"Child\"\n        LAINNYA JIKA usia KURANG DARI SAMA DENGAN 17 MAKA\n            KEMBALIKAN \"Teenager\"\n        LAINNYA\n            KEMBALIKAN \"Adult\"\n    AKHIR FUNGSI\n\n    BACA usia\n    hasil ← PANGGIL kategori_usia(usia)\n    TAMPILKAN hasil\nSELESAI",
+      "2": "```python\ndef kategori_usia(usia):\n    if usia <= ____:\n        return ____\n    elif usia <= ____:\n        return ____\n    else:\n        return ____\n\n\nusia = int(input(\"Masukkan usia: \"))\nprint(kategori_usia(usia))\n```",
+      "3": "```python\ndef kategori_usia(usia):\n    if usia <= 12:\n        return \"Child\"\n    elif usia <= 17:\n        return \"Teenager\"\n    else:\n        return \"Adult\"\n\n\nusia = int(input(\"Masukkan usia: \"))\nprint(kategori_usia(usia))\n```"
+    }
+  },
+  "soal_8": {
+    "pertanyaan": "Ask the user to enter a score (0-100). Print the grade: A (90-100), B (80-89), C (70-79), D (60-69), F (below 60).",
+    "hints": {
+      "1": "MULAI\n    DEFINISI FUNGSI grade(skor)\n        JIKA skor LEBIH BESAR SAMA DENGAN 90 MAKA\n            KEMBALIKAN \"A\"\n        LAINNYA JIKA skor LEBIH BESAR SAMA DENGAN 80 MAKA\n            KEMBALIKAN \"B\"\n        LAINNYA JIKA skor LEBIH BESAR SAMA DENGAN 70 MAKA\n            KEMBALIKAN \"C\"\n        LAINNYA JIKA skor LEBIH BESAR SAMA DENGAN 60 MAKA\n            KEMBALIKAN \"D\"\n        LAINNYA\n            KEMBALIKAN \"F\"\n    AKHIR FUNGSI\n\n    BACA skor\n    hasil ← PANGGIL grade(skor)\n    TAMPILKAN hasil\nSELESAI",
+      "2": "```python\ndef grade(skor):\n    if skor >= ____:\n        return ____\n    elif skor >= ____:\n        return ____\n    elif skor >= ____:\n        return ____\n    elif skor >= ____:\n        return ____\n    else:\n        return ____\n\nskor = int(input(\"Masukkan skor: \"))\nprint(grade(skor))\n```",
+      "3": "```python\ndef grade(skor):\n    if skor >= 90:\n        return \"A\"\n    elif skor >= 80:\n        return \"B\"\n    elif skor >= 70:\n        return \"C\"\n    elif skor >= 60:\n        return \"D\"\n    else:\n        return \"F\"\n\nskor = int(input(\"Masukkan skor: \"))\nprint(grade(skor))\n```"
+    }
+  },
+  "soal_9": {
+    "pertanyaan": "Ask the user to enter a number. Print its multiplication table from 1 to 10, one line per result.",
+    "hints": {
+      "1": "MULAI\n    angka ← BACA masukan dari pengguna, ubah menjadi bilangan bulat\n    ULANGI untuk i dari 1 sampai 10\n        TAMPILKAN angka, \"x\", i, \"=\", angka × i\n    AKHIR ULANGI\nSELESAI",
+      "2": "```python\n# Tabel perkalian\nangka = ____(input(\"Masukkan angka: \"))\nfor i in ____(1, ____):\n    print(angka, \"x\", ____, \"=\", angka * ____)\n```",
+      "3": "```python\n# Tabel perkalian\nangka = int(input(\"Masukkan angka: \"))\nfor i in range(1, 11):\n    print(angka, \"x\", i, \"=\", angka * i)\n```"
+    }
+  },
+  "soal_10": {
+    "pertanyaan": "Ask the user to enter a positive integer N. Use a for loop to calculate and print the sum of all numbers from 1 to N.",
+    "hints": {
+      "1": "MULAI\n    n ← BACA masukan dari pengguna, ubah menjadi bilangan bulat\n    total ← 0\n    ULANGI untuk i dari 1 sampai n\n        total ← total + i\n    AKHIR ULANGI\n    TAMPILKAN \"Output =\", total\nSELESAI",
+      "2": "```python\n# jumlah 1 sampai N\nn = int(____(\"Enter N: \"))\ntotal = ____\nfor i in range(1, ____ + 1):\n    total ____ i\nprint(\"Output =\", ____)\n```",
+      "3": "```python\n# jumlah 1 sampai N\nn = int(input(\"Enter N: \"))\ntotal = 0\nfor i in range(1, n + 1):\n    total += i\nprint(\"Output =\", total)\n```"
+    }
+  },
+  "soal_11": {
+    "pertanyaan": "Ask the user to enter a positive integer N. Print all even numbers from 1 to N, each on a new line.",
+    "hints": {
+      "1": "MULAI\n    n ← BACA masukan dari pengguna, ubah menjadi bilangan bulat\n    ULANGI untuk i dimulai dari 2 sampai n, bertambah 2 setiap putaran\n        TAMPILKAN i\n    AKHIR ULANGI\nSELESAI",
+      "2": "```python\n# cetak bilangan genap dengan step 2\nn = int(input(\"Masukkan N: \"))\nfor i in range(____, n + 1, ____):\n    print(____)\n```",
+      "3": "```python\n# cetak bilangan genap dengan step 2\nn = int(input(\"Masukkan N: \"))\nfor i in range(2, n + 1, 2):\n    print(i)\n```"
+    }
+  },
+  "soal_12": {
+    "pertanyaan": "Ask the user to enter a positive integer N. Print all numbers from 1 to N, each on a new line.",
+    "hints": {
+      "1": "MULAI\n    DEFINISI FUNGSI cetak_angka(n)\n        ULANGI untuk i dari 1 sampai n\n            TAMPILKAN i\n        AKHIR ULANGI\n    AKHIR FUNGSI\n\n    n ← BACA masukan dari pengguna, ubah menjadi bilangan bulat\n    PANGGIL cetak_angka(n)\nSELESAI",
+      "2": "```python\ndef cetak_angka(n):\n    for i in range(1, ____ + 1):\n        print(____)\n\nn = int(input(\"Masukkan N: \"))\n____(n)\n```",
+      "3": "```python\ndef cetak_angka(n):\n    for i in range(1, n + 1):\n        print(i)\n\nn = int(input(\"Masukkan N: \"))\ncetak_angka(n)\n```"
+    }
+  }
+}

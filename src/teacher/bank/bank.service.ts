@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import { Topic } from '../../general/topic/entities/topic.entity';
@@ -24,36 +28,48 @@ export class BankService {
     @InjectRepository(Test) private testRepo: Repository<Test>,
     @InjectRepository(Hint) private hintRepo: Repository<Hint>,
     @InjectRepository(Class) private classRepo: Repository<Class>,
-    @InjectRepository(ClassAssign) private classAssignRepo: Repository<ClassAssign>,
+    @InjectRepository(ClassAssign)
+    private classAssignRepo: Repository<ClassAssign>,
     private readonly redisService: RedisService,
-  ) { }
+  ) {}
 
   private async resolveClassId(idClass?: string): Promise<string> {
     if (!idClass || typeof idClass !== 'string' || idClass.trim() === '') {
       const fallback = await this.classRepo.findOne({ where: {} });
-      if (!fallback) throw new BadRequestException('Tidak ada data kelas terdaftar di sistem.');
+      if (!fallback)
+        throw new BadRequestException(
+          'Tidak ada data kelas terdaftar di sistem.',
+        );
       return fallback.id;
     }
 
     const trimmed = idClass.trim();
 
     // 1. Direct check in TABLE_CLASS by ID
-    const directClass = await this.classRepo.findOne({ where: { id: trimmed } });
+    const directClass = await this.classRepo.findOne({
+      where: { id: trimmed },
+    });
     if (directClass) return directClass.id;
 
     // 2. Check in TABLE_CLASS_ASSIGN by ID (in case assignment ID was passed)
-    const assign = await this.classAssignRepo.findOne({ where: { id: trimmed } });
+    const assign = await this.classAssignRepo.findOne({
+      where: { id: trimmed },
+    });
     if (assign && assign.idClass) return assign.idClass;
 
     // 3. Check in TABLE_CLASS by Title (in case class title was passed)
-    const classByTitle = await this.classRepo.findOne({ where: { title: trimmed } });
+    const classByTitle = await this.classRepo.findOne({
+      where: { title: trimmed },
+    });
     if (classByTitle) return classByTitle.id;
 
     // 4. Fallback to first class in DB
     const firstClass = await this.classRepo.findOne({ where: {} });
     if (firstClass) return firstClass.id;
 
-    throw new BadRequestException(`Kelas dengan id '${idClass}' tidak valid atau tidak ditemukan.`);
+    throw new BadRequestException(
+      `Kelas dengan id '${idClass}' tidak valid atau tidak ditemukan.`,
+    );
   }
 
   async listMaterials(q: QueryMaterialDto) {
@@ -73,7 +89,7 @@ export class BankService {
 
     const topics = await this.topicRepo.find({
       where,
-      order: { startDate: 'DESC' },
+      order: { createdAt: 'DESC' },
     });
 
     const result = topics.map((t) => ({
@@ -100,6 +116,7 @@ export class BankService {
 
     const topic = await this.topicRepo.findOne({
       where: { id },
+      order: { createdAt: 'DESC' },
     });
 
     if (!topic) {
@@ -205,7 +222,7 @@ export class BankService {
     const tests = await this.testRepo.find({
       where,
       relations: { topic: true, hints: true },
-      order: { title: "asc" },
+      order: { title: 'asc' },
     });
 
     const result = tests.map((t) => ({
@@ -269,11 +286,19 @@ export class BankService {
    * Create question dan invalidate cache
    */
   async createQuestion(dto: CreateQuestionDto) {
-    if (!dto.materialId || typeof dto.materialId !== 'string' || dto.materialId.trim() === '') {
-      throw new BadRequestException('materialId wajib diisi dan harus berupa UUID valid.');
+    if (
+      !dto.materialId ||
+      typeof dto.materialId !== 'string' ||
+      dto.materialId.trim() === ''
+    ) {
+      throw new BadRequestException(
+        'materialId wajib diisi dan harus berupa UUID valid.',
+      );
     }
 
-    const topic = await this.topicRepo.findOne({ where: { id: dto.materialId } });
+    const topic = await this.topicRepo.findOne({
+      where: { id: dto.materialId },
+    });
     if (!topic) {
       throw new NotFoundException(
         `Topik dengan id '${dto.materialId}' tidak ditemukan.`,

@@ -1,0 +1,1802 @@
+[
+  {
+    "feedback": "Program membaca tiga bilangan dengan konversi float() yang tepat karena hasil rata-rata bisa berupa desimal, lalu menghitung rata-rata dengan rumus yang benar. Kode rapi dan hasilnya sesuai dengan expected output. Dokumentasi masih standar tanpa komentar.",
+    "id_soal": 1,
+    "kode_siswa": "a = float(input(\"Masukkan angka pertama: \"))\nb = float(input(\"Masukkan angka kedua: \"))\nc = float(input(\"Masukkan angka ketiga: \"))\nrata = (a + b + c) / 3\nprint(\"Result =\", rata)",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 91
+  },
+  {
+    "feedback": "Siswa membungkus perhitungan rata-rata ke dalam fungsi dengan tiga parameter, menunjukkan pemahaman konsep fungsi yang baik. Perhitungan dan pemanggilan fungsi sudah benar sehingga hasil sesuai expected output. Dokumentasi masih sebatas kode tanpa komentar.",
+    "id_soal": 1,
+    "kode_siswa": "def rata_rata(a, b, c):\n    return (a + b + c) / 3\n\n\na = float(input(\"Masukkan angka pertama: \"))\nb = float(input(\"Masukkan angka kedua: \"))\nc = float(input(\"Masukkan angka ketiga: \"))\nprint(\"Result =\", rata_rata(a, b, c))",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 92
+  },
+  {
+    "feedback": "Kode berjalan dan menghasilkan rata-rata yang benar dengan memisahkan langkah penjumlahan total dan pembagian ke variabel berbeda. Penggunaan int() untuk input tetap menghasilkan rata-rata desimal yang benar karena pembagian dengan '/' otomatis menghasilkan float. Tidak ada komentar pada kode.",
+    "id_soal": 1,
+    "kode_siswa": "a = int(input(\"Angka 1: \"))\nb = int(input(\"Angka 2: \"))\nc = int(input(\"Angka 3: \"))\ntotal = a + b + c\nrata_rata = total / 3\nprint(\"Result =\", rata_rata)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Siswa menggunakan list dan perulangan untuk menampung tiga input sekaligus fungsi bawaan sum() dan len() untuk menghitung rata-rata, pendekatan yang cukup baik dan fleksibel meskipun sedikit lebih kompleks dari yang dibutuhkan untuk kasus tiga angka tetap. Logika dan konsep penggunaan list sudah tepat.",
+    "id_soal": 1,
+    "kode_siswa": "angka = []\nfor i in range(3):\n    angka.append(float(input(\"Masukkan angka: \")))\nhasil = sum(angka) / len(angka)\nprint(\"Result =\", hasil)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 90
+    },
+    "nilai_avg": 87
+  },
+  {
+    "feedback": "Program menghitung rata-rata dengan benar melalui dua langkah terpisah yaitu penjumlahan dan pembagian. Pendekatan ini valid meski sedikit kurang ringkas dibanding menuliskan rumus dalam satu baris. Tidak ada komentar penjelas pada kode.",
+    "id_soal": 1,
+    "kode_siswa": "a = float(input(\"Masukkan angka pertama: \"))\nb = float(input(\"Masukkan angka kedua: \"))\nc = float(input(\"Masukkan angka ketiga: \"))\njumlah = a + b + c\nrata = jumlah / 3\nprint(\"Result =\", rata)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 84
+  },
+  {
+    "feedback": "Konsep fungsi untuk menghitung rata-rata sudah tepat, tetapi baris return tidak diberi indentasi sehingga menyebabkan IndentationError. Karena kesalahan murni pada penulisan blok fungsi dan rumus yang digunakan benar, nilai konsep tetap tinggi meski syntax turun jauh.",
+    "id_soal": 1,
+    "kode_siswa": "def rata_rata(a, b, c):\nreturn (a + b + c) / 3\n\n\na = float(input(\"Masukkan angka pertama: \"))\nb = float(input(\"Masukkan angka kedua: \"))\nc = float(input(\"Masukkan angka ketiga: \"))\nprint(\"Result =\", rata_rata(a, b, c))",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Pendekatan fungsi untuk menghitung rata-rata tiga angka sudah tepat secara konsep, namun siswa lupa menuliskan tanda titik dua setelah definisi fungsi sehingga menyebabkan SyntaxError. Ini termasuk kesalahan sintaks sederhana yang umum pada siswa SMK.",
+    "id_soal": 1,
+    "kode_siswa": "def rata_rata(a, b, c)\n    return (a + b + c) / 3\n\n\na = float(input(\"Masukkan angka pertama: \"))\nb = float(input(\"Masukkan angka kedua: \"))\nc = float(input(\"Masukkan angka ketiga: \"))\nprint(\"Result =\", rata_rata(a, b, c))",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 77
+  },
+  {
+    "feedback": "Kode berjalan tanpa error dan menampilkan hasil sesuai contoh, tetapi tidak membaca input maupun melakukan perhitungan rata-rata sama sekali karena hasil 6.0 langsung ditulis secara hardcode. Program tidak akan bekerja untuk kombinasi angka lain.",
+    "id_soal": 1,
+    "kode_siswa": "print(\"Result = 6.0\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 90
+    },
+    "nilai_avg": 74
+  },
+  {
+    "feedback": "Kode berjalan tanpa error, namun hanya menjumlahkan ketiga angka tanpa membaginya dengan 3, sehingga hasil yang ditampilkan bukan rata-rata melainkan total. Ini menunjukkan konsep rata-rata belum diterapkan dengan benar.",
+    "id_soal": 1,
+    "kode_siswa": "a = float(input(\"Masukkan angka pertama: \"))\nb = float(input(\"Masukkan angka kedua: \"))\nc = float(input(\"Masukkan angka ketiga: \"))\nprint(\"Result =\", a + b + c)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 95
+    },
+    "nilai_avg": 76
+  },
+  {
+    "feedback": "Rumus rata-rata yang digunakan sudah benar, namun terdapat typo pada variabel ketiga ('cc' bukan 'c') di dalam perhitungan sehingga program akan menghasilkan NameError. Kesalahan ini adalah kesalahan penulisan kecil, bukan kesalahan pemahaman rumus rata-rata.",
+    "id_soal": 1,
+    "kode_siswa": "a = float(input(\"Masukkan angka pertama: \"))\nb = float(input(\"Masukkan angka kedua: \"))\nc = float(input(\"Masukkan angka ketiga: \"))\nrata = (a + b + cc) / 3\nprint(\"Result =\", rata)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 70,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 65
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Program membaca dua bilangan bulat dengan konversi int() yang tepat dan mengalikan keduanya menggunakan operator perkalian standar. Hasil dicetak dengan format yang jelas. Kode sudah cukup rapi meski hanya memiliki satu baris komentar implisit dari nama variabel tanpa komentar eksplisit.",
+    "id_soal": 2,
+    "kode_siswa": "a = int(input(\"Masukkan angka pertama: \"))\nb = int(input(\"Masukkan angka kedua: \"))\nresult = a * b\nprint(\"Result =\", result)",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 91
+  },
+  {
+    "feedback": "Siswa menggunakan fungsi untuk melakukan perkalian, menunjukkan pemahaman konsep fungsi yang baik dibanding sekadar operasi langsung. Fungsi dipanggil dan hasilnya dicetak dengan benar. Dokumentasi masih standar tanpa komentar tambahan.",
+    "id_soal": 2,
+    "kode_siswa": "def kali(a, b):\n    return a * b\n\n\na = int(input(\"Masukkan angka pertama: \"))\nb = int(input(\"Masukkan angka kedua: \"))\nhasil = kali(a, b)\nprint(\"Result =\", hasil)",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 92
+  },
+  {
+    "feedback": "Kode langsung menghitung perkalian di dalam pemanggilan print tanpa variabel hasil terpisah, yang membuatnya ringkas namun sedikit kurang terbaca dibanding menyimpan hasil ke variabel result terlebih dahulu. Fungsionalitas tetap benar dan sesuai soal.",
+    "id_soal": 2,
+    "kode_siswa": "a = int(input(\"Enter first number: \"))\nb = int(input(\"Enter second number: \"))\nprint(\"Result =\", a * b)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Program berjalan dengan benar menggunakan nama variabel yang lebih deskriptif (angka1, angka2, hasil_kali). Logika perkalian sudah tepat dan hasil dicetak dengan format yang sesuai. Tidak ada komentar untuk menjelaskan alur program.",
+    "id_soal": 2,
+    "kode_siswa": "angka1 = int(input(\"Masukkan angka pertama: \"))\nangka2 = int(input(\"Masukkan angka kedua: \"))\nhasil_kali = angka1 * angka2\nprint(\"Result =\", hasil_kali)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Program menghasilkan output yang benar dengan menjumlahkan 'a' sebanyak 'b' kali menggunakan loop for, sebuah pendekatan yang valid meski kurang efisien dibanding operator perkalian langsung. Karena tidak memakai konsep perkalian yang seharusnya menjadi fokus materi, nilai konsep dan logika dinilai lebih rendah dari versi yang menggunakan operator '*'.",
+    "id_soal": 2,
+    "kode_siswa": "a = int(input(\"Masukkan angka pertama: \"))\nb = int(input(\"Masukkan angka kedua: \"))\nresult = 0\nfor i in range(b):\n    result += a\nprint(\"Result =\", result)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 90,
+      "konsep": 75,
+      "logika": 80,
+      "syntax": 90
+    },
+    "nilai_avg": 80
+  },
+  {
+    "feedback": "Logika perkalian dua bilangan sudah benar, tetapi terdapat typo pada nama variabel kedua ('bb' bukan 'b') pada baris perhitungan sehingga program akan menghasilkan NameError. Kesalahan ini adalah kesalahan penulisan kecil, bukan kesalahan pemahaman konsep perkalian.",
+    "id_soal": 2,
+    "kode_siswa": "a = int(input(\"Masukkan angka pertama: \"))\nb = int(input(\"Masukkan angka kedua: \"))\nresult = a * bb\nprint(\"Result =\", result)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 70,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 65
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Konsep fungsi untuk perkalian sudah dipahami dengan baik, namun baris return tidak diberi indentasi sehingga menyebabkan IndentationError. Karena kesalahan hanya pada penulisan blok fungsi, nilai konsep tetap tinggi walau syntax turun jauh.",
+    "id_soal": 2,
+    "kode_siswa": "def kali(a, b):\nreturn a * b\n\n\na = int(input(\"Masukkan angka pertama: \"))\nb = int(input(\"Masukkan angka kedua: \"))\nprint(\"Result =\", kali(a, b))",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Pendekatan menggunakan fungsi untuk mengalikan dua angka sudah tepat secara konsep, tetapi siswa lupa menuliskan tanda titik dua setelah definisi fungsi sehingga kode akan menghasilkan SyntaxError. Ini merupakan kesalahan sintaks sederhana yang umum pada siswa SMK.",
+    "id_soal": 2,
+    "kode_siswa": "def kali(a, b)\n    return a * b\n\n\na = int(input(\"Masukkan angka pertama: \"))\nb = int(input(\"Masukkan angka kedua: \"))\nprint(\"Result =\", kali(a, b))",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 77
+  },
+  {
+    "feedback": "Kode berjalan tanpa error dan menampilkan hasil sesuai contoh, tetapi tidak membaca input maupun melakukan perhitungan perkalian sama sekali karena hasil 24 langsung ditulis secara hardcode. Program ini tidak akan bekerja untuk pasangan angka lain.",
+    "id_soal": 2,
+    "kode_siswa": "print(\"Result = 24\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 90
+    },
+    "nilai_avg": 74
+  },
+  {
+    "feedback": "Kode berjalan tanpa error, namun operasi yang digunakan adalah penjumlahan (+) bukan perkalian (*) seperti yang diminta soal, sehingga hasil yang ditampilkan salah secara konsep meskipun secara teknis kode dapat dieksekusi.",
+    "id_soal": 2,
+    "kode_siswa": "a = int(input(\"Masukkan angka pertama: \"))\nb = int(input(\"Masukkan angka kedua: \"))\nresult = a + b\nprint(\"Result =\", result)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 95
+    },
+    "nilai_avg": 76
+  },
+  {
+    "feedback": "Program membaca panjang dan lebar dengan konversi int() yang tepat lalu menghitung luas dengan rumus perkalian yang benar. Penamaan variabel jelas dan hasil dicetak dengan format yang sesuai. Dokumentasi masih standar tanpa komentar tambahan.",
+    "id_soal": 3,
+    "kode_siswa": "panjang = int(input(\"Masukkan panjang: \"))\nlebar = int(input(\"Masukkan lebar: \"))\nluas = panjang * lebar\nprint(\"Result =\", luas)",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 91
+  },
+  {
+    "feedback": "Siswa menggunakan fungsi untuk menghitung luas persegi panjang, menunjukkan pemahaman konsep fungsi yang baik dibanding perhitungan langsung. Fungsi dipanggil dengan argumen yang benar sehingga hasil sesuai expected output. Dokumentasi masih terbatas tanpa komentar.",
+    "id_soal": 3,
+    "kode_siswa": "def luas_persegi_panjang(p, l):\n    return p * l\n\n\npanjang = int(input(\"Masukkan panjang: \"))\nlebar = int(input(\"Masukkan lebar: \"))\nprint(\"Result =\", luas_persegi_panjang(panjang, lebar))",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 92
+  },
+  {
+    "feedback": "Kode ringkas dan langsung menghitung luas di dalam pemanggilan print tanpa variabel hasil terpisah. Penggunaan nama variabel singkat 'p' dan 'l' masih dapat dipahami meski kurang deskriptif dibanding 'panjang' dan 'lebar'. Tidak ada komentar pada kode.",
+    "id_soal": 3,
+    "kode_siswa": "p = int(input(\"Panjang: \"))\nl = int(input(\"Lebar: \"))\nprint(\"Result =\", p * l)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Program menghitung luas dengan benar dan nama variabel cukup deskriptif meski agak panjang dan repetitif pada teks prompt input. Logika perkalian sudah tepat dan output sesuai. Tidak ada komentar pada kode.",
+    "id_soal": 3,
+    "kode_siswa": "panjang = int(input(\"Masukkan panjang persegi panjang: \"))\nlebar = int(input(\"Masukkan lebar persegi panjang: \"))\nhasil_luas = panjang * lebar\nprint(\"Result =\", hasil_luas)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 84
+  },
+  {
+    "feedback": "Program menghasilkan luas yang benar dengan menjumlahkan panjang sebanyak lebar kali menggunakan perulangan, sebuah pendekatan yang valid tetapi kurang efisien dan tidak menerapkan konsep perkalian yang seharusnya menjadi inti materi. Nilai konsep dan logika diturunkan karena solusi tidak optimal untuk kasus sederhana ini.",
+    "id_soal": 3,
+    "kode_siswa": "panjang = int(input(\"Masukkan panjang: \"))\nlebar = int(input(\"Masukkan lebar: \"))\nluas = 0\nfor i in range(lebar):\n    luas += panjang\nprint(\"Result =\", luas)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 90,
+      "konsep": 75,
+      "logika": 80,
+      "syntax": 90
+    },
+    "nilai_avg": 80
+  },
+  {
+    "feedback": "Rumus luas persegi panjang yang digunakan sudah benar, tetapi terdapat typo pada variabel 'lebar' yang ditulis 'lbar' pada baris perhitungan sehingga program akan menghasilkan NameError. Kesalahan ini adalah kesalahan penulisan kecil, bukan kesalahan pemahaman rumus.",
+    "id_soal": 3,
+    "kode_siswa": "panjang = int(input(\"Masukkan panjang: \"))\nlebar = int(input(\"Masukkan lebar: \"))\nluas = panjang * lbar\nprint(\"Result =\", luas)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 70,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 65
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Konsep fungsi untuk menghitung luas sudah tepat, tetapi baris return tidak diberi indentasi sehingga menyebabkan IndentationError saat kode dijalankan. Karena kesalahan hanya pada penulisan blok fungsi, nilai konsep tetap tinggi meski syntax turun jauh.",
+    "id_soal": 3,
+    "kode_siswa": "def luas_persegi_panjang(p, l):\nreturn p * l\n\n\npanjang = int(input(\"Masukkan panjang: \"))\nlebar = int(input(\"Masukkan lebar: \"))\nprint(\"Result =\", luas_persegi_panjang(panjang, lebar))",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Pendekatan fungsi untuk menghitung luas persegi panjang sudah tepat secara konsep, namun siswa lupa menuliskan tanda titik dua setelah definisi fungsi sehingga menyebabkan SyntaxError. Ini termasuk kesalahan sintaks sederhana yang wajar pada siswa SMK.",
+    "id_soal": 3,
+    "kode_siswa": "def luas_persegi_panjang(p, l)\n    return p * l\n\n\npanjang = int(input(\"Masukkan panjang: \"))\nlebar = int(input(\"Masukkan lebar: \"))\nprint(\"Result =\", luas_persegi_panjang(panjang, lebar))",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 77
+  },
+  {
+    "feedback": "Kode berjalan tanpa error dan menampilkan hasil sesuai contoh, tetapi tidak membaca input maupun melakukan perhitungan luas sama sekali karena hasil 20 langsung ditulis secara hardcode. Program tidak akan bekerja untuk ukuran persegi panjang lain.",
+    "id_soal": 3,
+    "kode_siswa": "print(\"Result = 20\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 90
+    },
+    "nilai_avg": 74
+  },
+  {
+    "feedback": "Kode berjalan tanpa error, namun yang dihitung adalah keliling, bukan luas persegi panjang seperti yang diminta soal. Ini menunjukkan konsep yang keliru terhadap rumus geometri yang seharusnya digunakan.",
+    "id_soal": 3,
+    "kode_siswa": "panjang = int(input(\"Masukkan panjang: \"))\nlebar = int(input(\"Masukkan lebar: \"))\nkeliling = 2 * (panjang + lebar)\nprint(\"Result =\", keliling)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 95
+    },
+    "nilai_avg": 76
+  },
+  {
+    "feedback": "Siswa mencoba pendekatan berbeda dengan memasukkan kedua input ke dalam list lalu menjumlahkannya memakai sum(), menunjukkan variasi solusi yang menarik. Cara ini sedikit kurang umum untuk soal sesederhana ini sehingga terkesan berlebihan untuk kasusnya. Output tetap sesuai expected output.",
+    "id_soal": 4,
+    "kode_siswa": "data = [int(input(\"Angka pertama: \")), int(input(\"Angka kedua: \"))]\nprint(\"Result =\", sum(data))",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 100,
+      "konsep": 85,
+      "logika": 100,
+      "syntax": 100
+    },
+    "nilai_avg": 91
+  },
+  {
+    "feedback": "Siswa menerapkan konsep fungsi dengan parameter untuk menjumlahkan dua angka, menunjukkan pemahaman yang baik terhadap materi fungsi. Kode berjalan sesuai expected output. Penamaan parameter x dan y cukup umum, bisa lebih deskriptif.",
+    "id_soal": 4,
+    "kode_siswa": "def tambah(x, y):\n    return x + y\n\na = int(input(\"Angka 1: \"))\nb = int(input(\"Angka 2: \"))\nprint(\"Result =\", tambah(a, b))",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 100,
+      "dokumentasi": 80,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 92
+  },
+  {
+    "feedback": "Kode berjalan dengan benar dan menggunakan variabel total untuk menampung hasil penjumlahan sebelum dicetak. Penamaan variabel sudah cukup deskriptif. Tidak ada komentar sama sekali sehingga dokumentasi tergolong minim.",
+    "id_soal": 4,
+    "kode_siswa": "angka1 = int(input(\"Enter first number: \"))\nangka2 = int(input(\"Enter second number: \"))\ntotal = angka1 + angka2\nprint(\"Result =\", total)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 84
+  },
+  {
+    "feedback": "Kode sudah benar, menggunakan konversi int() pada input sehingga penjumlahan dilakukan secara numerik, bukan penggabungan string. Struktur kode sederhana dan mudah dibaca sesuai gaya siswa SMK. Dokumentasi masih minim karena tidak ada komentar.",
+    "id_soal": 4,
+    "kode_siswa": "a = int(input(\"Enter first number: \"))\nb = int(input(\"Enter second number: \"))\nresult = a + b\nprint(\"Result =\", result)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 85
+    },
+    "nilai_avg": 88
+  },
+  {
+    "feedback": "Siswa langsung menjumlahkan nilai di dalam fungsi print tanpa variabel tambahan, pendekatan yang ringkas dan tetap benar secara logika. Label output sedikit berbeda dari expected output namun nilainya tetap sesuai. Tidak ada komentar untuk menjelaskan kode.",
+    "id_soal": 4,
+    "kode_siswa": "a = int(input(\"Masukkan angka pertama: \"))\nb = int(input(\"Masukkan angka kedua: \"))\nprint(\"Hasil penjumlahan:\", a + b)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 80,
+      "fungsionalitas": 90,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 90
+    },
+    "nilai_avg": 88
+  },
+  {
+    "feedback": "Siswa memahami konsep penjumlahan dua nilai dengan benar, namun lupa mengonversi hasil input() menjadi int sehingga operator + melakukan penggabungan string, bukan penjumlahan angka. Untuk input 3 dan 5, program akan mencetak '35', bukan 8. Kesalahan tipe data seperti ini umum terjadi pada siswa SMK.",
+    "id_soal": 4,
+    "kode_siswa": "a = input(\"Enter first number: \")\nb = input(\"Enter second number: \")\nresult = a + b\nprint(\"Result =\", result)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 85
+    },
+    "nilai_avg": 88
+  },
+  {
+    "feedback": "Konsep penjumlahan dua variabel sudah dipahami siswa dengan baik, namun terdapat typo pada nama variabel ('bb' seharusnya 'b') sehingga program akan menghasilkan NameError. Kesalahan penulisan nama variabel seperti ini wajar terjadi pada siswa SMK yang kurang teliti.",
+    "id_soal": 4,
+    "kode_siswa": "a = int(input(\"Angka pertama: \"))\nb = int(input(\"Angka kedua: \"))\nresult = a + bb\nprint(\"Result =\", result)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 60
+    },
+    "nilai_avg": 76
+  },
+  {
+    "feedback": "Program hanya menampilkan kembali kedua angka yang diinput tanpa pernah menjumlahkannya, sehingga tidak menyelesaikan permintaan soal sama sekali. Kode dapat berjalan tanpa error, tetapi tidak menunjukkan penerapan konsep aritmatika yang diminta.",
+    "id_soal": 4,
+    "kode_siswa": "a = int(input(\"Angka pertama: \"))\nb = int(input(\"Angka kedua: \"))\nprint(\"Angka pertama:\", a)\nprint(\"Angka kedua:\", b)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 90
+    },
+    "nilai_avg": 73
+  },
+  {
+    "feedback": "Siswa hanya menuliskan angka hasil (8) secara langsung tanpa benar-benar melakukan operasi penjumlahan pada variabel a dan b, sehingga konsep aritmatika tidak diterapkan sama sekali. Kode akan selalu mencetak 8 meskipun nilai a dan b diganti, menunjukkan kesalahan pemahaman konsep yang cukup mendasar.",
+    "id_soal": 4,
+    "kode_siswa": "a = 3\nb = 5\nprint(\"Result =\", 8)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 65,
+      "fungsionalitas": 70,
+      "konsep": 65,
+      "logika": 70,
+      "syntax": 95
+    },
+    "nilai_avg": 72
+  },
+  {
+    "feedback": "Logika dan konsep fungsi untuk menjumlahkan dua angka sudah benar, tetapi baris return tidak diberi indentasi sehingga akan menyebabkan IndentationError saat program dijalankan. Kesalahan ini merupakan pola error yang sering terjadi pada siswa yang baru belajar struktur fungsi.",
+    "id_soal": 4,
+    "kode_siswa": "def tambah(a, b):\nreturn a + b\n\na = int(input(\"Angka 1: \"))\nb = int(input(\"Angka 2: \"))\nprint(\"Result =\", tambah(a, b))",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 80,
+      "fungsionalitas": 80,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Program menggunakan struktur if/elif/else yang lengkap dan tepat untuk menangani ketiga kemungkinan kondisi (positif, negatif, nol). Fungsionalitas dan konsep sudah sangat baik karena semua kasus tertangani dengan benar. Dokumentasi masih kurang karena tidak ada komentar.",
+    "id_soal": 5,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angka > 0:\n    print(\"Positive\")\nelif angka < 0:\n    print(\"Negative\")\nelse:\n    print(\"Zero\")",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 80,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 91
+  },
+  {
+    "feedback": "Siswa membungkus logika pengecekan tanda bilangan ke dalam fungsi yang mengembalikan nilai, menunjukkan pemahaman konsep fungsi dan percabangan bertingkat yang baik. Struktur kode rapi dan seluruh kasus tertangani. Dokumentasi masih sebatas kode tanpa komentar.",
+    "id_soal": 5,
+    "kode_siswa": "def cek_bilangan(n):\n    if n > 0:\n        return \"Positive\"\n    elif n < 0:\n        return \"Negative\"\n    else:\n        return \"Zero\"\n\n\nangka = int(input(\"Masukkan angka: \"))\nprint(cek_bilangan(angka))",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 92
+  },
+  {
+    "feedback": "Kode menggunakan struktur yang sama dengan solusi standar, hanya dengan nama variabel lebih singkat ('n'). Logika percabangan sudah lengkap dan benar untuk ketiga kasus. Tidak ada komentar yang menjelaskan program.",
+    "id_soal": 5,
+    "kode_siswa": "n = int(input(\"Enter a number: \"))\nif n > 0:\n    print(\"Positive\")\nelif n < 0:\n    print(\"Negative\")\nelse:\n    print(\"Zero\")",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 86
+  },
+  {
+    "feedback": "Program benar dengan mengubah urutan pengecekan menjadi Zero terlebih dahulu, sebuah variasi yang valid dan tetap menangani semua kasus dengan tepat. Logika if/elif/else sudah sesuai. Tidak ada komentar pada kode.",
+    "id_soal": 5,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angka == 0:\n    print(\"Zero\")\nelif angka > 0:\n    print(\"Positive\")\nelse:\n    print(\"Negative\")",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Program menghasilkan output yang benar dengan menggunakan variabel status yang diperbarui melalui dua blok if terpisah alih-alih elif. Pendekatan ini valid tetapi kurang efisien karena kedua kondisi selalu dicek meski tidak diperlukan, sehingga logika dan konsep dinilai lebih rendah dari struktur if/elif/else standar.",
+    "id_soal": 5,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nstatus = \"Zero\"\nif angka > 0:\n    status = \"Positive\"\nif angka < 0:\n    status = \"Negative\"\nprint(status)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 85,
+      "konsep": 75,
+      "logika": 80,
+      "syntax": 90
+    },
+    "nilai_avg": 79
+  },
+  {
+    "feedback": "Struktur if/elif/else sudah benar secara konsep, namun terdapat typo pada variabel yang diperiksa di kondisi pertama ('angk' bukan 'angka') sehingga akan menghasilkan NameError. Kesalahan ini murni kesalahan penulisan, bukan kesalahan logika percabangan.",
+    "id_soal": 5,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angk > 0:\n    print(\"Positive\")\nelif angka < 0:\n    print(\"Negative\")\nelse:\n    print(\"Zero\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 70,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 65
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Logika percabangan tiga kondisi sudah benar, tetapi baris print pertama tidak diberi indentasi sehingga akan menyebabkan IndentationError. Karena kesalahan hanya pada penulisan blok if, nilai konsep tetap tinggi meski syntax turun jauh.",
+    "id_soal": 5,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angka > 0:\nprint(\"Positive\")\nelif angka < 0:\n    print(\"Negative\")\nelse:\n    print(\"Zero\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Kondisi percabangan untuk positif, negatif, dan nol sudah dirancang dengan tepat, namun siswa lupa menuliskan tanda titik dua setelah kondisi if pertama sehingga kode akan menghasilkan SyntaxError. Ini termasuk kesalahan sintaks sederhana yang wajar pada siswa SMK.",
+    "id_soal": 5,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angka > 0\n    print(\"Positive\")\nelif angka < 0:\n    print(\"Negative\")\nelse:\n    print(\"Zero\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 77
+  },
+  {
+    "feedback": "Kode berjalan dan menampilkan hasil yang benar untuk contoh -5, tetapi tidak membaca input maupun memeriksa tanda angka sama sekali karena hasilnya langsung ditulis secara hardcode. Program ini akan salah untuk angka positif atau nol.",
+    "id_soal": 5,
+    "kode_siswa": "print(\"Negative\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 90
+    },
+    "nilai_avg": 74
+  },
+  {
+    "feedback": "Kode berjalan tanpa error, namun kondisi yang diperiksa adalah kegenapan angka menggunakan modulus, bukan tanda bilangan (positif/negatif/nol) seperti yang diminta soal. Selain itu kategori 'Zero' tidak ditangani sama sekali, menunjukkan konsep yang salah total.",
+    "id_soal": 5,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angka % 2 == 0:\n    print(\"Positive\")\nelse:\n    print(\"Negative\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 95
+    },
+    "nilai_avg": 76
+  },
+  {
+    "feedback": "Program menggunakan operator modulus (%) dengan tepat untuk memeriksa kegenapan angka dan struktur if/else yang jelas. Fungsionalitas dan konsep sudah sangat baik karena solusi ini adalah cara paling standar untuk soal genap/ganjil. Dokumentasi masih kurang karena tidak ada komentar.",
+    "id_soal": 6,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angka % 2 == 0:\n    print(\"Even\")\nelse:\n    print(\"Odd\")",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 80,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 91
+  },
+  {
+    "feedback": "Siswa membungkus logika pengecekan genap/ganjil ke dalam fungsi yang mengembalikan nilai, menunjukkan pemahaman konsep fungsi dan percabangan yang baik sekaligus. Struktur kode rapi dan hasil sesuai. Dokumentasi masih sebatas kode tanpa komentar.",
+    "id_soal": 6,
+    "kode_siswa": "def cek_genap_ganjil(angka):\n    if angka % 2 == 0:\n        return \"Even\"\n    else:\n        return \"Odd\"\n\n\nangka = int(input(\"Masukkan angka: \"))\nprint(cek_genap_ganjil(angka))",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 92
+  },
+  {
+    "feedback": "Kode benar dan menggunakan pendekatan yang sama dengan solusi standar, hanya dengan nama variabel yang lebih singkat ('n'). Logika kondisional sudah tepat dan hasil sesuai expected output. Tidak ada komentar untuk menjelaskan program.",
+    "id_soal": 6,
+    "kode_siswa": "n = int(input(\"Enter a number: \"))\nif n % 2 == 0:\n    print(\"Even\")\nelse:\n    print(\"Odd\")",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 86
+  },
+  {
+    "feedback": "Program benar dengan menyimpan hasil modulus ke variabel 'sisa' terlebih dahulu sebelum diperiksa dengan if. Langkah tambahan ini valid namun sedikit kurang ringkas dibanding memeriksa kondisi langsung di dalam if. Tidak ada komentar pada kode.",
+    "id_soal": 6,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nsisa = angka % 2\nif sisa == 0:\n    print(\"Even\")\nelse:\n    print(\"Odd\")",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 84
+  },
+  {
+    "feedback": "Siswa menggunakan conditional expression (ternary) untuk menentukan hasil dalam satu baris, menunjukkan pemahaman fitur Python yang cukup baik meski agak jarang dipakai siswa SMK pemula. Logika dan hasil program sudah tepat. Dokumentasi tidak ada.",
+    "id_soal": 6,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nhasil = \"Even\" if angka % 2 == 0 else \"Odd\"\nprint(hasil)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 70,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 90,
+      "syntax": 90
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Struktur if/else dan operator modulus yang digunakan sudah tepat secara konsep, namun terdapat typo pada variabel yang diperiksa di kondisi if ('angk' bukan 'angka') sehingga akan menghasilkan NameError. Ini adalah kesalahan penulisan kecil, bukan kesalahan logika.",
+    "id_soal": 6,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angk % 2 == 0:\n    print(\"Even\")\nelse:\n    print(\"Odd\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 70,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 65
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Logika percabangan sudah benar, tetapi baris print di dalam blok if tidak diberi indentasi sehingga akan menyebabkan IndentationError. Karena kesalahan murni pada penulisan blok if, nilai konsep tetap tinggi meski syntax turun jauh.",
+    "id_soal": 6,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angka % 2 == 0:\nprint(\"Even\")\nelse:\n    print(\"Odd\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Kondisi pengecekan genap/ganjil sudah tepat, namun siswa lupa menuliskan tanda titik dua setelah kondisi if sehingga kode akan menghasilkan SyntaxError. Ini termasuk kesalahan sintaks sederhana yang wajar terjadi pada siswa SMK.",
+    "id_soal": 6,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angka % 2 == 0\n    print(\"Even\")\nelse:\n    print(\"Odd\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 77
+  },
+  {
+    "feedback": "Kode berjalan dan menampilkan hasil yang benar untuk contoh angka 7, tetapi tidak membaca input maupun memeriksa kegenapan angka sama sekali karena hasilnya langsung ditulis secara hardcode. Program ini akan salah untuk angka genap.",
+    "id_soal": 6,
+    "kode_siswa": "print(\"Odd\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 90
+    },
+    "nilai_avg": 74
+  },
+  {
+    "feedback": "Kode berjalan tanpa error, namun kondisi yang diperiksa adalah apakah angka positif atau tidak, bukan apakah angka genap atau ganjil menggunakan operator modulus. Ini menunjukkan konsep yang salah total terhadap materi genap/ganjil yang diminta soal.",
+    "id_soal": 6,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nif angka > 0:\n    print(\"Even\")\nelse:\n    print(\"Odd\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 95
+    },
+    "nilai_avg": 76
+  },
+  {
+    "feedback": "Program menggunakan struktur if/elif/else yang tepat dengan batas usia yang sesuai kategori Child, Teenager, dan Adult. Fungsionalitas dan konsep sudah sangat baik karena seluruh rentang usia tertangani dengan benar. Dokumentasi masih kurang karena tidak ada komentar.",
+    "id_soal": 7,
+    "kode_siswa": "usia = int(input(\"Masukkan usia: \"))\nif usia <= 12:\n    print(\"Child\")\nelif usia <= 17:\n    print(\"Teenager\")\nelse:\n    print(\"Adult\")",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 80,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 91
+  },
+  {
+    "feedback": "Siswa membungkus logika kategorisasi usia ke dalam fungsi yang mengembalikan nilai, menunjukkan pemahaman konsep fungsi dan percabangan bertingkat yang baik. Struktur kode rapi dan seluruh kategori tertangani dengan benar. Dokumentasi masih sebatas kode tanpa komentar.",
+    "id_soal": 7,
+    "kode_siswa": "def kategori_usia(usia):\n    if usia <= 12:\n        return \"Child\"\n    elif usia <= 17:\n        return \"Teenager\"\n    else:\n        return \"Adult\"\n\n\nusia = int(input(\"Masukkan usia: \"))\nprint(kategori_usia(usia))",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 92
+  },
+  {
+    "feedback": "Kode benar dengan menuliskan kondisi batas bawah dan atas secara eksplisit menggunakan 'and', sedikit lebih verbose dibanding solusi yang hanya memeriksa batas atas saja tetapi tetap valid dan mudah dipahami. Logika kategori usia sudah tepat. Tidak ada komentar pada kode.",
+    "id_soal": 7,
+    "kode_siswa": "age = int(input(\"Enter your age: \"))\nif age >= 0 and age <= 12:\n    print(\"Child\")\nelif age >= 13 and age <= 17:\n    print(\"Teenager\")\nelse:\n    print(\"Adult\")",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 86
+  },
+  {
+    "feedback": "Program benar dengan menggunakan operator '<' alih-alih '<=' pada batas kategori, sebuah variasi penulisan kondisi yang tetap menghasilkan output yang sama dan valid. Logika percabangan sudah sesuai. Tidak ada komentar penjelas.",
+    "id_soal": 7,
+    "kode_siswa": "usia = int(input(\"Masukkan usia: \"))\nif usia < 13:\n    print(\"Child\")\nelif usia < 18:\n    print(\"Teenager\")\nelse:\n    print(\"Adult\")",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Program menghasilkan output yang benar dengan menetapkan nilai default 'Adult' lalu memperbarui variabel kategori melalui dua blok if terpisah alih-alih elif. Pendekatan ini valid namun kurang efisien karena kedua kondisi selalu diperiksa, sehingga logika dan konsep dinilai lebih rendah dari struktur if/elif/else standar.",
+    "id_soal": 7,
+    "kode_siswa": "usia = int(input(\"Masukkan usia: \"))\nkategori = \"Adult\"\nif usia <= 12:\n    kategori = \"Child\"\nif 13 <= usia <= 17:\n    kategori = \"Teenager\"\nprint(kategori)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 85,
+      "konsep": 75,
+      "logika": 80,
+      "syntax": 90
+    },
+    "nilai_avg": 79
+  },
+  {
+    "feedback": "Struktur kategorisasi usia dengan if/elif/else sudah benar secara konsep, namun terdapat typo pada variabel yang diperiksa di kondisi pertama ('usai' bukan 'usia') sehingga akan menghasilkan NameError. Kesalahan ini murni kesalahan penulisan, bukan kesalahan logika kategori.",
+    "id_soal": 7,
+    "kode_siswa": "usia = int(input(\"Masukkan usia: \"))\nif usai <= 12:\n    print(\"Child\")\nelif usia <= 17:\n    print(\"Teenager\")\nelse:\n    print(\"Adult\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 70,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 65
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Logika kategorisasi usia menjadi tiga kelompok sudah benar, tetapi baris print pertama tidak diberi indentasi sehingga akan menyebabkan IndentationError. Karena kesalahan hanya pada penulisan blok if, nilai konsep tetap tinggi meski syntax turun jauh.",
+    "id_soal": 7,
+    "kode_siswa": "usia = int(input(\"Masukkan usia: \"))\nif usia <= 12:\nprint(\"Child\")\nelif usia <= 17:\n    print(\"Teenager\")\nelse:\n    print(\"Adult\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Kondisi kategorisasi usia menjadi Child, Teenager, dan Adult sudah dirancang dengan tepat, namun siswa lupa menuliskan tanda titik dua setelah kondisi if pertama sehingga kode akan menghasilkan SyntaxError. Ini termasuk kesalahan sintaks sederhana yang wajar pada siswa SMK.",
+    "id_soal": 7,
+    "kode_siswa": "usia = int(input(\"Masukkan usia: \"))\nif usia <= 12\n    print(\"Child\")\nelif usia <= 17:\n    print(\"Teenager\")\nelse:\n    print(\"Adult\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 77
+  },
+  {
+    "feedback": "Kode berjalan dan menampilkan hasil yang benar untuk contoh usia 15, tetapi tidak membaca input maupun memeriksa rentang usia sama sekali karena hasilnya langsung ditulis secara hardcode. Program ini akan salah untuk usia lain.",
+    "id_soal": 7,
+    "kode_siswa": "print(\"Teenager\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 90
+    },
+    "nilai_avg": 74
+  },
+  {
+    "feedback": "Kode berjalan tanpa error, namun hanya membagi usia menjadi dua kategori (Child dan Adult) tanpa menangani kategori Teenager sama sekali, padahal soal secara eksplisit meminta tiga kategori. Ini menunjukkan konsep kategorisasi yang tidak lengkap dan salah terhadap kebutuhan soal.",
+    "id_soal": 7,
+    "kode_siswa": "usia = int(input(\"Masukkan usia: \"))\nif usia < 18:\n    print(\"Child\")\nelse:\n    print(\"Adult\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 95
+    },
+    "nilai_avg": 76
+  },
+  {
+    "feedback": "Kode menggunakan struktur if/elif/else berurutan dari batas tertinggi ke terendah, sesuai dengan pola penilaian grade yang benar. Semua kondisi tertangani dengan baik dan output sesuai expected output. Tidak ada komentar untuk menjelaskan batas-batas nilai.",
+    "id_soal": 8,
+    "kode_siswa": "skor = int(input(\"Masukkan skor: \"))\nif skor >= 90:\n    print(\"A\")\nelif skor >= 80:\n    print(\"B\")\nelif skor >= 70:\n    print(\"C\")\nelif skor >= 60:\n    print(\"D\")\nelse:\n    print(\"F\")",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 80,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 89
+  },
+  {
+    "feedback": "Siswa menggunakan pendekatan if bersarang (nested if) yang tetap menghasilkan output benar, namun kurang efisien dan lebih sulit dibaca dibanding elif berantai. Indentasi yang semakin dalam membuat kode terlihat rumit untuk kasus sesederhana ini. Konsep percabangan tetap dipahami meski implementasinya kurang optimal.",
+    "id_soal": 8,
+    "kode_siswa": "skor = int(input(\"Skor: \"))\nif skor < 60:\n    print(\"F\")\nelse:\n    if skor < 70:\n        print(\"D\")\n    else:\n        if skor < 80:\n            print(\"C\")\n        else:\n            if skor < 90:\n                print(\"B\")\n            else:\n                print(\"A\")",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 65,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 80,
+      "logika": 80,
+      "syntax": 90
+    },
+    "nilai_avg": 80
+  },
+  {
+    "feedback": "Siswa membungkus logika klasifikasi grade ke dalam fungsi, menunjukkan pemahaman konsep fungsi dan percabangan yang baik sekaligus. Struktur if/elif sudah tepat urutannya sehingga hasil sesuai expected output. Fungsi belum memiliki docstring penjelas.",
+    "id_soal": 8,
+    "kode_siswa": "def grade(skor):\n    if skor >= 90:\n        return \"A\"\n    elif skor >= 80:\n        return \"B\"\n    elif skor >= 70:\n        return \"C\"\n    elif skor >= 60:\n        return \"D\"\n    else:\n        return \"F\"\n\nskor = int(input(\"Masukkan skor: \"))\nprint(grade(skor))",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 80,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 95,
+      "syntax": 100
+    },
+    "nilai_avg": 92
+  },
+  {
+    "feedback": "Siswa menyimpan hasil klasifikasi ke variabel grade sebelum mencetaknya, pendekatan yang valid dan mudah dipahami. Urutan pengecekan kondisi sudah tepat dari nilai tertinggi ke terendah. Tidak ada komentar yang menjelaskan rentang nilai tiap grade.",
+    "id_soal": 8,
+    "kode_siswa": "skor = int(input(\"Masukkan skor: \"))\nif skor >= 90:\n    grade = \"A\"\nelif skor >= 80:\n    grade = \"B\"\nelif skor >= 70:\n    grade = \"C\"\nelif skor >= 60:\n    grade = \"D\"\nelse:\n    grade = \"F\"\nprint(grade)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 95,
+      "konsep": 85,
+      "logika": 90,
+      "syntax": 90
+    },
+    "nilai_avg": 86
+  },
+  {
+    "feedback": "Kode sudah benar dan mengikuti struktur if/elif/else yang sesuai untuk klasifikasi grade. Penamaan variabel 'nilai' cukup jelas menggantikan 'skor'. Tidak ada variasi tambahan seperti fungsi atau validasi, sehingga kode terkesan cukup dasar.",
+    "id_soal": 8,
+    "kode_siswa": "nilai = int(input(\"Input nilai: \"))\nif nilai >= 90:\n    print(\"A\")\nelif nilai >= 80:\n    print(\"B\")\nelif nilai >= 70:\n    print(\"C\")\nelif nilai >= 60:\n    print(\"D\")\nelse:\n    print(\"F\")",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 90,
+      "syntax": 85
+    },
+    "nilai_avg": 84
+  },
+  {
+    "feedback": "Logika percabangan untuk menentukan grade sudah tepat dan urutan kondisinya benar, namun seluruh baris print tidak diberi indentasi sehingga akan menghasilkan IndentationError saat dijalankan. Ini adalah kesalahan indentasi klasik yang sering terjadi pada siswa SMK saat menulis blok if/elif.",
+    "id_soal": 8,
+    "kode_siswa": "skor = int(input(\"Masukkan skor: \"))\nif skor >= 90:\nprint(\"A\")\nelif skor >= 80:\nprint(\"B\")\nelif skor >= 70:\nprint(\"C\")\nelif skor >= 60:\nprint(\"D\")\nelse:\nprint(\"F\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Struktur percabangan dan urutan kondisi sudah sesuai konsep grade classifier, tetapi siswa lupa menambahkan tanda titik dua (:) setelah 'elif skor >= 80' sehingga menyebabkan SyntaxError. Kesalahan tanda baca kecil seperti ini umum terjadi ketika siswa menulis banyak baris elif berturut-turut.",
+    "id_soal": 8,
+    "kode_siswa": "skor = int(input(\"Masukkan skor: \"))\nif skor >= 90:\n    print(\"A\")\nelif skor >= 80\n    print(\"B\")\nelif skor >= 70:\n    print(\"C\")\nelif skor >= 60:\n    print(\"D\")\nelse:\n    print(\"F\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Siswa memahami konsep percabangan untuk klasifikasi grade dengan baik, namun variabel yang menampung input diberi nama 'nilai' sedangkan pengecekan kondisi menggunakan nama 'skor' yang tidak pernah didefinisikan, sehingga menyebabkan NameError. Ini adalah kesalahan penamaan variabel yang tidak konsisten.",
+    "id_soal": 8,
+    "kode_siswa": "nilai = int(input(\"Masukkan skor: \"))\nif skor >= 90:\n    print(\"A\")\nelif skor >= 80:\n    print(\"B\")\nelif skor >= 70:\n    print(\"C\")\nelif skor >= 60:\n    print(\"D\")\nelse:\n    print(\"F\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 60
+    },
+    "nilai_avg": 76
+  },
+  {
+    "feedback": "Program hanya membedakan status lulus/tidak lulus, bukan mengklasifikasikan skor ke dalam grade A sampai F seperti yang diminta soal. Konsep percabangan bertingkat untuk lima kategori grade tidak diterapkan sama sekali, sehingga tidak menjawab kebutuhan soal meskipun kode dapat berjalan.",
+    "id_soal": 8,
+    "kode_siswa": "skor = int(input(\"Masukkan skor: \"))\nif skor >= 60:\n    print(\"Lulus\")\nelse:\n    print(\"Tidak Lulus\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 70,
+      "fungsionalitas": 85,
+      "konsep": 55,
+      "logika": 70,
+      "syntax": 90
+    },
+    "nilai_avg": 75
+  },
+  {
+    "feedback": "Program selalu mencetak 'A' apa pun nilai skor yang dimasukkan karena tidak ada percabangan sama sekali untuk mengecek rentang nilai. Konsep dasar conditional branching yang menjadi inti soal ini sepenuhnya tidak diterapkan, meskipun kode tidak menghasilkan error.",
+    "id_soal": 8,
+    "kode_siswa": "skor = input(\"Masukkan skor: \")\nprint(\"A\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 75,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 95
+    },
+    "nilai_avg": 75
+  },
+  {
+    "feedback": "Program sudah benar: angka dibaca dengan int(input()), lalu for loop range(1, 11) mencetak tiap hasil perkalian sesuai format '3 x 1 = 3'. Sintaks rapi dan nama variabel mudah dipahami. Dokumentasi hanya satu komentar judul dan belum ada penanganan jika input bukan angka.",
+    "id_soal": 9,
+    "kode_siswa": "# Tabel perkalian\nangka = int(input(\"Masukkan angka: \"))\nfor i in range(1, 11):\n    print(angka, \"x\", i, \"=\", angka * i)",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 91
+  },
+  {
+    "feedback": "Logika perkalian dibungkus dalam fungsi tabel_perkalian(n) dan output dicetak dengan f-string sehingga persis sesuai format soal. Docstring singkat menjelaskan tujuan fungsi dan penamaan sudah jelas. Yang masih kurang hanya validasi input, misalnya jika pengguna tidak memasukkan angka.",
+    "id_soal": 9,
+    "kode_siswa": "def tabel_perkalian(n):\n    \"\"\"Mencetak tabel perkalian n dari 1 sampai 10.\"\"\"\n    for i in range(1, 11):\n        print(f\"{n} x {i} = {n * i}\")\n\nangka = int(input(\"Enter a number: \"))\ntabel_perkalian(angka)",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 90,
+      "fungsionalitas": 95,
+      "konsep": 95,
+      "logika": 95,
+      "syntax": 95
+    },
+    "nilai_avg": 93
+  },
+  {
+    "feedback": "Hasil perkalian disimpan di variabel hasil lalu dicetak dengan penggabungan string memakai str(), dan output sudah sesuai. Cara ini benar tetapi lebih panjang dibanding f-string atau print dengan koma. Program tidak memiliki komentar sehingga dokumentasinya minim.",
+    "id_soal": 9,
+    "kode_siswa": "n = int(input(\"Masukkan angka: \"))\nfor i in range(1, 11):\n    hasil = n * i\n    print(str(n) + \" x \" + str(i) + \" = \" + str(hasil))",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 95,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Program berjalan dan mencetak 10 baris yang benar. Loop memakai range(10) sehingga i + 1 harus ditulis dua kali; logikanya benar tetapi kurang sederhana dibanding range(1, 11). Tidak ada komentar dan tidak ada validasi input.",
+    "id_soal": 9,
+    "kode_siswa": "num = int(input(\"Enter number: \"))\nfor i in range(10):\n    print(num, \"x\", i + 1, \"=\", num * (i + 1))",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 80,
+      "logika": 80,
+      "syntax": 90
+    },
+    "nilai_avg": 82
+  },
+  {
+    "feedback": "Program memakai for loop dan method format() dengan tiga placeholder, dan output sesuai contoh soal. Variabel hasil membuat baris print lebih mudah dibaca dan ada satu komentar singkat di awal. Dokumentasi bisa ditambah, dan f-string akan membuat kode lebih ringkas.",
+    "id_soal": 9,
+    "kode_siswa": "# program tabel perkalian\nangka = int(input(\"Masukkan angka: \"))\n\nfor i in range(1, 11):\n    hasil = angka * i\n    print(\"{} x {} = {}\".format(angka, i, hasil))",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 80,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 86
+  },
+  {
+    "feedback": "Siswa sudah memahami konsep: input diubah ke int, for loop range(1, 11), dan f-string untuk mencetak. Namun pada f-string variabel ditulis angk padahal namanya angka, sehingga muncul NameError saat loop dijalankan dan tidak ada baris yang tercetak. Perlu lebih teliti mengecek nama variabel.",
+    "id_soal": 9,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nfor i in range(1, 11):\n    print(f\"{angka} x {i} = {angk * i}\")",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 70
+    },
+    "nilai_avg": 80
+  },
+  {
+    "feedback": "Konsep sudah tepat: input diubah ke int, for loop range(1, 11), dan rumus n * i. Namun baris print tidak diberi indentasi di dalam for sehingga muncul IndentationError dan program tidak bisa berjalan. Perbaikan cukup dengan menjorokkan baris print satu tingkat.",
+    "id_soal": 9,
+    "kode_siswa": "n = int(input(\"Enter a number: \"))\nfor i in range(1, 11):\nprint(n, \"x\", i, \"=\", n * i)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Kode tidak menimbulkan error, tetapi n masih bertipe string karena tidak dikonversi dengan int(). Akibatnya n * i mengulang teks: untuk input 3 baris kedua menjadi '3 x 2 = 33', bukan '3 x 2 = 6'. Loop dan format cetak sudah benar, hanya konversi tipe data yang terlewat.",
+    "id_soal": 9,
+    "kode_siswa": "n = input(\"Masukkan angka: \")\nfor i in range(1, 11):\n    print(n, \"x\", i, \"=\", n * i)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 70,
+      "konsep": 85,
+      "logika": 80,
+      "syntax": 85
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Program membaca angka lalu hanya mencetak angka * 10, sehingga untuk input 3 hanya tampil 30. Tidak ada for loop dan tidak ada tabel perkalian 1 sampai 10 per baris seperti yang diminta soal. Konsep perulangan yang menjadi inti soal belum digunakan.",
+    "id_soal": 9,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nhasil = angka * 10\nprint(hasil)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 75
+    },
+    "nilai_avg": 72
+  },
+  {
+    "feedback": "Siswa mencoba memakai for loop, tetapi penulisannya meniru bahasa lain ('for i = 1 to 10') sehingga terjadi SyntaxError. Pada print juga ditulis angka x i, padahal Python memakai operator * untuk perkalian. Sintaks for range() dan operator perkalian perlu dipelajari lagi.",
+    "id_soal": 9,
+    "kode_siswa": "angka = int(input(\"Masukkan angka: \"))\nfor i = 1 to 10:\n    print(angka x i)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 75,
+      "syntax": 70
+    },
+    "nilai_avg": 71
+  },
+  {
+    "feedback": "Program memakai pola akumulator: total dimulai dari 0 lalu ditambah setiap nilai i dari 1 sampai N lewat range(1, n + 1) dan operator +=. Hasil untuk N = 5 adalah 15 sesuai soal. Kode ringkas dan idiomatis; hanya validasi input (misalnya N harus positif) yang belum ada.",
+    "id_soal": 10,
+    "kode_siswa": "# jumlah 1 sampai N\nn = int(input(\"Enter N: \"))\ntotal = 0\nfor i in range(1, n + 1):\n    total += i\nprint(\"Output =\", total)",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 95,
+      "dokumentasi": 85,
+      "fungsionalitas": 100,
+      "konsep": 95,
+      "logika": 95,
+      "syntax": 95
+    },
+    "nilai_avg": 94
+  },
+  {
+    "feedback": "Perhitungan dipisah ke fungsi jumlah_1_sampai_n(n) yang mengembalikan hasil, lalu dipanggil dari program utama. For loop dan akumulator hasil benar, dan pemanggilan fungsi rapi. Nilai dokumentasi belum maksimal karena tidak ada docstring atau komentar.",
+    "id_soal": 10,
+    "kode_siswa": "def jumlah_1_sampai_n(n):\n    hasil = 0\n    for i in range(1, n + 1):\n        hasil += i\n    return hasil\n\nn = int(input(\"Masukkan N: \"))\nprint(\"Output =\", jumlah_1_sampai_n(n))",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 100,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 92
+  },
+  {
+    "feedback": "Variabel jumlah menampung hasil penjumlahan di setiap putaran for loop dan range(1, N + 1) sudah tepat, sehingga output untuk N = 5 adalah 15. Penulisan jumlah = jumlah + angka valid walau bisa dipersingkat dengan +=. Nama variabel N huruf besar kurang sesuai kebiasaan PEP8 dan tidak ada komentar.",
+    "id_soal": 10,
+    "kode_siswa": "N = int(input(\"Masukkan bilangan bulat positif N: \"))\njumlah = 0\nfor angka in range(1, N + 1):\n    jumlah = jumlah + angka\nprint(jumlah)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 80,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 86
+  },
+  {
+    "feedback": "Program berjalan dan menghasilkan jumlah yang benar. Loop memakai range(n + 1) sehingga dimulai dari 0; ini tidak mengubah hasil penjumlahan tetapi kurang sesuai dengan soal yang meminta angka dari 1. Tidak ada komentar dan tidak ada validasi input.",
+    "id_soal": 10,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nhasil = 0\nfor i in range(n + 1):\n    hasil = hasil + i\nprint(\"Output =\", hasil)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 80,
+      "logika": 80,
+      "syntax": 90
+    },
+    "nilai_avg": 82
+  },
+  {
+    "feedback": "Siswa menghitung dengan loop menurun range(angka, 0, -1) yang tetap mencakup semua angka dari N sampai 1, sehingga hasilnya benar. Pendekatan ini kreatif walaupun lebih rumit dibanding range(1, angka + 1) yang lebih umum. Kode rapi tetapi tanpa komentar.",
+    "id_soal": 10,
+    "kode_siswa": "angka = int(input(\"Masukkan angka positif: \"))\ntotal = 0\nfor x in range(angka, 0, -1):\n    total += x\nprint(\"Output =\", total)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 80,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 90
+    },
+    "nilai_avg": 88
+  },
+  {
+    "feedback": "Alur program sudah tepat: hasil diinisialisasi 0, for loop menambahkan i, lalu hasil dicetak. Namun baris for tidak diakhiri titik dua sehingga terjadi SyntaxError sebelum program dijalankan. Setelah titik dua ditambahkan, kode akan mencetak 15 untuk N = 5.",
+    "id_soal": 10,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nhasil = 0\nfor i in range(1, n + 1)\n    hasil += i\nprint(\"Output = \" + str(hasil))",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 95,
+      "logika": 90,
+      "syntax": 55
+    },
+    "nilai_avg": 79
+  },
+  {
+    "feedback": "Siswa memahami pola akumulasi dan memakai for loop dengan range. Namun input() menghasilkan string dan tidak dikonversi dengan int(), sehingga n + 1 pada range menyebabkan TypeError. Perbaikannya cukup n = int(input(...)).",
+    "id_soal": 10,
+    "kode_siswa": "n = input(\"Masukkan N: \")\ntotal = 0\nfor i in range(1, n + 1):\n    total = total + i\nprint(\"Output =\", total)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 70,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 80
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Ada for loop dari 1 sampai N, tetapi total = i mengganti nilai total di setiap putaran dan bukan menambahkannya (seharusnya total = total + i atau +=). Akibatnya untuk N = 5 program mencetak 5, bukan 15. Konsep akumulasi belum dipahami.",
+    "id_soal": 10,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(1, n + 1):\n    total = i\nprint(\"Output =\", total)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 80
+    },
+    "nilai_avg": 72
+  },
+  {
+    "feedback": "Program mencoba menjumlahkan angka tetapi memakai for i in n dengan n berupa string dari input(), bukan range(1, N + 1). Hasilnya TypeError saat total (int) ditambah karakter (str). Siswa belum memahami penggunaan range() dan konversi tipe data untuk membuat perulangan 1 sampai N.",
+    "id_soal": 10,
+    "kode_siswa": "n = input(\"Masukkan N: \")\ntotal = 0\nfor i in n:\n    total = total + i\nprint(total)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 75
+    },
+    "nilai_avg": 71
+  },
+  {
+    "feedback": "Konsep akumulator dan for loop range(1, n + 1) sudah benar. Namun baris total += i tidak menjorok di dalam for sehingga terjadi IndentationError dan program tidak bisa berjalan. Cukup menambahkan indentasi agar perulangan menjumlahkan tiap angka.",
+    "id_soal": 10,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\ntotal = 0\nfor i in range(1, n + 1):\ntotal += i\nprint(\"Output =\", total)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 76
+  },
+  {
+    "feedback": "Program memakai range(2, n + 1, 2) sehingga langsung menghasilkan bilangan genap dari 2 sampai N tanpa pengecekan tambahan, dan tiap angka dicetak pada baris baru. Ini pendekatan yang efisien dan idiomatis. Komentar singkat sudah membantu, hanya validasi input yang belum ada.",
+    "id_soal": 11,
+    "kode_siswa": "# cetak bilangan genap dengan step 2\nn = int(input(\"Masukkan N: \"))\nfor i in range(2, n + 1, 2):\n    print(i)",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 95,
+      "dokumentasi": 85,
+      "fungsionalitas": 100,
+      "konsep": 95,
+      "logika": 95,
+      "syntax": 95
+    },
+    "nilai_avg": 94
+  },
+  {
+    "feedback": "Logika dibungkus dalam fungsi cetak_genap(n) dengan for loop dan kondisi i % 2 == 0, lalu dipanggil dengan input pengguna. Struktur rapi dan komentar di dalam fungsi menjelaskan tujuannya. Masih bisa ditingkatkan dengan validasi bahwa N positif.",
+    "id_soal": 11,
+    "kode_siswa": "def cetak_genap(n):\n    # cetak semua bilangan genap dari 1 sampai n\n    for i in range(1, n + 1):\n        if i % 2 == 0:\n            print(i)\n\nangka = int(input(\"Masukkan bilangan positif N: \"))\ncetak_genap(angka)",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 90,
+      "dokumentasi": 85,
+      "fungsionalitas": 100,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 95
+    },
+    "nilai_avg": 92
+  },
+  {
+    "feedback": "Program benar: for loop memeriksa setiap angka 1 sampai N dan mencetak hanya yang habis dibagi 2 dengan i % 2 == 0. Logikanya sedikit kurang efisien dibanding memakai step 2 pada range. Tidak ada komentar sehingga dokumentasinya minim.",
+    "id_soal": 11,
+    "kode_siswa": "n = int(input(\"Enter N: \"))\nfor i in range(1, n + 1):\n    if i % 2 == 0:\n        print(i)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 95,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Siswa memakai i * 2 dengan range(1, n // 2 + 1) sehingga hanya bilangan genap sampai N yang dicetak (N = 10 menghasilkan 2 sampai 10). Idenya benar dan kreatif, tetapi lebih sulit dipahami dibanding pengecekan modulus atau step 2. Tidak ada komentar yang menjelaskan alasan memakai n // 2.",
+    "id_soal": 11,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(1, n // 2 + 1):\n    print(i * 2)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 85,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 80,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 84
+  },
+  {
+    "feedback": "Program berjalan dengan benar: angka 0 dikecualikan lewat kondisi angka != 0 dan modulus dipakai untuk memilih bilangan genap. Loop dimulai dari 0 sehingga perlu pengecekan tambahan yang sebenarnya bisa dihindari dengan range(1, N + 1). Variabel N huruf besar dan tidak ada komentar.",
+    "id_soal": 11,
+    "kode_siswa": "N = int(input(\"Masukkan angka N: \"))\nfor angka in range(N + 1):\n    if angka % 2 == 0 and angka != 0:\n        print(angka)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 85,
+      "konsep": 80,
+      "logika": 80,
+      "syntax": 90
+    },
+    "nilai_avg": 82
+  },
+  {
+    "feedback": "Struktur program sudah benar: input diubah ke int, for loop range(1, n + 1), dan kondisi i % 2 == 0. Namun pada pencetakan tertulis prin(i) sehingga terjadi NameError saat angka genap pertama (2) ditemukan. Perlu lebih teliti dalam menulis nama fungsi bawaan.",
+    "id_soal": 11,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(1, n + 1):\n    if i % 2 == 0:\n        prin(i)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 70
+    },
+    "nilai_avg": 80
+  },
+  {
+    "feedback": "Siswa sudah tepat memakai for loop dan modulus i % 2 == 0. Namun print(i) sejajar dengan if sehingga terjadi IndentationError karena blok if tidak memiliki isi. Perbaikannya dengan menjorokkan print(i) satu tingkat.",
+    "id_soal": 11,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(1, n + 1):\n    if i % 2 == 0:\n    print(i)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Konsep for loop dan pengecekan bilangan genap sudah benar, tetapi kondisi ditulis i % 2 = 0 dengan satu tanda sama dengan. Operator = adalah penugasan sehingga menimbulkan SyntaxError; untuk perbandingan harus memakai ==. Kesalahan ini membuat program tidak bisa dijalankan sama sekali.",
+    "id_soal": 11,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(1, n + 1):\n    if i % 2 = 0:\n        print(i)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 50
+    },
+    "nilai_avg": 77
+  },
+  {
+    "feedback": "Program berjalan tetapi hanya mengalikan setiap angka dengan 2 tanpa menyeleksi bilangan genap. Untuk N = 10 output-nya 2 sampai 20, bukan 2 sampai 10. Siswa belum memahami penggunaan kondisi/modulus atau step untuk memilih bilangan genap.",
+    "id_soal": 11,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(1, n + 1):\n    print(i * 2)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 70,
+      "syntax": 80
+    },
+    "nilai_avg": 72
+  },
+  {
+    "feedback": "Siswa tidak memakai perulangan sama sekali dan hanya memeriksa satu nilai N. Karena input() tidak dikonversi dengan int(), operasi n % 2 menyebabkan TypeError. Soal meminta semua bilangan genap dari 1 sampai N sehingga diperlukan for loop.",
+    "id_soal": 11,
+    "kode_siswa": "n = input(\"Masukkan N: \")\nif n % 2 == 0:\n    print(n)\nelse:\n    print(\"bukan genap\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 70,
+      "logika": 75,
+      "syntax": 75
+    },
+    "nilai_avg": 72
+  },
+  {
+    "feedback": "Siswa membungkus logika perulangan ke dalam fungsi cetak_angka, menunjukkan pemahaman konsep fungsi dan for loop secara bersamaan. Output tetap sesuai dengan expected output untuk input 5. Fungsi belum memiliki docstring penjelas.",
+    "id_soal": 12,
+    "kode_siswa": "def cetak_angka(n):\n    for i in range(1, n + 1):\n        print(i)\n\nn = int(input(\"Masukkan N: \"))\ncetak_angka(n)",
+    "level_siswa": "Expert",
+    "nilai": {
+      "code_style": 95,
+      "dokumentasi": 80,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 100,
+      "syntax": 100
+    },
+    "nilai_avg": 93
+  },
+  {
+    "feedback": "Siswa terlebih dahulu mengubah range menjadi list sebelum melakukan perulangan, pendekatan yang sedikit kurang efisien karena tidak diperlukan, namun tetap menghasilkan output yang benar. Penggunaan list menunjukkan variasi solusi memakai struktur data. Tidak ada komentar pada kode.",
+    "id_soal": 12,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nangka = list(range(1, n + 1))\nfor a in angka:\n    print(a)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 85
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Kode sederhana dan berjalan dengan benar menggunakan for loop standar. Penamaan variabel N dengan huruf kapital sedikit tidak mengikuti konvensi PEP8 yang biasanya menggunakan huruf kecil. Tidak ada variasi tambahan seperti fungsi atau validasi input.",
+    "id_soal": 12,
+    "kode_siswa": "N = int(input(\"Masukan angka N: \"))\nfor x in range(1, N + 1):\n    print(x)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 95,
+      "konsep": 80,
+      "logika": 90,
+      "syntax": 85
+    },
+    "nilai_avg": 84
+  },
+  {
+    "feedback": "Kode menggunakan for loop dengan range(1, n+1) yang merupakan cara paling idiomatis untuk mencetak angka 1 sampai N. Output sesuai persis dengan expected output. Kode singkat, rapi, namun belum ada komentar penjelas.",
+    "id_soal": 12,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(1, n + 1):\n    print(i)",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 75,
+      "fungsionalitas": 95,
+      "konsep": 90,
+      "logika": 90,
+      "syntax": 85
+    },
+    "nilai_avg": 85
+  },
+  {
+    "feedback": "Siswa menggunakan while loop sebagai alternatif dari for loop, menunjukkan variasi solusi yang tetap valid. Pengelolaan variabel counter (i) sudah benar dengan increment di akhir blok. Pendekatan ini sedikit lebih rawan lupa increment dibanding for loop, meskipun pada kode ini sudah benar.",
+    "id_soal": 12,
+    "kode_siswa": "n = int(input(\"Masukkan angka: \"))\ni = 1\nwhile i <= n:\n    print(i)\n    i += 1",
+    "level_siswa": "Competent",
+    "nilai": {
+      "code_style": 80,
+      "dokumentasi": 75,
+      "fungsionalitas": 90,
+      "konsep": 85,
+      "logika": 85,
+      "syntax": 90
+    },
+    "nilai_avg": 84
+  },
+  {
+    "feedback": "Konsep for loop dengan range yang tepat untuk mencetak angka 1 sampai N sudah dipahami dengan baik, namun baris print(i) tidak diberi indentasi sehingga menyebabkan IndentationError. Kesalahan indentasi pada badan for loop adalah pola error yang sangat umum pada siswa SMK.",
+    "id_soal": 12,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(1, n + 1):\nprint(i)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 80,
+      "fungsionalitas": 85,
+      "konsep": 90,
+      "logika": 85,
+      "syntax": 55
+    },
+    "nilai_avg": 78
+  },
+  {
+    "feedback": "Siswa sudah memahami konsep for loop dengan range, namun batas atas range hanya ditulis 'n' tanpa ditambah 1, sehingga angka terakhir (N) tidak ikut tercetak. Untuk input 5, output yang dihasilkan hanya 1 sampai 4, bukan 1 sampai 5 seperti expected output. Ini termasuk kesalahan off-by-one yang umum terjadi.",
+    "id_soal": 12,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(1, n):\n    print(i)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 75,
+      "dokumentasi": 70,
+      "fungsionalitas": 85,
+      "konsep": 85,
+      "logika": 80,
+      "syntax": 80
+    },
+    "nilai_avg": 79
+  },
+  {
+    "feedback": "Struktur for loop dan range sudah benar sesuai konsep, tetapi siswa menuliskan variabel 'j' pada print padahal variabel loop yang didefinisikan adalah 'i', sehingga menyebabkan NameError. Kesalahan penamaan variabel loop seperti ini wajar terjadi pada siswa yang kurang teliti.",
+    "id_soal": 12,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(1, n + 1):\n    print(j)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 75,
+      "fungsionalitas": 80,
+      "konsep": 85,
+      "logika": 75,
+      "syntax": 55
+    },
+    "nilai_avg": 73
+  },
+  {
+    "feedback": "Program hanya mencetak nilai N satu kali tanpa melakukan perulangan sama sekali, sehingga tidak menghasilkan urutan angka 1 sampai N seperti yang diminta soal. Konsep for loop yang menjadi inti materi soal ini tidak diterapkan sama sekali.",
+    "id_soal": 12,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nprint(n)",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 45,
+      "logika": 70,
+      "syntax": 100
+    },
+    "nilai_avg": 71
+  },
+  {
+    "feedback": "Siswa memang membuat perulangan sebanyak N kali, tetapi hanya mencetak teks statis 'Angka' berulang kali, bukan mencetak urutan angka 1 sampai N seperti yang diminta soal. Ini menunjukkan kesalahpahaman terhadap tujuan penggunaan variabel loop untuk merepresentasikan nilai yang berubah.",
+    "id_soal": 12,
+    "kode_siswa": "n = int(input(\"Masukkan N: \"))\nfor i in range(n):\n    print(\"Angka\")",
+    "level_siswa": "Advance",
+    "nilai": {
+      "code_style": 70,
+      "dokumentasi": 70,
+      "fungsionalitas": 70,
+      "konsep": 55,
+      "logika": 70,
+      "syntax": 90
+    },
+    "nilai_avg": 71
+  }
+]

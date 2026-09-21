@@ -34,6 +34,12 @@ export class Topic {
   @Column()
   isActive: boolean;
 
+  @Column('date')
+  updatedAt: string;
+
+  @Column('date')
+  createdAt: string;
+
   @ManyToOne(() => Class, (cls) => cls.topics)
   @JoinColumn({ name: 'idClass' })
   class: Class;

@@ -48,10 +48,10 @@ model User {
 }
 
 model ClassAssign {
-  id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  idUser  String    @db.Uuid
-  idClass String    @db.Uuid
-  state   RoleState
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  idUser    String    @db.Uuid
+  idClass   String    @db.Uuid
+  state     RoleState
 
   user  User  @relation(fields: [idUser], references: [id])
   class Class @relation(fields: [idClass], references: [id])
@@ -67,6 +67,8 @@ model Topic {
   description String   @default("ini deskripsi")
   startDate   DateTime @default(now())
   isActive    Boolean
+  updatedAt   DateTime @updatedAt @default(now())
+  createdAt   DateTime @default(now())
 
   class      Class      @relation(fields: [idClass], references: [id])
   tests      Test[]
@@ -76,13 +78,15 @@ model Topic {
 }
 
 model Test {
-  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  idTopic   String @db.Uuid
-  title     String @db.VarChar
-  question  String @db.Text
-  expOutput String @db.VarChar
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  idTopic   String   @db.Uuid
+  title     String   @db.VarChar
+  question  String   @db.Text
+  expOutput String   @db.VarChar
   maxTries  Int
-  isActive Boolean @default(true)
+  isActive  Boolean  @default(true)
+  updatedAt DateTime @updatedAt @default(now())
+  createdAt DateTime @default(now())
 
   topic  Topic   @relation(fields: [idTopic], references: [id])
   hints  Hint[]
