@@ -260,6 +260,8 @@ export class VerificationService {
         // Invalidate profile cache
         if (studentId) {
             keysToDelete.push(`profile:${studentId}`);
+            const profileKeys = await this.redisService.getKeysByPattern(`profile:${studentId}:*`);
+            keysToDelete.push(...profileKeys);
         } else {
             const profileKeys = await this.redisService.getKeysByPattern(`profile:*`);
             keysToDelete.push(...profileKeys);
