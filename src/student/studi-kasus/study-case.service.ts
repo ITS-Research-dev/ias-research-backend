@@ -132,12 +132,26 @@ export class StudyCaseService {
       };
     });
 
+    const completedQuestions = questions.filter(
+      (question) => question.hasSubmitted,
+    ).length;
+    const totalQuestions = questions.length;
+    const progress = {
+      completed: completedQuestions,
+      total: totalQuestions,
+      percentage:
+        totalQuestions === 0
+          ? 0
+          : Math.round((completedQuestions / totalQuestions) * 100),
+    };
+
     const result = {
       id: topic.id,
       title: topic.title,
       topic: topic.subject,
       description: topic.description,
       status: 'learning',
+      progress,
       questions,
     };
 

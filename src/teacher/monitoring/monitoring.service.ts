@@ -78,7 +78,7 @@ export class MonitoringService {
     const userIds = siswa.map((s) => s.id);
     let rataNilai = 0;
     if (userIds.length > 0) {
-      const scores = await this.scoreRepo
+        const scores = await this.scoreRepo
         .createQueryBuilder('s')
         .where('s.idUser IN (:...userIds)', { userIds })
         .getMany();
@@ -140,7 +140,7 @@ export class MonitoringService {
     };
     const count = scores.length || 1;
     for (const sc of scores) {
-      const raw = sc.overrideBy ? sc.teacherScore : sc.aiScore;
+      const raw = sc.flagOverride ? sc.teacherScore : sc.aiScore;
       const a = typeof raw === 'string' ? (JSON.parse(raw) as any) : (raw as any);
       
       dims.logika += a?.logika ?? 0;
