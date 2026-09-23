@@ -45,6 +45,7 @@ export class ScoreRepository {
         id: true,
         averageScore: true,
         level: true,
+        flagOverride: true,
         aiScore: true,
         teacherScore: true,
         hintUsage: true,
