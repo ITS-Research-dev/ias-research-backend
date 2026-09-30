@@ -19,6 +19,12 @@ export class AuthController {
     return this.authService.login(dto.username, dto.password);
   }
 
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  refresh(@Body('refresh_token') refreshToken: string) {
+    return this.authService.refresh(refreshToken);
+  }
+
   @Post('verify')
   @HttpCode(HttpStatus.OK)
   verify(@Body('token') token: string) {
