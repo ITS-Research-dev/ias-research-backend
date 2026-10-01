@@ -12,10 +12,13 @@ interface OllamaGenerateRequest {
   model: string;
   prompt: string;
   stream: false;
+  raw?: boolean;
   system?: string;
   options?: {
     num_predict?: number;
     temperature?: number;
+    repeat_penalty?: number;
+    repeat_last_n?: number;
   };
 }
 
@@ -254,8 +257,10 @@ export class OllamaService {
       stream: false,
       ...(systemContext ? { system: systemContext } : {}),
       options: {
-        num_predict: 512, // Limit response token count to speed up response time
-        temperature: 0.2, // Lower temperature for structured & predictable outputs
+        num_predict: 512,
+        temperature: 0.3,
+        repeat_penalty: 1.2,
+        repeat_last_n: 64,  
       },
     };
     this.logger.log(`Calling Ollama [${this.ollamaModel}] at ${url}`);
