@@ -17,14 +17,13 @@ export class StudyCaseController {
 
   @Get()
   async findAllMateri(@Req() req: any) {
-    return this.materiService.getMateriByClass(req.user.classId);
+    return this.studyCaseService.getMateriByUser(req.user);
   }
 
   @Get(':tId')
   async findByTopic(@Param('tId') topicId: string, @Req() req: any) {
-    return this.studyCaseService.getCaseDetail(topicId, req.user?.id);
+    return this.studyCaseService.getCaseDetail(topicId, req.user.userId);
   }
-
 
   @Get(':testId/:hintLevel')
   async getHint(@Param('testId') testId: string, @Param('hintLevel') hintLevel: number) {

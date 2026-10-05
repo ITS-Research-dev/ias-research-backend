@@ -24,7 +24,7 @@ import { join } from 'path';
         database: configService.get<string>('DB_DATABASE', 'ias_db'),
         autoLoadEntities: true,
         synchronize: false,
-        logging: configService.get<string>('NODE_ENV') === 'development',
+        // logging: configService.get<string>('NODE_ENV') === 'development',
       }),
     }),
 

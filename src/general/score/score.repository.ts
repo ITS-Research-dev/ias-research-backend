@@ -20,11 +20,24 @@ export class ScoreRepository {
     return this.repo.findOneBy({ id });
   }
 
+  findAllForVerification(idClass?: string){
+    return this.repo.find({
+      where: idClass ? { test: { topic: { idClass } } } : {},
+      relations: {
+        test: { topic: true },
+      }
+    });
+  }
+
   findByUserId(uId: string): Promise<Score[]> {
     return this.repo.find({
       where: { idUser: uId },
       order: { createdAt: 'DESC' },
     });
+  }
+
+  alreadyExisted(idUser: string, idTest: string): Promise<Score | null> {
+    return this.repo.findOne({ where: { idUser: idUser, idTest: idTest } });
   }
 
   findDetail(id: string): Promise<Score | null> {
@@ -79,6 +92,18 @@ export class ScoreRepository {
   create(data: Partial<CreateScoreDto>): Promise<Score> {
     const entity = this.repo.create(data);
     return this.repo.save(entity);
+  }
+
+  async createOrUpdate(data: Partial<Score>) {
+    const existing = await this.repo.findOne({
+      where: { idTest: data.idTest, idUser: data.idUser },
+    });
+
+    if (existing) {
+      await this.repo.update(existing.id, data);
+    } else {
+      return this.repo.save(data);
+    }
   }
 
   async update(

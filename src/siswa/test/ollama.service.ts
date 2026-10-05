@@ -4,9 +4,14 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Score } from '../../general/score/entities/score.entity';
+import {
+  PreviousScore,
+  Score,
+  Scoring,
+} from '../../general/score/entities/score.entity';
 import { ScoreRepository } from '../../general/score/score.repository';
 import { RedisService } from '../../redis/redis.service';
+import { ProgressService } from '../../general/progress/progress.service';
 
 interface OllamaGenerateRequest {
   model: string;
@@ -73,6 +78,7 @@ export class OllamaService {
     private readonly configService: ConfigService,
     private readonly scoreRepository: ScoreRepository,
     private readonly redisService: RedisService,
+    private readonly progressService: ProgressService,
   ) {
     this.ollamaUrl = this.configService.get<string>(
       'OLLAMA_URL',
@@ -91,7 +97,7 @@ export class OllamaService {
 
   checkLevel(avgScore: number, hintUsage: number): string {
     let currentLevel = 'Novice';
-    
+
     switch (hintUsage) {
       case 1:
         return 'Advance/Beginner';
@@ -100,7 +106,7 @@ export class OllamaService {
       case 3:
         return 'Novice';
     }
-    
+
     for (const { level, min } of this.levels) {
       if (avgScore >= min) {
         if (min !== 0 && avgScore >= min) currentLevel = level;
@@ -117,6 +123,8 @@ export class OllamaService {
     hintUsage: number,
     testId?: string,
     userId?: string,
+    isRetrying: boolean = false,
+    retryData: Score | null = null,
   ): Promise<OllamaAssessmentResult> {
     const prompt =
       `<s>[INST] Soal: ${soal}\n` +
@@ -124,31 +132,57 @@ export class OllamaService {
       `Kode siswa:\n\`\`\`python\n${studentCode}\n\`\`\`\n\n` +
       `Nilai kode siswa ini dan berikan feedback (maksimal 100 kata). [/INST]`;
 
-    const { response: raw, duration } = await this.callOllama(prompt);
-    const parsed = this.parseAssessmentResponse(raw);
+    // const { response: raw, duration } = await this.callOllama(prompt);
+    // const parsed = this.parseAssessmentResponse(raw);
+
+    // const result: OllamaAssessmentResult = {
+    //   aiScore: parsed.aiScore,
+    //   overallScore: parsed.overallScore,
+    //   flagOverride: false,
+    //   aiSuggestion: parsed.aiSuggestion,
+    //   aiFinishTime: this.secondsToReadable(duration),
+    //   hintUsage,
+    //   level: this.checkLevel(parsed.overallScore, hintUsage),
+    // };
 
     const result: OllamaAssessmentResult = {
-      aiScore: parsed.aiScore,
-      overallScore: parsed.overallScore,
+      aiScore: {
+        fungsionalitas: 91,
+        logika: 90,
+        syntax: 90,
+        code_style: 90,
+        dokumentasi: 90,
+        konsep: 95,
+      },
+      overallScore: 95,
       flagOverride: false,
-      aiSuggestion: parsed.aiSuggestion,
-      aiFinishTime: this.secondsToReadable(duration),
+      aiSuggestion: 'Niba kamu',
+      aiFinishTime: new Date().toTimeString().slice(0, 8),
       hintUsage,
-      level: this.checkLevel(parsed.overallScore, hintUsage),
+      level: this.checkLevel(82.5, hintUsage),
     };
 
     if (testId && userId) {
+      await this.progressService.addProgress(userId, testId);
+      const { overallScore, ...resultData } = result;
+
       await this.saveToDb({
         idTest: testId,
         idUser: userId,
-        level: result.level,
-        averageScore: Math.round(result.overallScore),
-        flagOverride: false,
-        hintUsage,
-        aiScore: result.aiScore,
-        aiSuggestion: result.aiSuggestion,
-        aiFinishTime: result.aiFinishTime,
+        averageScore: Math.round(overallScore),
+        status: result.flagOverride
+          ? 'Perlu di verifikasi'
+          : 'Sudah di Verifikasi',
         uCode: studentCode,
+        ...resultData,
+        ...(isRetrying && retryData
+          ? {
+              status: 'Selesai dikerjakan ulang',
+              allowRetry: false,
+              retryDeadline: null,
+              previousScore: this.buildPreviousScore(retryData),
+            }
+          : {}),
       });
 
       await this.invalidateCache(userId);
@@ -157,10 +191,15 @@ export class OllamaService {
     return result;
   }
 
-  private async saveToDb(data: any): Promise<Score | null> {
+  async isTestUnifinish(testId: string, userId: string): Promise<boolean> {
+    return await this.progressService.progressUnfinished(userId, testId);
+  }
+
+  private async saveToDb(data: any) {
     try {
+      console.log(data);
       if (!data.idTest || !data.idUser) return null;
-      return await this.scoreRepository.create(data);
+      await this.scoreRepository.createOrUpdate(data);
     } catch (err) {
       this.logger.error('Failed to save score to database', err);
       return null;
@@ -169,7 +208,13 @@ export class OllamaService {
 
   private async invalidateCache(userId?: string): Promise<void> {
     try {
-      const patterns = ['studycase:*', 'monitoring:*', 'dashboard:*'];
+      const patterns = [
+        'studycase:*',
+        'monitoring:*',
+        'dashboard:*',
+        'verification:*',
+        'profile:*',
+      ];
       if (userId) {
         patterns.push(`profile:${userId}*`);
       }
@@ -185,7 +230,6 @@ export class OllamaService {
   }
 
   private limitWords(text: string, maxWords = 100): string {
-
     if (!text) return '';
     const trimmed = text.trim();
     const words = trimmed.split(/\s+/);
@@ -260,7 +304,7 @@ export class OllamaService {
         num_predict: 512,
         temperature: 0.3,
         repeat_penalty: 1.2,
-        repeat_last_n: 64,  
+        repeat_last_n: 64,
       },
     };
     this.logger.log(`Calling Ollama [${this.ollamaModel}] at ${url}`);
@@ -328,5 +372,34 @@ export class OllamaService {
     const seconds = Math.floor((ms % 60_000) / 1000);
 
     return `${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  private parseJson<T>(value: unknown, fallback: T): T {
+    let v: unknown = value;
+    for (let i = 0; i < 5 && typeof v === 'string'; i++) {
+      try {
+        v = JSON.parse(v);
+      } catch {
+        return fallback;
+      }
+    }
+    return v && typeof v === 'object' ? (v as T) : fallback;
+  }
+
+  private buildPreviousScore(retryData: Score): PreviousScore[] {
+    const parsed = this.parseJson<unknown>(retryData.previousScore, []);
+    const prev = Array.isArray(parsed) ? (parsed as PreviousScore[]) : []; // or Object.values(parsed) if legacy keyed-object rows exist
+
+    return [
+      ...prev,
+      {
+        level: retryData.level,
+        averageScore: retryData.averageScore,
+        score: this.parseJson<Scoring | null>(
+          retryData.teacherScore ?? retryData.aiScore,
+          null,
+        ),
+      },
+    ];
   }
 }

@@ -3,6 +3,7 @@ import { OllamaService } from './ollama.service';
 import { AssessCodeDto } from './dto/assess-code.dto';
 import { SiswaAuth } from '../../../common/decorators/siswa-auth.decorator';
 import { ScoreRepository } from '../../general/score/score.repository';
+import { Score } from '../../general/score/entities/score.entity';
 
 @SiswaAuth()
 @Controller('siswa/test')
@@ -14,13 +15,20 @@ export class SiswaTestController {
 
     @Post('ai/assess')
     async assessAi(@Body() dto: AssessCodeDto, @Req() req: any) {
-        const userId = req.user?.id;
+        const userId = req.user.userId;
+        let isRetrying = false;
+        let retryData: Score | null = null;
 
         if (dto.testId && userId) {
-            const existing = await this.scoreRepository.findByUserId(userId);
-            const alreadySubmitted = existing.some((s) => s.idTest === dto.testId);
-            if (alreadySubmitted) {
-                throw new BadRequestException('Soal ini sudah pernah dikerjakan.');
+            const isTestUnfinished = await this.ollamaService.isTestUnifinish(dto.testId, userId);
+            if (!isTestUnfinished) throw new BadRequestException('Soal ini sudah selesai dikerjakan, mohon hubungi guru untuk mengulang.');
+            
+            const alreadySubmitted = await this.scoreRepository.alreadyExisted(userId, dto.testId);
+            if(alreadySubmitted){
+                if (alreadySubmitted?.allowRetry === false) throw new BadRequestException('Soal ini tidak bisa dikerjakan lagi, mohon hubungi guru.');
+                if (alreadySubmitted?.retryDeadline && new Date() > alreadySubmitted.retryDeadline) throw new BadRequestException('Soal ini tidak bisa dikerjakan lagi, mohon hubungi guru.');
+                isRetrying = true;
+                retryData = alreadySubmitted;
             }
         }
 
@@ -31,7 +39,8 @@ export class SiswaTestController {
             dto.hintUsage,
             dto.testId,
             userId,
+            isRetrying,
+            retryData
         );
     }
 }
-

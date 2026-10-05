@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { ScoreRepository } from '../../general/score/score.repository';
 import { HintRepository } from '../../general/hint/hint.repository';
 import { TestRepository } from '../../general/test/test.repository';
@@ -8,6 +13,8 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
+import { OllamaAssessmentScores } from '../../siswa/test/ollama.service';
+import { Scoring } from '../../../common/utils/mapper';
 
 @Injectable()
 export class StudyCaseService {
@@ -44,6 +51,25 @@ export class StudyCaseService {
     return data;
   }
 
+  async getMateriByUser(user: any) {
+    if (!user || !user.classId)
+      throw new ForbiddenException('User tidak memiliki kelas');
+
+    const cacheKey = `${this.CACHE_PREFIX}:case:${user.userId}`;
+
+    // Check cache
+    const cachedData = await this.redisService.get(cacheKey);
+    if (cachedData) return cachedData;
+
+    // Fetch dari database
+    const data = await this.topicRepository.findByUser(user);
+
+    // Store ke cache
+    await this.redisService.set(cacheKey, data, this.CACHE_TTL);
+
+    return data;
+  }
+
   /**
    * Get tests by topic dengan caching
    */
@@ -68,10 +94,8 @@ export class StudyCaseService {
   /**
    * Get case detail dengan caching
    */
-  async getCaseDetail(topicId: string, currentUserId?: string) {
-    const cacheKey = currentUserId
-      ? `${this.CACHE_PREFIX}:case:${topicId}:${currentUserId}`
-      : `${this.CACHE_PREFIX}:case:${topicId}`;
+  async getCaseDetail(topicId: string, userId: string) {
+    const cacheKey = `${this.CACHE_PREFIX}:case:${topicId}:${userId}`;
 
     // Check cache
     const cachedData = await this.redisService.get(cacheKey);
@@ -88,12 +112,7 @@ export class StudyCaseService {
     }
 
     const tests = await this.testRepository.findByTopicId(topicId);
-
-    // If student user ID is present, fetch their existing scores
-    let userScores: any[] = [];
-    if (currentUserId) {
-      userScores = await this.scoreRepository.findByUserId(currentUserId);
-    }
+    const userScores = await this.scoreRepository.findByUserId(userId);
 
     const questions = tests.map((test, index) => {
       const hintRecord = test.hints?.[0];
@@ -117,16 +136,15 @@ export class StudyCaseService {
         hasSubmitted,
         submission: userScore
           ? {
-              id: userScore.id,
               score: userScore.averageScore,
               level: userScore.level,
               feedback:
                 userScore.teacherSuggestion || userScore.aiSuggestion || '',
-              aiScore: userScore.aiScore,
-              teacherScore: userScore.teacherScore,
+              aiScore: this.parseScore(
+                userScore.teacherScore ?? userScore.aiScore,
+              ),
               code: userScore.uCode,
               hintUsage: userScore.hintUsage,
-              createdAt: userScore.createdAt,
             }
           : null,
       };
@@ -156,12 +174,11 @@ export class StudyCaseService {
     };
 
     // Store ke cache (shorter TTL if user-specific)
-    const ttl = currentUserId ? 300 : this.CACHE_TTL;
+    const ttl = userId ? 300 : this.CACHE_TTL;
     await this.redisService.set(cacheKey, result, ttl);
 
     return result;
   }
-
 
   /**
    * Get hint dengan caching
@@ -271,7 +288,7 @@ export class StudyCaseService {
         });
 
         proc.on('close', (code, signal) => {
-          const exitCode = signal ? 1 : code ?? 1;
+          const exitCode = signal ? 1 : (code ?? 1);
           if (signal === 'SIGTERM') {
             stderr =
               'TimeoutError: Execution exceeded 10 seconds and was terminated.';
@@ -325,5 +342,39 @@ export class StudyCaseService {
     if (keysToDelete.length > 0) {
       await this.redisService.deleteMany(keysToDelete);
     }
+  }
+
+  private parseJson<T>(value: unknown, fallback: T): T {
+    let v: unknown = value;
+    for (let i = 0; i < 5 && typeof v === 'string'; i++) {
+      try {
+        v = JSON.parse(v);
+      } catch {
+        return fallback;
+      }
+    }
+    return v && typeof v === 'object' ? (v as T) : fallback;
+  }
+
+  private parseScore(raw: Scoring): OllamaAssessmentScores {
+    const scoreKeys: (keyof OllamaAssessmentScores)[] = [
+      'fungsionalitas',
+      'logika',
+      'syntax',
+      'code_style',
+      'dokumentasi',
+      'konsep',
+    ];
+    const parsed = this.parseJson<
+      Partial<Record<keyof OllamaAssessmentScores, unknown>>
+    >(raw, {});
+
+    const aiScore = {} as OllamaAssessmentScores;
+    for (const key of scoreKeys) {
+      const n = Number(parsed[key]);
+      aiScore[key] = Number.isFinite(n) ? n : 0;
+    }
+
+    return aiScore;
   }
 }

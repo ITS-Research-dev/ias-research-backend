@@ -188,7 +188,7 @@ async function main() {
 
   // 10. Seed Scores (from score.json)
   console.log('🏆 Seeding Scores...');
-  await seedScore()
+  // await seedScore()
   await seedNegative()
 
   console.log('✅ Seeding completed successfully!');

@@ -19,8 +19,8 @@ export class MateriService {
   /**
    * Get materi by class ID dengan caching
    */
-  async getMateriByClass(userClassId: string) {
-    const cacheKey = `${this.CACHE_PREFIX}:class:${userClassId}`;
+  async getMateriByClass(classId: string) {
+    const cacheKey = `${this.CACHE_PREFIX}:class:${classId}`;
 
     // Check cache
     const cachedData = await this.redisService.get(cacheKey);
@@ -29,7 +29,7 @@ export class MateriService {
     }
 
     // Fetch dari database
-    const data = await this.topicRepository.findByClassId(userClassId);
+    const data = await this.topicRepository.findByClassId(classId);
 
     // Store ke cache
     await this.redisService.set(cacheKey, data, this.CACHE_TTL);

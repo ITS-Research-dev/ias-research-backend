@@ -24,6 +24,10 @@ export class ProgressRepository {
     return this.repo.save(entity);
   }
 
+  createOrUpdate(data: Partial<Progress>): Promise<Progress> {
+    return this.repo.save(data);
+  }
+
   async update(
     idUser: string,
     idTopic: string,

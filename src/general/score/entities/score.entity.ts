@@ -6,6 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
+  Unique,
 } from 'typeorm';
 import { Test } from '../../test/entities/test.entity';
 import { User } from '../../user/entities/user.entity';
@@ -19,7 +20,13 @@ export interface Scoring {
   konsep: number;
 }
 
+export interface PreviousScore {
+  level: string;
+  averageScore: number;
+  score: Scoring | null;
+}
 @Entity('TABLE_SCORE')
+@Unique(['idTest', 'idUser'])
 export class Score {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -38,7 +45,7 @@ export class Score {
 
   @Column()
   flagOverride: boolean;
-  
+
   @Column('int')
   hintUsage: number;
 
@@ -48,11 +55,14 @@ export class Score {
   @Column('text')
   aiSuggestion: string;
 
-  @Column('time')
+  @Column({ type: 'time' })
   aiFinishTime: Date;
 
   @Column('text')
   uCode: string;
+
+  @Column({ type: 'text', default: 'Sudah di Verifikasi' })
+  status: string;
 
   @Column({ type: 'uuid', nullable: true })
   overrideBy: string | null;
@@ -62,6 +72,15 @@ export class Score {
 
   @Column({ type: 'text', nullable: true })
   teacherSuggestion: string | null;
+
+  @Column({ type: 'boolean', default: false })
+  allowRetry: boolean;
+
+  @Column({ type: 'timestamp', nullable: true })
+  retryDeadline: Date | null;
+
+  @Column({ type: 'jsonb', nullable: true })
+  previousScore: PreviousScore[] | null;
 
   @CreateDateColumn()
   createdAt: Date;
